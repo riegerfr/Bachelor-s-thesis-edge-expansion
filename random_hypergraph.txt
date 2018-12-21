@@ -1,0 +1,23 @@
+idea 4.1
+
+vertices_degrees = array[d]
+vertices_degrees[0] = {1, ..., n}
+edges = {}
+first_edge = sample(r, vertices_degrees[0]) # vertices are distinguishable
+edges union= first_edge
+vertices_degrees[0].remove(first_edge)
+vertices_degrees[1] = first_edge
+
+while vertices_degrees[0] not empty: # O(d*n/r), increment degree of r of the n vertices by 1 for each of one of d runs
+	vertex_in_main_connection_component = sample(1, union(vertices_degrees[1:d-1])) # union is expensive, O(n)
+	other_vertices = sample(r-1, union(vertices_degrees[0:d-1]) # union is expensive, O(n)
+	edge = union(other_vertices, {vertex_in_main_connection_component})
+	update vertices_degrees # expensive, because vertices_degrees needs to be searched, O(n) 
+	edges union= edge
+
+while union(vertices_degrees[1:d-1]) not empty:
+	edge = sample(r, union(vertices_degrees[1:d-1]))
+	update vertices_degrees # expensive, because vertices_degrees needs to be searched, O(n) 
+	edges union= edge
+
+#todo: analyze if 

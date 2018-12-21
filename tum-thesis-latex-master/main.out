@@ -1,0 +1,19 @@
+\BOOKMARK [0][-]{Doc-Start}{Acknowledgments}{}% 1
+\BOOKMARK [0][-]{chapter*.1}{Abstract}{}% 2
+\BOOKMARK [0][-]{toc.0}{Contents}{}% 3
+\BOOKMARK [0][-]{chapter.1}{Introduction}{}% 4
+\BOOKMARK [0][-]{chapter.2}{Notation}{}% 5
+\BOOKMARK [0][-]{chapter.3}{Algorithms}{}% 6
+\BOOKMARK [1][-]{section.3.1}{Brute force}{chapter.3}% 7
+\BOOKMARK [1][-]{section.3.2}{Orthonormal vectors}{chapter.3}% 8
+\BOOKMARK [0][-]{chapter.4}{Random Hypergraphs}{}% 9
+\BOOKMARK [1][-]{section.4.1}{random edges with discard if not connected}{chapter.4}% 10
+\BOOKMARK [1][-]{section.4.2}{connected edges with discard if not connected or not regular}{chapter.4}% 11
+\BOOKMARK [0][-]{chapter.5}{Implementation}{}% 12
+\BOOKMARK [1][-]{section.5.1}{Technologies}{chapter.5}% 13
+\BOOKMARK [1][-]{section.5.2}{Code}{chapter.5}% 14
+\BOOKMARK [0][-]{chapter.6}{Evaluation}{}% 15
+\BOOKMARK [0][-]{chapter.7}{Applications}{}% 16
+\BOOKMARK [0][-]{chapter.8}{Resume and Further Work}{}% 17
+\BOOKMARK [0][-]{chapter*.3}{List of Figures}{}% 18
+\BOOKMARK [0][-]{chapter*.4}{List of Tables}{}% 19

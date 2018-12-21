@@ -1,0 +1,155 @@
+\chapter{Algorithms}\label{chapter:algorithms}
+In the following chapter different approaches for generating small expansion sets $S$ will be discussed.
+%TODO: NP-hard? --> approximation needed
+%todo: which tense to use where?
+TODO: why  phi (S) and not phi(H)?
+
+
+\section{Brute force}
+One obvoius approach is to brute-force the problem:
+\begin{algorithm}[h!]
+	\caption{Brute-force  \label{alg:brute_force}}
+	\begin{algorithmic}
+		\State $best\_S := null$
+		\State $lowest\_expansion := \inf$
+		\For{$\emptyset \neq S \subsetneq V$}
+		\State $expansion := \Phi(S)$
+		\If{$expansion < lowest\_expansion$}
+			\State $lowest\_expansion := expansion$
+			\State $best\_S := S$
+		\EndIf
+		\EndFor	
+		\State return $best\_S$
+	\end{algorithmic}
+\end{algorithm}
+
+
+Correctness: This as this algorithm iterates over all $\emptyset \neq S \subsetneq V$, it computes $\arg\min_{\emptyset \subsetneq S \subsetneq V} \Phi(S)$.
+
+TODO: what else to prove?
+
+
+Complexity:
+There are $2^{|V|}-2 = 2^{n}-2 \in O(2^n) $ combinations for $\emptyset \neq S \subsetneq V$, namely all the $2^{|V|}$ subsets of $V$ excluding the empty set $\emptyset$ and $V$ itself. Therefore, this algorithm is of exponential time complexity in $n$ and is therefore not efficient for larger graphs.
+%TODO: In fact the problem is  unique games conjecture, np-hard
+
+TODO: refine brute-force to only $\phi(S)$ not $\phi(H)$ possibly with $a<|S|<b$
+
+\section{Orthonormal vectors}
+As described in \cite{ChanLTZ16}, the following algorithm can be used:
+
+
+
+\begin{algorithm}[h!]
+	\caption{Small Set Expansion (according to Algorithm 1 in \cite{ChanLTZ16}) \label{alg:small_set_expansion}} %todo: better name
+	
+	
+	\begin{algorithmic}
+		\Function{SmallSetExpansion}{$G := (V,E, w), f_1, \ldots , f_k$}
+		\State assert $\xi == \max_{s\in [k]} \{D_w(f_s)\}$
+		\State assert $\forall f_i, f_j \in \{f_1, \ldots , f_k\} \subset \mathbb{R}^n, i\neq j: f_i \text{ and } f_j \text{ orthonormal in weighted space} $
+		
+		\For{$i \in V$}
+		\For{$s\in [k]$}
+		\State	$u_i(s) := f_s(i) $
+		\EndFor
+		\EndFor
+		
+		\For{$i \in V$}
+		\State $\tilde{u}_i := \frac{u_i}{||u_i||}$
+		\EndFor
+		
+		\State $\hat{S} := $ \Call{OrthogonalSeparator}{$\{\tilde{u}_i\}_{i\in V} , \beta = \frac{99}{100}, \tau = k$ }
+		
+		\For {$i \in S$}
+		\If {$\tilde{u}_i \in \hat{S}$ }
+
+		\State $X_i := ||u_i||^2$
+		\Else
+		\State $X_i := 0$
+		\EndIf
+		
+		\EndFor
+		\State $X:= $ sort $ list(\{X_i\}_{i \in V})$
+		\State $V := [i]_{\text{in order of X}}$
+		\State $S := \arg \min_{\{P: O \text{ is prefix of }V\}}\phi(O)$
+		
+		\State return $S$
+		
+	
+	
+		\EndFunction
+		
+		
+	\end{algorithmic}
+\end{algorithm} %todo: explain list syntax in notation
+
+
+\begin{algorithm}[h!]
+	\caption{Orthogonal Separator (combination of Lemma 18 and algorithm Theorem 10 in \cite{LouisM14} (also Fact 6.7 in \cite{ChanLTZ16})) \label{alg:orthogonal_separator}} 
+\begin{algorithmic}
+	\Function{OrthogonalSeparator}{$\{\tilde{u}_i\}_{i\in V} , \beta = \frac{99}{100}, \tau = k$}
+	\State $l := \lceil \frac{\log_2 k}{1-\log_2 k}\rceil$
+	\State $g \sim \mathcal{N} (0,I_n)$ where each component $g_i$ is mutually independent and sampled from $\mathcal{N} (0,1)$
+	
+
+	
+	\State $w := $\Call{SampleAssignments}{$l, V, \beta$}
+	
+	\For{$ i \in V$}
+	\State $W(u) := w_1(u)w_2(u)\cdots w_j(u)$
+	\EndFor
+	
+	\If{$n\ge 2^l$}
+	\State $word := random( \{0,1\}^l)$ uniform
+	
+	\Else
+	 
+	\State $words := set({w(i): i\in V})$  no multiset
+	\State $words \cup= \{w_1, \ldots , w_{|V|-|words|} \in \{0,1\}^l\} $ random choice
+	\State $word := random(words)$ uniform
+	
+	\EndIf
+	
+	\State $r := uniform(0,1)$
+	\State $S := \{i \in V: ||i||^2 \ge r \land W(u) = word \}$
+	\State return $S$
+	
+	\EndFunction %todo: 1-vector explain;
+	%todo: explain norm
+	%todo: i or u or v for what?
+\end{algorithmic}
+\end{algorithm}	
+
+	
+	
+\begin{algorithm}[h!]
+	\caption{Sample Assignments (proof of Lemma 18 in \cite{LouisM14}) \label{alg:sample_assignments}} 
+	\begin{algorithmic}
+	\Function{SampleAssignments}{$l, V, \beta$}
+		\State $\lambda := \frac{1}{\sqrt{\beta}}$ 
+		\For {$j = 1, 2, \ldots, l$}
+	\For{$i\in V$}
+	
+	
+	\State $t_i := \langle g, \tilde{u}_i \rangle $
+	\State $poisson\_count_i := N(t_i, \lambda)$ where N is a poisson process on $\mathbb{R}$
+	\If{$poisson\_count_i \mod 2 == 0 $}
+	\State $w_j(i) := 1$
+	\Else
+	\State  $w_j(i) := 0$
+	\EndIf
+	\EndFor
+	\EndFor
+	\State return $w$
+	\EndFunction %todo: 1-vector explain
+\end{algorithmic}
+\end{algorithm}	
+\begin{fact}{Theorem 6.6 in \cite{ChanLTZ16}}
+	Given an a hypergraph $H = (V, E, w)$ and $k$ vectors $f_1, f_2, \ldots , f_k$ which are orthonormal in the weighted space with $ \max_{s \in [k]} D_w(f_s) \le \xi $, the following holds. \cref{alg:small_set_expansion} constructs a random set $S \subsetneq V$ in polynomial time such that with $\Omega(1)$ probability, $|S| \le \frac{24|V|}{k}$ and
+	 $$\phi(S) \le C \min\{\sqrt{r \log k}, k \log k  \log \log k \sqrt{\log r} \} \cdot \sqrt{\xi},$$ 
+	 where $C$ is an absolute constant and $r := \max_{e\in E} |e|$.
+\end{fact}
+%todo: Algorithm instead of algorithm at sentence-beginning
+%todo: formatting
+

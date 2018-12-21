@@ -1,0 +1,37 @@
+\chapter{Notation}\label{chapter:notation}
+
+The notation used in this thesis is orientated on \cite{ChanLTZ16}.
+
+A weighted, undirected hypergraph $H = (V, E, w)$ consists of a set of $n$ vertices $V = \{v_1, \ldots, v_n\}$ and a set of $m$ (hyper-)edges $E = \{ e_1, \ldots , e_m | \forall i \in [i]: e_i \subseteq V \land e_i \neq \emptyset \} $ where every edge $e$ is a non-empty subset of $V$ and has a positive weight $w_e:= w(e) $, defined by the weight function $w: E \to  \mathbb{R}_+ $.
+
+The weight $w_v$ of a vertex $v$ is defined by summing up the weights of its edges: $w_v = \sum_{e\in E: v\in e} w_e$. Accordingly, a subset $S\subseteq V$ of vertices has weight $w_S := \sum_{v\in S}$ and a subset $F \subseteq E $ of edges has weight $w_F = \sum_{e\in F} w_e$. The set of edges which are cut by $S$ is defined as $\partial S:= \{e\in E : e \cap S \neq \emptyset \land  e \cap V \setminus S \neq \emptyset  \}$, which contains all the edges, which have at least one vertex in $S$ and at least one vertex in $V\setminus S$. 
+The edge expansion of a non-empty set of vertices $S \subseteq V$ is defined by \begin{equation}
+\Phi(S):= \frac{w(\partial S)}{w(S)}.
+\end{equation}
+Observe that $\forall \emptyset \neq S \subset V : 0\le \Phi(S) \le 1 $. The first inequality holds because the edge-weights are positive. The second inequality holds because $W(S) \ge W(\partial S)$, as $W(S)$ takes at least every edge (and therefore the corresponding weight), which is also considered by $W(\partial S)$, into account.
+
+
+With this, the expansion of a graph $H$ is defined as \begin{equation}
+	\Phi(H) := \min_{\emptyset \subsetneq S \subsetneq V} \max \{\Phi(S), \Phi(V\setminus S)\}.
+\end{equation} Here again, $0\le \Phi(H)\le 1$ holds.
+For not connected graphs $\Phi(H) = 0$, which can be verified by observing a $S$ which only contains vertices of one connection component. Therefore, only connected graphs shall be of interest here.
+Observe that for a graph $H$, which is obtained by connecting two connection components with edge with small weight, $\Phi(H)$ takes a small value. For a fully connected graph with equal edge-weights,  $\partial S$ (and therefore $\Phi(S)$) will be big for every $S\subsetneq V$.
+
+The weight matrix can be denoted as $$ W = 
+\begin{pmatrix}
+w_{v_1} & 0 & 0&\dots &0 \\
+0 & w_{v_2} & 0 & \ldots & 0 \\
+0 & 0 & w_{v_3} & \ldots & 0 \\
+\vdots & \vdots & \vdots & \ddots & \vdots \\
+0 &0&0& \ldots  & w_{v_n}
+\end{pmatrix} \in \mathbb{R}_{0+}^{n \times n} $$
+% TODO: needed?
+
+The discrepancy ratio of a graph, given a non-zero vector $f \in \mathbb{R}^V$ is defined as $$D_w(f) := \frac{\sum_{e\in E} w_e \max_{u,v\in e}(f_u - f_v)^2}{\sum_{u\in V} w_u f_u^2}$$.
+
+In the weighted space, in which the discrepancy ratio is defined like above, for two vectors $f, g \in \mathbb{R}^V$ the inner product is defined as $ \langle f,g \rangle_w := f^T W g$. Accordingly, the norm is $||f||_w = \sqrt{ \langle f,f \rangle_w}$.
+If $ \langle f,g \rangle_w   = 0 $, $f$ and $g$ are said to be orthonormal in the weighted space.
+
+%TODO: small/big correct words?
+
+%TODO: New words in italics?

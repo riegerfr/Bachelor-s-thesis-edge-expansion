@@ -1,10 +1,172 @@
 \chapter{Random Hypergraphs}\label{chapter:random_hypergraphs}
 
 
+The initial intention for creating random r-uniform, d-regular, connected hypergraphs in an effective manner which is guaranteed to terminate showed to be not as a trivial task, which is why several different approaches will be used and their resulting graphs also characterized by their edge expansion
+
+To start with, a simple algorithm to generate graphs which follows some of the intentions will be discussed:
+\begin{algorithm}[h!]
+	\caption{Generate random graph} 
+	\begin{algorithmic}
+		\Function{GenerateRandomGraph}{$n, rank, numberEdges, weightDistribution$}
+		\State $E := \emptyset$
+		\State $V := \{v_1, \ldots, v_n\}$
+		\For{$1, \ldots , numberEdges$}
+		\State $nextEdgeVertices := sample(V, rank) $ \Comment draw without replacement
+		\State $nextEdgeWeight := sample(weightDistribution)$ 
+		\State $nextEdge := (nextEdgeVertices, nextEdgeWeight)$
+		\State $E := E \cup \{nextEdge\}$
+		\EndFor
+		\EndFunction 
+	\end{algorithmic}
+\end{algorithm}	
+
+The algorithm is terminating, quick and the resulting graph is r-uniform and all the possible graphs can be constructed.
+But it might never sample one vertex $v \in V$, therefore the rank of this vertex will be 0 which does not make the graph regular and also not connected. Also, it does not guarantee to have no doubled edges.
+
+This idea can be improved by ensuring the degree of the vertices do not exceed $d$:
+
+\begin{algorithm}[h!]
+	\caption{Generate random graph} 
+	\begin{algorithmic}
+		\Function{GenerateRandomGraph}{$n, rank, d, weightDistribution$}
+		\State $E := \emptyset$
+		\State $V := \{v_1, \ldots, v_n\}$
+		\While{$|\{v\in V| deg(v)< d\}| \ge rank$}
+		\State $nextEdgeVertices := sample(\{v\in V| deg(v)< d\}, rank) $ \Comment draw without replacement
+		\State $nextEdgeWeight := sample(weightDistribution)$ 
+		\State $nextEdge := (nextEdgeVertices, nextEdgeWeight)$
+		\State $E := E \cup \{nextEdge\}$
+		\EndWhile
+		\EndFunction 
+	\end{algorithmic}
+\end{algorithm}	
+
+The algorithm is terminating, quick and the resulting graph is r-uniform and all the possible graphs can be constructed.
+However it is not guaranteed that this graph is connected and it is possible that some ($< rank$) vertices do not have degree $d$ in the end, because they have not been sampled before. TODO: example
+Also, it does not guarantee to have no doubled edges.
+
+To overcome these problems, the edges could only be sampled from the vertices with the smallest degrees:
+
+\begin{algorithm}[h!]
+	\caption{Generate random graph} 
+	\begin{algorithmic}
+		\Function{GenerateRandomGraph}{$n, rank, d, weightDistribution$}
+		\State $E := \emptyset$
+		\State $V := \{v_1, \ldots, v_n\}$
+		\While{$|\{v\in V| deg(v)< d\}| \ge rank$}
+		\State $ smallestDegreeVertices := \{v\in V| deg(v) = \min_{u\in V} deg(u) \}$
+		\If {$|smallestDegreeVertices| >= rank$}
+		\State $nextEdgeVertices := sample(smallestDegreeVertices, rank) $ \Comment draw without replacement
+		\Else
+		\State $secondSmallestDegreeVertices := \{v\in V| deg(v) = \min_{u\in V} deg(u) +1 \}$
+		\State $nextEdgeVertices :=  sample(secondSmallestDegreeVertices, rank - | smallestDegreeVertices|)$
+		\State $nextEdgeVertices := smallestDegreeVertices \cup nextEdgeVertices  $
+		\EndIf
+		\State $nextEdgeWeight := sample(weightDistribution)$ 
+		\State $nextEdge := nextEdgeVertices$
+		\State $E := E \cup \{nextEdge\}$
+		\State $w(e):= nextEdgeWeight$
+		
+		\EndWhile
+		\State return $G:=(V,E, w)$	
+		\EndFunction 
+	\end{algorithmic}
+\end{algorithm}	
+
+The algorithm is guaranteed to terminate, quick and the resulting graph is r-uniform and d-regular.
+However, not all the possible graphs can be constructed: This algorithm basically constructs the edges by d r-matchings. But not every graph can be dissembled into d r-matchings.
+Again this graph is not neccessarily connected and some edges might be doubled.
+
+To solve this, there are several options:
+One could i) resample whole graph (if probability is > constant), losing the terminating property.
+ii) resample some edges (from different connection components), ideally only strongly connected vertices, also losing the terminating property. Proof: all vertices are strongly connected to their connection component?
+iii) creating a spanning tree first and then sampling further
+
+i)
+\begin{algorithm}[h!]
+	\caption{Generate random graph} 
+	\begin{algorithmic}
+		\Function{GenerateRandomGraph}{$n, rank, d, weightDistribution$}
+		\State $G:=$ \Call{GenerateRandomGraph}{$n, rank, d, weightDistribution$}
+		\While{$\not$ Connected(G) or $ \exists e,f \in E. e = f$}
+		\State $G:=$ \Call{GenerateRandomGraph}{$n, rank, d, weightDistribution$}
+		\EndWhile
+		\State return $G:=(V,E)$	
+		\EndFunction 
+	\end{algorithmic}
+\end{algorithm}	
+
+ii)
+
+\begin{algorithm}[h!]
+	\caption{Generate random graph} 
+	\begin{algorithmic}
+		\Function{GenerateRandomGraph}{$n, rank, d, weightDistribution$}
+		\State $G:=$ \Call{GenerateRandomGraph}{$n, rank, d, weightDistribution$}
+		\While{$\not$ Connected(G) or $ \exists e,f \in E. e = f$}
+		\State $e,f := sample(E, 2)$
+		\State $u := sample(e)$
+		\State $v := sample(f)$
+		\State $e := (e \cup \{v\}) \setminus \{u\}$
+		\State $f := (f \cup \{u\}) \setminus \{v\}$
+		\EndWhile
+		\State return $G:=(V,E, w)$	
+		\EndFunction 
+	\end{algorithmic}
+\end{algorithm}	
+
+
+iii)
+
+\begin{algorithm}[h!]
+	\caption{Generate random graph} 
+	\begin{algorithmic}
+		\Function{GenerateRandomGraph}{$n, rank, d, weightDistribution$}
+		\State $V := \{v_1, \ldots, v_n\}$
+		\State $E := choice(V,rank)$
+		\While {$\{v\in V| deg(v) = 0 \} \neq \emptyset$}
+		\If{ $|\{v\in V| deg(v) = 0 \}| \ge rank$}
+			\State $nextEdgeTreeVertex := choice(\{v\in V| deg(v) = 1 \})$\Comment get one tree node
+			\State $nextEdgeVertices := choice(\{v\in V| deg(v) =0\}, rank-1) \cup \{nextEdgeTreeVertex\}$
+			\Else
+			\State  $nextEdgeVertices :=  \{v\in V| deg(v) =0\},  \cup choice(\{v\in V| deg(v) >0\},| \{v\in V| deg(v) =0\}| ) $
+			\EndIf
+			\State $nextEdgeWeight := sample(weightDistribution)$ 
+			\State $nextEdge := nextEdgeVertices$
+			\State $E := E \cup \{nextEdge\}$
+			\State $w(e):= nextEdgeWeight$
+			\EndWhile
+			\While{$|\{v\in V| deg(v)< d\}| \ge rank$}
+			\State $ smallestDegreeVertices := \{v\in V| deg(v) = \min_{u\in V} deg(u) \}$
+			\If {$|smallestDegreeVertices| >= rank$}
+			\State $nextEdgeVertices := sample(smallestDegreeVertices, rank) $ \Comment draw without replacement
+			\Else
+			\State $secondSmallestDegreeVertices := \{v\in V| deg(v) = \min_{u\in V} deg(u) +1 \}$
+			\State $nextEdgeVertices :=  sample(secondSmallestDegreeVertices, rank - | smallestDegreeVertices|)$
+			\State $nextEdgeVertices := smallestDegreeVertices \cup nextEdgeVertices  $
+			\EndIf
+			\State $nextEdgeWeight := sample(weightDistribution)$ 
+			\State $nextEdge := nextEdgeVertices$
+			\State $E := E \cup \{nextEdge\}$
+			\State $w(e):= nextEdgeWeight$
+			\EndWhile
+			\State return $G:=(V,E, w)$	
+			\EndFunction 
+	\end{algorithmic}
+\end{algorithm}	
+	
+However it is not guaranteed that this graph is connected and it is possible that some ($< rank$) vertices do not have degree $d$ in the end, because they have not been sampled before.
+
+
+TODO: define quick
+
 TODO: Discuss different approaches of generating, their limitations
 
 TODO: Analyze $\Phi$ for different random- classes? (and explain?)
 
 \section{random edges with discard if not connected}
+
+
+
 
 \section{connected edges with discard if not connected or not regular}

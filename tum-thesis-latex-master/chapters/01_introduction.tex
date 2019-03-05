@@ -2,6 +2,33 @@
 % Add the above to each chapter to make compiling the PDF easier in some editors.
 
 \chapter{Introduction}\label{chapter:introduction}
+
+...
+\section{Simple Graphs} %todo: good title?
+In graph theory a graph $G := (V,E)$ is defined as a set of $n$ vertices $V = \{v_1, \ldots, v_n \}$ and a set of $ m $ edges $E = \{e_1, \ldots, e_m\}$ where each edge $e_i = \{v_k, v_l\} \in E$ connects two vertices $v_k, v_l \in V$. Some of the simplest graphs can be seen in ... (TODO:figure)
+
+\section{Hypergraphs}
+This thesis will deal with a generalized form of simple graphs, namely hypergraphs.
+
+A weighted, undirected hypergraph $H = (V, E, w)$ consists of a set of $n$ vertices $V = \{v_1, \ldots, v_n\}$ and a set of $m$ (hyper-)edges $E = \{ e_1, \ldots , e_m | \forall i \in [i]: e_i \subseteq V \land e_i \neq \emptyset \} $ where every edge $e$ is a non-empty subset of $V$ and has a positive weight $w_e:= w(e) $, defined by the weight function $w: E \to  \mathbb{R}_+ $.
+
+
+\section{Cuts}
+On such graphs certain properties can be described, which are of theoretical interest but also have influence on the behaviour of a system which is described by such a graph. Some of these properties are so called cuts. A cut is described by its cut-set $\emptyset \neq S \subsetneq V$ a non-empty true subset of the vertices. Interesting cuts are for example the so called Minumum cut or the maximum cut which are defined by the minimum/maximum number of edges (or their added weight for weighted graphs) going between $S$ and $V \setminus S$. Formally $MinCut(G) := \min_{\emptyset \subsetneq S \subsetneq V} \sum_{e\in E:\exists u, v \in e: u \in S \land v \in V \setminus S } w_e $.
+For the min-cut there exists a polynomial time (in the number of vertices) algorithm TODO: find citation
+The max cut problem is known to be NP hard
+
+Sparse cut: crossing edge weights/ min{w(S), w(V\ S)}
+The cut on which this thesis focuses on is the so called Edge Expansion, which is the quotient of the summed weight of the edges crossing S and V\ S and the summed weight of all the edges in S.
+
+This is also a np hard problem ?
+Therefore several approximation algorithms exist, which will be shown in the following
+Out of Chan's proof that an algorithm with certain properties exists will be used to extract that algorithm.
+The involved constants will be estimated in a empirical manner by running it multiple times on different random graphs (for which algorithms are evaluated)
+
+
+
+
 TODO: how to work with notation of next chapter here: minium
 TODO: example graphs (also example dataset?)
 TODO: Mincut, Sparsest Cut, Edge expansion

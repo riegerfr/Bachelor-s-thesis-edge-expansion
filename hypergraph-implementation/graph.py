@@ -1,5 +1,4 @@
 import random
-import time
 import itertools
 import math
 import numpy as np
@@ -7,7 +6,7 @@ import numpy as np
 # import cvxpy
 import scipy
 import scipy.optimize as minimize
-
+import pickle
 
 # todo: different ways to define 'random' hypergraphs! discuss in thesis.
 # a) create vertices and add random edges until connected (given r_min and r_max)
@@ -19,14 +18,8 @@ import scipy.optimize as minimize
 # n: # vertices
 # m: # edges
 # r: # max degree in edges
+from connection_component import ConnectionComponent
 
-# class ConnectionComponent:
-#     def __init__(self, vertices):
-#         # self.graph = vertices.graph
-#         # self.edges = set()
-#         self.vertices = vertices
-#         for vertex in vertices:
-#             vertex.connection_component = self
 
 # def update_edge(self, edge):
 #     new_vertices = set()
@@ -42,90 +35,41 @@ import scipy.optimize as minimize
 # def merge_with_component(self, other_component):
 #     self.edges.update(other_component.edges)
 #     self.vertices.update(other_component.vertices)
-
-
-class Vertex:
-    indexes = 0
-
-    def __init__(self, graph):
-        self.graph = graph
-        self.edges = []
-        # todo: measure?
-        # this takes: O(n*m*r) memory
-        self.weight = 0
-        self.degree = 0
-        self.index = Vertex.indexes  # todo: use everywhere
-        Vertex.indexes += 1
-        # self.connection_component = ConnectionComponent({self})
-
-    def add_to_edge(self, edge):
-        self.degree += 1
-        if (edge in self.edges):  # O(m) time!
-            raise ValueError('this edge has already been added')
-        self.edges.append(edge)
-        self.weight += edge.weight
-        self.graph.total_vertex_weight += edge.weight
-
-    def recompute_weights_degrees(self):  # todo: needed?
-        weight = 0
-        degree = 0
-        for edge in self.edges:
-            degree += 1
-            weight += edge.weight
-        self.weight = weight
-        self.degree = degree
-
-
-class Edge:
-
-    def __init__(self, graph, weight, vertices):
-        self.graph = graph
-        if weight <= 0:
-            raise ValueError('Edges always have positive weights')
-        self.weight = weight
-        self.vertices = vertices
-
-        for vertex in vertices:  # todo: useful?
-            vertex.add_to_edge(self)
-
-        # possible_same_connection_component = next(iter(vertices)).connection_component
-        # if any(vertex.connection_component != possible_same_connection_component for vertex in vertices):
-        #     new_connection_component_vertices = vertices
-        # for vertex in vertices:
-        #     new_connection_component_vertices.update(vertex.connection_component.vertices) #todo: Set changed size during iteration?
-        # new_connection_component = ConnectionComponent(new_connection_component_vertices)
+from edge import Edge
+from poisson_process import Poisson_Process
+from vertex import Vertex
+from vertex_vector import Vertex_Vector
 
 
 class Graph:
 
-    def __init__(self, number_vertices, rank=None, max_edge_size=None, min_edge_size=None, degree=None, min_weight=None,
-                 max_weight=None, ):
+    def __init__(self, rank=None, max_edge_size=None, min_edge_size=None, degree=None, min_weight=None,
+                 max_weight=None ):
 
         self.vertices = set()
         self.edges = set()  # todo: how to assure this is not a multiset?
         self.connection_components = set()
 
-        self.number_vertices = number_vertices
-
         if min_edge_size and min_edge_size < 2:
             raise ValueError('edges need to contain at least two nodes')
 
+        if min_edge_size:  # todo: this for other arguments
+            self.min_edge_size = min_edge_size
+        if max_edge_size:
+            self.max_edge_size = max_edge_size
+
+        self.total_vertex_weight = 0
+
+    def create_random_uniform_regular_graph_until_connected(self, number_vertices, rank, degree, min_weight,
+                                                            max_weight):  # degree >= 2, random weights, uniform distribution. TODO: other distributions
+        self.number_vertices = number_vertices
         # create vertices
         for _ in range(number_vertices):
             new_vertex = Vertex(self)
             self.vertices.add(new_vertex)
         #     self.connection_components.add(new_vertex.connection_component)
 
-        if min_edge_size:  # todo: this for other arguments
-            self.min_edge_size = min_edge_size
-        self.max_edge_size = max_edge_size
-
-        self.total_vertex_weight = 0
-
-    def create_random_uniform_regular_graph_until_connected(self, rank, degree, min_weight,
-                                                            max_weight):  # degree >= 2, random weights, uniform distribution. TODO: other distributions
-        if not (
-                1. * self.number_vertices * degree / rank).is_integer():  # number_vertices * degree = number_edges * rank
+        if not (1. * self.number_vertices * degree / rank).is_integer():  # number_vertices * degree = number_edges * rank
             raise ValueError('no %s -uniform %s -regular connected hypergraph with &s vertices exists', rank, degree,
                              self.number_vertices)
         if not (degree >= 2 and rank >= 2):
@@ -149,20 +93,211 @@ class Graph:
             self.fill_up_lowest_degree(lowest_degree, max_weight, min_weight, rank, vertices_with_degree)
             lowest_degree += 1
 
+        self.compute_connection_components()
         while len(self.connection_components) > 1:
             self.shuffle()
+            self.compute_connection_components()
+
+    def create_random_graph_by_randomly_adding_edges(self, number_vertices, rank, avg_degree, min_weight,
+                                                     max_weight):
+        self.number_vertices = number_vertices
+        # create vertices
+        for _ in range(number_vertices):
+            new_vertex = Vertex(self)
+            self.vertices.add(new_vertex)
+
+        number_edges = number_vertices * avg_degree / rank  # todo: math correct? insert assert
+        if not number_edges.is_integer():
+            print("no integer number of edges, rounding up")
+            number_edges = math.ceil(number_edges)
+
+        for _ in range(number_edges):
+            next_edge_vertices = set(random.sample(self.vertices, rank))
+            for edge in self.edges:  # todo: activate
+                assert not edge in next_edge_vertices  # this ensures that the two sets are not the same making the new edge actually new
+
+            next_edge = Edge(self, random.uniform(min_weight, max_weight), next_edge_vertices)
+            self.edges.add(next_edge)
+
+        self.compute_connection_components()
+        if len(self.connection_components) != 1:
+            print("the created graph is not connected")
+
+        for vertex in self.vertices:
+            if vertex.degree != avg_degree:
+                print(" graph not uniform")
+
+    def compute_connection_components(self):  # todo: change to recompute?
+        for vertex in self.vertices:
+            vertex.connection_component = ConnectionComponent({vertex})
+
+        for edge in self.edges:
+            components = [vertex.connection_component for vertex in edge.vertices]
+
+            vertices = set([vertex for component in components for vertex in component.vertices])
+            new_component = ConnectionComponent(vertices)
+
+            for vertex in vertices:
+                vertex.connection_component = new_component
+
+
+        connection_components = set()
+
+        for vertex in self.vertices:
+            connection_components.add(vertex.connection_component)
+
+
+        self.connection_components = connection_components
+
+    # def recompute_connection_components(self):
+    #     connection_components_so_far = []
+    #
+    #     for vertex in self.vertices:
+    #         vertex.connection_component = {vertex}
+    #     for edge in self.edges:
+    #         components_of_vertices = [vertex.connection_component for vertex in edge.vertices]
+    #
+    #         vertices = set([vertex for component in components_of_vertices for vertex in component])
+    #
+    #         for component in connection_components_so_far:
+    #             if not vertices.isdisjoint(component):
+    #                 vertices |= component
+    #                 connection_components_so_far.remove(component)
+    #
+    #         for vertex in vertices:
+    #             vertex.connection_component = vertices
+    #
+    #         connection_components_so_far.append(vertices)
+    #
+    #     self.connection_components = components_of_vertices
+
+    def create_random_edges_connecting_in_the_end(self, number_vertices, rank, degree, min_weight,
+                                                  max_weight):
+
+        self.number_vertices = number_vertices
+        # create vertices
+        for _ in range(number_vertices):
+            new_vertex = Vertex(self)
+            self.vertices.add(new_vertex)
+
+        number_edges = number_vertices * degree / rank  # todo: math correct? insert assert
+        if not number_edges.is_integer():
+            print("no integer number of edges, rounding up")
+            number_edges = math.ceil(number_edges)
+
+        for _ in range(number_edges):
+            next_edge_vertices = set(random.sample(self.vertices, rank))
+            for edge in self.edges:  # todo: activate
+                assert not edge in next_edge_vertices  # this ensures that the two sets are not the same making the new edge actually new
+
+            next_edge = Edge(self, random.uniform(min_weight, max_weight), next_edge_vertices)
+            self.edges.add(next_edge)
+
+            self.compute_connection_components()
+            if len(self.connection_components) > 1:
+                if len(self.connection_components) != rank:
+                    for component in self.connection_components:
+                        number_free_connections = 0
+                        for vertex in component:
+                            assert degree >= vertex.degree
+                            number_free_connections += degree - vertex.degree
+                        assert number_free_connections >= 1
+
+        if len(self.connection_components) != 1:
+            print("the created graph is not connected")
 
     def shuffle(self):
         # select two different edges
 
         edges = random.sample(self.edges, 2)
-        vertex_1 = random.choice(edges[0])
-        vertex_2 = random.choice(edges[1])
+        vertex_0 = random.sample(edges[0].vertices, 1)[0]
+        vertex_1 = random.sample(edges[1].vertices, 1)[0]
 
-        # if vertex_1.connection_component != vertex_2.connection_component:
+        if vertex_0.connection_component != vertex_1.connection_component:
+            vertex_0.edges.remove(edges[0])
+            edges[0].vertices.remove(vertex_0)
+            vertex_1.edges.remove(edges[1])
+            edges[1].vertices.remove(vertex_1)
 
-    def create_random_uniform_regular_connected_graph(self, rank, degree, min_weight,
+            edges[0].vertices.add(vertex_0)
+            edges[1].vertices.add(vertex_1)
+
+            vertex_0.recompute()
+            vertex_1.recompute()
+            edges[0].recompute()
+            edges[1].recompute()
+
+    def create_random_uniform_regular_connected_graph(self, number_vertices, rank, degree, min_weight,
                                                       max_weight):  # degree >= 2, random weights, uniform distribution. TODO: other distributions
+        self.number_vertices = number_vertices
+        # create vertices
+        for _ in range(number_vertices):
+            new_vertex = Vertex(self)
+            self.vertices.add(new_vertex)
+        #     self.connection_components.add(new_vertex.connection_component)
+
+        if not (
+                1. * self.number_vertices * degree / rank).is_integer():  # number_vertices * degree = number_edges * rank
+            raise ValueError('no %s -uniform %s -regular connected hypergraph with &s vertices exists', rank, degree,
+                             self.number_vertices)
+        if not (degree >= 2 and rank >= 2):
+            raise ValueError('rank and degree have to be at least 2')
+
+        assert len(self.vertices) == self.number_vertices and not self.edges
+
+        vertices_with_degree = [set() for i in range(degree + 1)]  # for ranks  0, 1, ..., rank
+
+        vertices_with_degree[0] = self.vertices.copy()
+
+        # create first edge of spanning tree
+        first_edge_vertices = set(random.sample(vertices_with_degree[0], rank))
+        first_edge = Edge(self, random.uniform(min_weight, max_weight), first_edge_vertices)
+        self.edges.add(first_edge)
+
+        vertices_with_degree[0].difference_update((first_edge_vertices))
+        vertices_with_degree[1].update(first_edge_vertices)
+
+        # create spanning tree
+        while len(vertices_with_degree[0]) >= rank - 1:
+            connected_vertex = random.sample(vertices_with_degree[1], 1)[
+                0]  # more efficient than random.choice (needs set to be converted to list)
+            nonconnected_vertices = set(random.sample(vertices_with_degree[0], rank - 1))
+
+            next_edge_vertices = nonconnected_vertices.copy()
+            next_edge_vertices.add(connected_vertex)
+            next_edge = Edge(self, random.uniform(min_weight, max_weight), next_edge_vertices)
+            self.edges.add(next_edge)
+
+            vertices_with_degree[0].difference_update((nonconnected_vertices))
+            vertices_with_degree[1].update(nonconnected_vertices)
+
+            vertices_with_degree[1].remove(connected_vertex)
+            vertices_with_degree[2].add(connected_vertex)
+
+        # in case some vertices are 'left' over, add an edge between them and those which are already connected
+        self.fill_up_lowest_degree(0, max_weight, min_weight, rank, vertices_with_degree)
+
+        lowest_degree = 1
+        while lowest_degree < degree:
+            while len(vertices_with_degree[lowest_degree]) >= rank:
+                next_edge_vertices = set(random.sample(vertices_with_degree[lowest_degree], rank))
+                next_edge = Edge(self, random.uniform(min_weight, max_weight), next_edge_vertices)
+                self.edges.add(next_edge)
+                vertices_with_degree[lowest_degree].difference_update((next_edge_vertices))
+                vertices_with_degree[lowest_degree + 1].update(next_edge_vertices)
+            assert lowest_degree - 2 <= degree or not vertices_with_degree[lowest_degree]
+            self.fill_up_lowest_degree(lowest_degree, max_weight, min_weight, rank, vertices_with_degree)
+            lowest_degree += 1
+
+    def create_random_uniform_regular_graph_connect_in_the_end(self, number_vertices, rank, degree, min_weight,
+                                                               max_weight):  # degree >= 2, random weights, uniform distribution. TODO: other distributions
+        self.number_vertices = number_vertices
+        # create vertices
+        for _ in range(number_vertices):
+            new_vertex = Vertex(self)
+            self.vertices.add(new_vertex)
+        #     self.connection_components.add(new_vertex.connection_component)
+
         if not (
                 1. * self.number_vertices * degree / rank).is_integer():  # number_vertices * degree = number_edges * rank
             raise ValueError('no %s -uniform %s -regular connected hypergraph with &s vertices exists', rank, degree,
@@ -675,56 +810,6 @@ class Graph:
         return np.sum(np.multiply(np.multiply(np.transpose(f), W), g))  # todo: sum correct?
 
 
-class Poisson_Process:
-    def __init__(self, min_time, max_time, lambda_poisson):
-        # create poisson process todo: refactor into seperate class
-        self.event_times_positive = []  # a event happens at time= 0 per definition todo: correct?
-        self.event_times_negative = [0]
-        current_time = 0
-
-        # sample positive times
-        while current_time < max_time:
-            time = np.random.exponential(1 / lambda_poisson)  # todo: maybe 1/lambda?
-            current_time += time
-            self.event_times_positive.append(current_time)
-
-        current_time = 0
-        # sample negative times
-        while current_time > min_time:
-            time = np.random.exponential(1 / lambda_poisson)  # todo: maybe 1/lambda?
-            current_time -= time
-            self.event_times_negative.append(current_time)
-
-    def get_number_events_happened_until_t(self, t):
-        assert t != 0  # todo: neccessary?
-        if t > 0:
-            indices = [index for index, time in enumerate(self.event_times_positive) if time < t]
-            return len(indices)
-        if t < 0:
-            indices = [index for index, time in enumerate(self.event_times_positive) if time > t]
-            return len(indices)
-
-
-class Vertex_Vector:
-    def __init__(self, graph, values=None, vertex_list=None):  # todo: assert values have correct order
-        self.graph = graph
-        self.vector = {}
-        if values is not None:
-            assert len(values) == len(vertex_list)
-            for i, vertex in enumerate(vertex_list):
-                self.vector[vertex] = values[i]
-        else:
-            self.insert_random_values()
-
-    def insert_random_values(self):
-        for vertex in graph.vertices:
-            self.vector[vertex] = random.uniform(-1, 1)
-
-    def all_ones(self):
-        for vertex in graph.vertices:
-            self.vector[vertex] = 1
-
-
 random.seed(123)
 np.random.seed(123)
 
@@ -750,8 +835,10 @@ np.random.seed(123)
 #     print(" for "+str(6+i)+" vertixes it took "+ str(times[i]) + " seconds")
 
 
-graph = Graph(7)
-graph.create_random_uniform_regular_connected_graph(3, 6, 0.1, 1.1)
+graph = Graph()
+# graph.create_random_uniform_regular_connected_graph(7, 3, 6, 0.1, 1.1)
+# graph.create_random_graph_by_randomly_adding_edges(7, 3, 5, 0.1, 1.1)
+graph.create_random_uniform_regular_graph_until_connected(10, 3, 6, 0.1, 1.1)
 
 graph.generate_small_expansion_set(2)  # todo: make work for 4
 
@@ -761,6 +848,41 @@ graph.brute_force_hypergraph_expansion()
 random_vertex_vector = Vertex_Vector(graph)
 discrepancy_ratio = graph.discrepancy_ratio(random_vertex_vector)
 print("Discrepancy ratio ", discrepancy_ratio)
+
+
+creation_algorithms =[(Graph.create_random_uniform_regular_graph_until_connected, 10, 3, 6, 0.1, 1.1), (Graph.create_random_uniform_regular_connected_graph,7, 3, 6, 0.1, 1.1)] #todo: extend
+graphs_per_algorithm = 5
+random_small_expansion_tries_per_graph = 5
+
+for creation_algorithm, params in creation_algorithms: #todo: log everything, store
+    for _ in range(graphs_per_algorithm):
+        graph = Graph()
+        graph.creation_algorithm(params)
+
+        graph.brute_force_smallest_hypergraph_expansion()
+        graph.brute_force_smallest_hypergraph_expansion()
+        graph.brute_force_hypergraph_expansion_on_vertices(len(small_expansion))
+        for _ in range(random_small_expansion_tries_per_graph):
+            small_expansion = graph.generate_small_expansion_set()
+
+
+#plot
+
+
+#evaluation:
+# todo: brute force time eval on 10 random graphs (degrees?)
+# todo: for different algorithms to create graphs on 25 vertices
+# evaluate best and 
+
+# generate x different graphs with each generation method
+
+# brute force all the graphs
+
+# use approcimation algorithm (... times for each graph, take best result
+
+# plot result
+
+
 #
 # repetitions = 5
 # construct_time_total = 0

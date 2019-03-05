@@ -2,7 +2,7 @@
 
 The notation used in this thesis is orientated on \cite{ChanLTZ16}.
 
-A weighted, undirected hypergraph $H = (V, E, w)$ consists of a set of $n$ vertices $V = \{v_1, \ldots, v_n\}$ and a set of $m$ (hyper-)edges $E = \{ e_1, \ldots , e_m | \forall i \in [i]: e_i \subseteq V \land e_i \neq \emptyset \} $ where every edge $e$ is a non-empty subset of $V$ and has a positive weight $w_e:= w(e) $, defined by the weight function $w: E \to  \mathbb{R}_+ $.
+
 
 The weight $w_v$ of a vertex $v$ is defined by summing up the weights of its edges: $w_v = \sum_{e\in E: v\in e} w_e$. Accordingly, a subset $S\subseteq V$ of vertices has weight $w_S := \sum_{v\in S}$ and a subset $F \subseteq E $ of edges has weight $w_F = \sum_{e\in F} w_e$. The set of edges which are cut by $S$ is defined as $\partial S:= \{e\in E : e \cap S \neq \emptyset \land  e \cap V \setminus S \neq \emptyset  \}$, which contains all the edges, which have at least one vertex in $S$ and at least one vertex in $V\setminus S$. 
 The edge expansion of a non-empty set of vertices $S \subseteq V$ is defined by \begin{equation}

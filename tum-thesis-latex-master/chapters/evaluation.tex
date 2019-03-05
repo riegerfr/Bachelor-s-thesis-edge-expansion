@@ -1,4 +1,39 @@
 \chapter{Evaluation}\label{chapter:Evaluation}
 
+\section{Graph size}
+For evaluating the implementation of the algorithm ... (chan's) in comparison to the brute-force solution, the maximal size of graphs (in $n$) which can be brute-forced in a reasonable time is determined. In general it is favourable to generate as large as possible graphs, for not needing to extrapolate ...
+However, the brute forcing time correlates with around $n^8$ (see ...), so with the available resources, it already takes ...s for n=...
+
+For estimating the constant in theorem ..., the a plot of as many grapsh as possible seems to be ideal. So not only for brute-forcing but also for executing algorithm ... oftenly (...), the graph shouldn't be too big, as the (improveable) time complexity of the implementation shows to be at around ... $n...$
+
+
+
+
+
+What time is reasonable is influenced by the following trade-off: either one wants to know the expansion of  
+
+in conclusion 1 minute seems to be a reasinable time for one run of the algorithm.
+
+
+So the size of the graph is fixed to 20.
+
+In order to not generate very dense graphs but also demonstrate the hypergraph property, the rank of edges is set to 3 and the degree of vertices is  set to be ... 
+
+This can't be chosen freely, as For other combinations no r-uniform d-regular graphs exist on .. vertices, as $n d = m r$ (todo: source)
+
+
+\section{random Generation methods}
+
+As the expansion for not connected graphs is always 0, only algorithms which guarantee connected graphs will be considered.
+
+As it proved difficult to re-generate graphs... only the three algorithms ... , ... and ... will be used. The expansion of the graphs will be evaluated against each other via brute-force and using the approximation alorithm as well.
+
+
+The edge-weight distribution is always set to be a uniform distribution on $[0.1, 1.1]$
+\section{title}
+
+
+
+
 TODO: find constants by analyzing quality?
 Analyze runtime of code? 

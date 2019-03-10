@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.19 (TeX Live 2018/W32TeX) (preloaded format=pdflatex 2018.12.6)  5 MAR 2019 00:38
+This is pdfTeX, Version 3.14159265-2.6-1.40.19 (TeX Live 2018/W32TeX) (preloaded format=pdflatex 2018.12.6)  9 MAR 2019 22:48
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -2438,22 +2438,22 @@ LaTeX Warning: `!h' float specifier changed to `!ht'.
 
 ) (./chapters/implementation_tetail.tex [11] [12]
 chapter 5.
-) (./chapters/evaluation.tex [13
+[13
 
 
-]
+]) (./chapters/evaluation.tex [14]
 chapter 6.
-) (./chapters/applications.tex [14
+[15
 
 
-] [15]
+]) (./chapters/applications.tex [16]
 chapter 7.
-) (./chapters/resume_further_work.tex [16
+) (./chapters/resume_further_work.tex [17
 
 
 ]
 chapter 8.
-) [17
+) [18
 
 
 ]
@@ -2463,7 +2463,7 @@ Package tocbasic Info: character protrusion at lof deactivated on input line 54
 \tf@lof=\write7
 \openout7 = `main.lof'.
 
- [18
+ [19
 
 
 ]
@@ -2473,7 +2473,7 @@ Package tocbasic Info: character protrusion at lot deactivated on input line 55
 \tf@lot=\write8
 \openout8 = `main.lot'.
 
- [19
+ [20
 
 
 ]
@@ -2494,7 +2494,7 @@ s.^^Q In: \T1/pplx/m/it/10.95 (-20) CoRR \T1/pplx/m/n/10.95 (-20) abs/1605.0148
  []
 
 No complaints by nag.
-[20
+[21
 
 
 ]
@@ -2510,11 +2510,11 @@ Package logreq Info: Writing requests to 'main.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 53729 strings out of 492639
- 1166427 string characters out of 6133088
- 1858178 words of memory out of 5000000
+ 53762 strings out of 492639
+ 1166694 string characters out of 6133088
+ 1858180 words of memory out of 5000000
  56524 multiletter control sequences out of 15000+600000
- 586992 words of font info for 227 fonts, out of 8000000 for 9000
+ 588753 words of font info for 251 fonts, out of 8000000 for 9000
  1143 hyphenation exceptions out of 8191
  81i,15n,136p,9083b,2191s stack positions out of 5000i,500n,10000p,200000b,80000s
 {c:/texlive/2018/texmf-dist/fonts/enc/dvips/cm-super/cm-super-t1.enc}{c:/texl
@@ -2530,10 +2530,10 @@ blic/amsfonts/symbols/msbm10.pfb><c:/texlive/2018/texmf-dist/fonts/type1/public
 /cm-super/sftt1095.pfb><c:/texlive/2018/texmf-dist/fonts/type1/urw/palatino/upl
 b8a.pfb><c:/texlive/2018/texmf-dist/fonts/type1/urw/palatino/uplr8a.pfb><c:/tex
 live/2018/texmf-dist/fonts/type1/urw/palatino/uplri8a.pfb>
-Output written on main.pdf (27 pages, 656793 bytes).
+Output written on main.pdf (28 pages, 661360 bytes).
 PDF statistics:
- 435 PDF objects out of 1000 (max. 8388607)
- 354 compressed objects within 4 object streams
- 99 named destinations out of 1000 (max. 500000)
+ 439 PDF objects out of 1000 (max. 8388607)
+ 357 compressed objects within 4 object streams
+ 100 named destinations out of 1000 (max. 500000)
  34023 words of extra memory for PDF output out of 35830 (max. 10000000)
 

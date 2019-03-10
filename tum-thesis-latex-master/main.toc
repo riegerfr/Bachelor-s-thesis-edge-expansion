@@ -33,20 +33,20 @@
 \defcounter {refsection}{0}\relax 
 \contentsline {section}{\numberline {5.2}Code}{13}{section.5.2}
 \defcounter {refsection}{0}\relax 
-\contentsline {chapter}{\numberline {6}Evaluation}{14}{chapter.6}
+\contentsline {chapter}{\numberline {6}Evaluation}{15}{chapter.6}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {6.1}Graph size}{14}{section.6.1}
+\contentsline {section}{\numberline {6.1}Graph size}{15}{section.6.1}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {6.2}random Generation methods}{14}{section.6.2}
+\contentsline {section}{\numberline {6.2}random Generation methods}{16}{section.6.2}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {6.3}title}{15}{section.6.3}
+\contentsline {section}{\numberline {6.3}title}{16}{section.6.3}
 \defcounter {refsection}{0}\relax 
-\contentsline {chapter}{\numberline {7}Applications}{16}{chapter.7}
+\contentsline {chapter}{\numberline {7}Applications}{17}{chapter.7}
 \defcounter {refsection}{0}\relax 
-\contentsline {chapter}{\numberline {8}Resume and Further Work}{17}{chapter.8}
+\contentsline {chapter}{\numberline {8}Resume and Further Work}{18}{chapter.8}
 \defcounter {refsection}{0}\relax 
-\contentsline {chapter}{\nonumberline List of Figures}{18}{chapter*.3}
+\contentsline {chapter}{\nonumberline List of Figures}{19}{chapter*.3}
 \defcounter {refsection}{0}\relax 
-\contentsline {chapter}{\nonumberline List of Tables}{19}{chapter*.4}
+\contentsline {chapter}{\nonumberline List of Tables}{20}{chapter*.4}
 \defcounter {refsection}{0}\relax 
-\contentsline {chapter}{\nonumberline Bibliography}{20}{chapter*.5}
+\contentsline {chapter}{\nonumberline Bibliography}{21}{chapter*.5}

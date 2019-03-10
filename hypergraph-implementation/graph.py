@@ -6,7 +6,7 @@ import numpy as np
 # import cvxpy
 import scipy
 import scipy.optimize as minimize
-import pickle
+import statistics
 
 # todo: different ways to define 'random' hypergraphs! discuss in thesis.
 # a) create vertices and add random edges until connected (given r_min and r_max)
@@ -19,7 +19,6 @@ import pickle
 # m: # edges
 # r: # max degree in edges
 from connection_component import ConnectionComponent
-
 
 # def update_edge(self, edge):
 #     new_vertices = set()
@@ -44,7 +43,7 @@ from vertex_vector import Vertex_Vector
 class Graph:
 
     def __init__(self, rank=None, max_edge_size=None, min_edge_size=None, degree=None, min_weight=None,
-                 max_weight=None ):
+                 max_weight=None):
 
         self.vertices = set()
         self.edges = set()  # todo: how to assure this is not a multiset?
@@ -69,7 +68,8 @@ class Graph:
             self.vertices.add(new_vertex)
         #     self.connection_components.add(new_vertex.connection_component)
 
-        if not (1. * self.number_vertices * degree / rank).is_integer():  # number_vertices * degree = number_edges * rank
+        if not (
+                1. * self.number_vertices * degree / rank).is_integer():  # number_vertices * degree = number_edges * rank
             raise ValueError('no %s -uniform %s -regular connected hypergraph with &s vertices exists', rank, degree,
                              self.number_vertices)
         if not (degree >= 2 and rank >= 2):
@@ -94,9 +94,12 @@ class Graph:
             lowest_degree += 1
 
         self.compute_connection_components()
-        while len(self.connection_components) > 1:
+        counter = 0
+        while len(self.connection_components) > 1 and counter < 1000:
             self.shuffle()
-            self.compute_connection_components()
+            counter += 1
+
+        assert len(self.connection_components) == 1  # todo: proper error messsage
 
     def create_random_graph_by_randomly_adding_edges(self, number_vertices, rank, avg_degree, min_weight,
                                                      max_weight):
@@ -140,12 +143,10 @@ class Graph:
             for vertex in vertices:
                 vertex.connection_component = new_component
 
-
         connection_components = set()
 
         for vertex in self.vertices:
             connection_components.add(vertex.connection_component)
-
 
         self.connection_components = connection_components
 
@@ -219,13 +220,16 @@ class Graph:
             vertex_1.edges.remove(edges[1])
             edges[1].vertices.remove(vertex_1)
 
-            edges[0].vertices.add(vertex_0)
-            edges[1].vertices.add(vertex_1)
+            edges[0].vertices.add(vertex_1)
+            vertex_1.add_to_edge(edges[0])
+            edges[1].vertices.add(vertex_0)
+            vertex_0.add_to_edge(edges[1])
 
-            vertex_0.recompute()
-            vertex_1.recompute()
-            edges[0].recompute()
-            edges[1].recompute()
+            vertex_0.recompute_weights_degrees()  # todo test
+            vertex_1.recompute_weights_degrees()
+            # edges[0].recompute()
+            # edges[1].recompute()
+        self.compute_connection_components()
 
     def create_random_uniform_regular_connected_graph(self, number_vertices, rank, degree, min_weight,
                                                       max_weight):  # degree >= 2, random weights, uniform distribution. TODO: other distributions
@@ -505,9 +509,10 @@ class Graph:
         lowest_expansion = 1
         best_set = None
         for length in range(1,
-                            self.number_vertices - 1):  # range(1, int(math.ceil(len(self.vertices) / 2))): todo: why not?
+                            self.number_vertices):  # range(1, int(math.ceil(len(self.vertices) / 2))): todo: why not?
             for subset_candidate in itertools.combinations(self.vertices, length):
                 expansion = self.bigger_edge_expansion(subset_candidate)
+
                 if expansion < lowest_expansion:
                     lowest_expansion = expansion
                     best_set = subset_candidate
@@ -519,7 +524,7 @@ class Graph:
         lowest_expansion = 1
         best_set = None
         for length in range(1,
-                            self.number_vertices - 1):  # range(1, int(math.ceil(len(self.vertices) / 2))): todo: why not?
+                            self.number_vertices):  # range(1, int(math.ceil(len(self.vertices) / 2))): todo: why not?
             for subset_candidate in itertools.combinations(self.vertices, length):
                 expansion = self.smaller_edge_expansion(subset_candidate)
                 if expansion < lowest_expansion:
@@ -528,6 +533,35 @@ class Graph:
                     print("new lowest expansion: " + (str(lowest_expansion)))
 
         print("lowest expansion (min of both sides) found: " + str(lowest_expansion) + " for " + str(best_set))
+
+    def brute_force_smallest_hypergraph_expansion_each_size(self):  # todo: plot it for all lengths
+        lowest_expansion = {}
+        best_set = {}
+        for length in range(1,
+                            self.number_vertices):  # range(1, int(math.ceil(len(self.vertices) / 2))): todo: why not?
+            lowest_expansion[length] = 1
+            sum_expansion = 0  # todo: log
+            number_combinations = 0
+            expansions = []
+            for subset_candidate in itertools.combinations(self.vertices, length):
+
+                expansion = self.edge_expansion(
+                    subset_candidate)  # todo: which one? bigger/smaller/just edge expansion?
+                sum_expansion += expansion
+                number_combinations += 1
+                expansions.append(expansion)
+                if expansion < lowest_expansion[length]:
+                    lowest_expansion[length] = expansion
+                    best_set[length] = subset_candidate
+                #  print("new lowest expansion for length + " + str(length) + " : " + (str(lowest_expansion[length])))
+
+            print("lowest expansion (just one side) found: " + str(lowest_expansion[length]) + " , average " + str(
+                sum_expansion / number_combinations) + " for " + str(
+                length) + " vertices")  # todo: compare small with average (min 10%?)
+            print("median: " + str(statistics.median(expansions)))
+        print("lowest expansion (just one side): " + str(
+            lowest_expansion[min(lowest_expansion, key=lowest_expansion.get)]))
+        return best_set, lowest_expansion
 
     def discrepancy_ratio(self, vertex_vector):
         nominator = 0.
@@ -556,7 +590,6 @@ class Graph:
         for i, vertex in enumerate(self.vertices):  # todo assert vertices are a list
             W[i, i] = vertex.weight
 
-        # f = [np.ones((number_vertices)) for i in range(k)]
         f = []
 
         f.append(np.ones(number_vertices))
@@ -577,10 +610,11 @@ class Graph:
             # constr.append({'type': 'eq', 'fun': lambda x: self.weighted_vertex_g_f_sum_alternative(x, f[i])})
             constr.append(
                 {'type': 'eq', 'fun': lambda x: self.weighted_vertex_g_f_sum_alternative_f_as_list_of_np_arrays(x, f)})
-            g = scipy.optimize.minimize(fun=self.sdp_val_function, x0=g, constraints=constr,
+            g = scipy.optimize.minimize(fun=self.sdp_val_function, x0=g, constraints=constr, tol=0.0000001, #todo: tweak tolerance
                                         # method='SLSQP', # not working: 'nelder-mead', 'powell', 'cg', 'bfgs', 'newton-cg', 'dogleg',    'l-bfgs-b', 'tnc'  , 'trust-ncg', cobyla
-                                        options={"maxiter": 200, "disp": True})
-            assert g.success
+                                        options={"maxiter": 10000, "disp": True})  # dstip: set to true for messages
+            assert g.success  # todo: what to do if not?
+            print("optimization success")
             g = np.reshape(g.x, (number_vertices, number_vertices))  # todo: transpose?
 
             z = np.random.normal(loc=0, scale=1, size=(number_vertices))
@@ -649,7 +683,7 @@ class Graph:
             value += edge.weight * max_g_discrepancy_in_g_values
         return value
 
-    def generate_small_expansion_set(self, k):  # algorithm 1
+    def generate_small_expansion_set(self, k, random_projection_repetitions=20):  # algorithm 1
 
         vertex_list = list(self.vertices)  # use vertex indexing? todo: make sure always same order
         self.vertices = vertex_list  # todo: get rid of this technical dept (make it a list from the beginning on)
@@ -668,7 +702,7 @@ class Graph:
             f_discrepancy_ratio = self.discrepancy_ratio(f_vertex_vector)  # todo: adjust vertex_vector
             if f_discrepancy_ratio > max_discrepancy_ratio:
                 max_discrepancy_ratio = f_discrepancy_ratio
-
+        print("max_discrepancy_ratio: " + str(max_discrepancy_ratio))
         # xi =  max_discrepancy_ratio
 
         # 1.
@@ -684,35 +718,39 @@ class Graph:
             normalized_u[vertex] = u[vertex] / np.linalg.norm(u[vertex])  # todo: check whether norm applied correctly
 
         # 3 random projection
-        beta = 0.99
-        tau = k
-        orthogonal_seperator = self.create_random_orthogonal_seperator(normalized_u, beta,
-                                                                       tau)  # set of (vertex, u_vertex)
-        random_projection = []
-        for vertex in self.vertices:
-            if vertex in orthogonal_seperator:
-                random_projection.append((np.linalg.norm(u[vertex]), vertex))
-            else:
-                random_projection.append((0, vertex))
+        result = []
+        for i in range(random_projection_repetitions):
+            beta = 0.99
+            tau = k
+            orthogonal_seperator = self.create_random_orthogonal_seperator(normalized_u, beta,
+                                                                           tau)  # set of (vertex, u_vertex)
+            random_projection = []
+            for vertex in self.vertices:
+                if vertex in orthogonal_seperator:
+                    random_projection.append((np.linalg.norm(u[vertex]), vertex))
+                else:
+                    random_projection.append((0, vertex))
 
-        # sweep cut
-        random_projection.sort(key=lambda tuple: tuple[0])
+            # sweep cut
+            random_projection.sort(key=lambda tuple: tuple[0])
 
-        sorted_vertices = [tuple[1] for tuple in random_projection if tuple[0] > 0]  # todo: maybe just remove 1?
+            sorted_vertices = [tuple[1] for tuple in random_projection if tuple[0] > 0]  # todo: maybe just remove 1?
 
-        lowest_expansion = math.inf
-        lowest_expansion_vertices = set()
-        for i in range(1, min(len(random_projection),
-                              self.number_vertices - 1)):  # todo: make sure not all vertices can be included (expansion 0); check for index off by 1
+            lowest_expansion = math.inf
+            lowest_expansion_vertices = set()
+            for i in range(1, min(len(random_projection),
+                                  self.number_vertices - 1)):  # todo: make sure not all vertices can be included (expansion 0); check for index off by 1
 
-            vertices = set(sorted_vertices[:i])
-            expansion = self.edge_expansion(vertices)
-            if lowest_expansion > expansion:
-                lowest_expansion = expansion
-                lowest_expansion_vertices = vertices
+                vertices = set(sorted_vertices[:i])
+                expansion = self.edge_expansion(vertices)
+                if lowest_expansion > expansion:
+                    lowest_expansion = expansion
+                    lowest_expansion_vertices = vertices
 
-        print("lowest expansion: " + str(lowest_expansion))
-        return lowest_expansion_vertices
+            print("lowest expansion: " + str(lowest_expansion))
+            result.append((lowest_expansion_vertices, lowest_expansion))
+        # C = lowest_expansion /min(math.sqrt(r * math.log2(k)), k*math.log2(k)*math.log2(math.log2(k))*math.sqrt(math.log2(r)))) *math.sqrt(max_discrepancy_ratio) #todo: get r, k, which log?
+        return result
 
     #    def generate_and_solve_sdp(self, W, vertices_list, number_vertices):
 
@@ -808,102 +846,6 @@ class Graph:
 
     def weighted_inner_product(self, W, f, g):
         return np.sum(np.multiply(np.multiply(np.transpose(f), W), g))  # todo: sum correct?
-
-
-random.seed(123)
-np.random.seed(123)
-
-# times = []
-#
-# m = 15
-# for i in range(6, m):
-#     start_time = time.time()
-#
-#     graph = Graph(i)
-#     graph.create_random_uniform_regular_connected_graph(3, 6, 0.1, 1.1)
-#
-#     graph.generate_small_expansion_set(2)
-#
-#     end_time = time.time()
-#
-#     total_time = end_time-start_time
-#     times.append(total_time)
-#
-#     print("it took " + str(total_time) + " s generate a small expansion set for a graph of "+str(i)+ " vertices")
-#
-# for i in range( m-1):
-#     print(" for "+str(6+i)+" vertixes it took "+ str(times[i]) + " seconds")
-
-
-graph = Graph()
-# graph.create_random_uniform_regular_connected_graph(7, 3, 6, 0.1, 1.1)
-# graph.create_random_graph_by_randomly_adding_edges(7, 3, 5, 0.1, 1.1)
-graph.create_random_uniform_regular_graph_until_connected(10, 3, 6, 0.1, 1.1)
-
-graph.generate_small_expansion_set(2)  # todo: make work for 4
-
-graph.brute_force_smallest_hypergraph_expansion()
-graph.brute_force_hypergraph_expansion()
-
-random_vertex_vector = Vertex_Vector(graph)
-discrepancy_ratio = graph.discrepancy_ratio(random_vertex_vector)
-print("Discrepancy ratio ", discrepancy_ratio)
-
-
-creation_algorithms =[(Graph.create_random_uniform_regular_graph_until_connected, 10, 3, 6, 0.1, 1.1), (Graph.create_random_uniform_regular_connected_graph,7, 3, 6, 0.1, 1.1)] #todo: extend
-graphs_per_algorithm = 5
-random_small_expansion_tries_per_graph = 5
-
-for creation_algorithm, params in creation_algorithms: #todo: log everything, store
-    for _ in range(graphs_per_algorithm):
-        graph = Graph()
-        graph.creation_algorithm(params)
-
-        graph.brute_force_smallest_hypergraph_expansion()
-        graph.brute_force_smallest_hypergraph_expansion()
-        graph.brute_force_hypergraph_expansion_on_vertices(len(small_expansion))
-        for _ in range(random_small_expansion_tries_per_graph):
-            small_expansion = graph.generate_small_expansion_set()
-
-
-#plot
-
-
-#evaluation:
-# todo: brute force time eval on 10 random graphs (degrees?)
-# todo: for different algorithms to create graphs on 25 vertices
-# evaluate best and 
-
-# generate x different graphs with each generation method
-
-# brute force all the graphs
-
-# use approcimation algorithm (... times for each graph, take best result
-
-# plot result
-
-
-#
-# repetitions = 5
-# construct_time_total = 0
-# brute_force_time_total = 0
-#
-# for _ in range(repetitions):
-#     start_time = time.time()
-#     graph = Graph(10)
-#     graph.create_random_uniform_regular_connected_graph(5, 10, 0.1, 1.1)
-#     end_time = time.time()
-#     construct_time = end_time - start_time
-#     construct_time_total += construct_time
-#     print("it took " + str(construct_time) + " s to create " + str(graph))
-#
-#     graph.brute_force_hypergraph_expansion()
-#     brute_force_time = time.time() - end_time
-#     print("it took " + str(brute_force_time) + " s to brute-force " + str(graph))
-#     brute_force_time_total += brute_force_time
-#
-# print("avg construct time: " + str(construct_time_total / repetitions) + ", avg brute-force time: " + str(
-#     brute_force_time_total / repetitions))
 
 # # create vertices
 # vertices_to_be_connected = []

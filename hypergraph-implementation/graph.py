@@ -62,6 +62,8 @@ class Graph:
     def create_random_uniform_regular_graph_until_connected(self, number_vertices, rank, degree, min_weight,
                                                             max_weight):  # degree >= 2, random weights, uniform distribution. TODO: other distributions
         self.number_vertices = number_vertices
+        self.max_edge_size = rank
+        self.min_edge_size = rank
         # create vertices
         for _ in range(number_vertices):
             new_vertex = Vertex(self)
@@ -234,6 +236,8 @@ class Graph:
     def create_random_uniform_regular_connected_graph(self, number_vertices, rank, degree, min_weight,
                                                       max_weight):  # degree >= 2, random weights, uniform distribution. TODO: other distributions
         self.number_vertices = number_vertices
+        self.max_edge_size = rank
+        self.min_edge_size = rank
         # create vertices
         for _ in range(number_vertices):
             new_vertex = Vertex(self)
@@ -534,34 +538,38 @@ class Graph:
 
         print("lowest expansion (min of both sides) found: " + str(lowest_expansion) + " for " + str(best_set))
 
-    def brute_force_smallest_hypergraph_expansion_each_size(self):  # todo: plot it for all lengths
+    def brute_force_hypergraph_expansion_each_size(self, use_one_sided_evaluator=True):  # todo: plot it for all lengths
         lowest_expansion = {}
+        average_expansion = {}
+        median_expansion = {}
+        smallest_percentile_expansion = {}
         best_set = {}
-        for length in range(1,
-                            self.number_vertices):  # range(1, int(math.ceil(len(self.vertices) / 2))): todo: why not?
+        for length in range(1, self.number_vertices):
             lowest_expansion[length] = 1
-            sum_expansion = 0  # todo: log
-            number_combinations = 0
+
             expansions = []
             for subset_candidate in itertools.combinations(self.vertices, length):
-
-                expansion = self.edge_expansion(
-                    subset_candidate)  # todo: which one? bigger/smaller/just edge expansion?
-                sum_expansion += expansion
-                number_combinations += 1
+                expansion = 1
+                if use_one_sided_evaluator:
+                    expansion = self.edge_expansion(subset_candidate)
+                else:
+                    expansion = self.bigger_edge_expansion(subset_candidate)
                 expansions.append(expansion)
                 if expansion < lowest_expansion[length]:
                     lowest_expansion[length] = expansion
                     best_set[length] = subset_candidate
                 #  print("new lowest expansion for length + " + str(length) + " : " + (str(lowest_expansion[length])))
 
+            average_expansion[length] = np.mean(expansions)
             print("lowest expansion (just one side) found: " + str(lowest_expansion[length]) + " , average " + str(
-                sum_expansion / number_combinations) + " for " + str(
-                length) + " vertices")  # todo: compare small with average (min 10%?)
-            print("median: " + str(statistics.median(expansions)))
+                average_expansion) + " for " + str(
+                length) + " vertices")
+            median_expansion[length] = np.median(expansions)
+            smallest_percentile_expansion[length] = np.percentile(expansions, 1)
+            print("median: " + str(median_expansion[length]))
         print("lowest expansion (just one side): " + str(
             lowest_expansion[min(lowest_expansion, key=lowest_expansion.get)]))
-        return best_set, lowest_expansion
+        return best_set, lowest_expansion, average_expansion, median_expansion, smallest_percentile_expansion
 
     def discrepancy_ratio(self, vertex_vector):
         nominator = 0.
@@ -610,9 +618,12 @@ class Graph:
             # constr.append({'type': 'eq', 'fun': lambda x: self.weighted_vertex_g_f_sum_alternative(x, f[i])})
             constr.append(
                 {'type': 'eq', 'fun': lambda x: self.weighted_vertex_g_f_sum_alternative_f_as_list_of_np_arrays(x, f)})
-            g = scipy.optimize.minimize(fun=self.sdp_val_function, x0=g, constraints=constr, tol=0.0000001, #todo: tweak tolerance
-                                        # method='SLSQP', # not working: 'nelder-mead', 'powell', 'cg', 'bfgs', 'newton-cg', 'dogleg',    'l-bfgs-b', 'tnc'  , 'trust-ncg', cobyla
-                                        options={"maxiter": 10000, "disp": True})  # dstip: set to true for messages
+            g = scipy.optimize.minimize(fun=self.sdp_val_function, x0=g, constraints=constr, tol=1e-05,
+                                        # todo: tweak tolerance
+                                        method='SLSQP',
+                                        # not working: 'nelder-mead', 'powell', 'cg', 'bfgs', 'newton-cg', 'dogleg',    'l-bfgs-b', 'tnc'  , 'trust-ncg', cobyla
+                                        options={"maxiter": 100000, 'ftol': 1e-05,
+                                                 "disp": True})  # dstip: set to true for messages
             assert g.success  # todo: what to do if not?
             print("optimization success")
             g = np.reshape(g.x, (number_vertices, number_vertices))  # todo: transpose?
@@ -748,8 +759,14 @@ class Graph:
                     lowest_expansion_vertices = vertices
 
             print("lowest expansion: " + str(lowest_expansion))
-            result.append((lowest_expansion_vertices, lowest_expansion))
-        # C = lowest_expansion /min(math.sqrt(r * math.log2(k)), k*math.log2(k)*math.log2(math.log2(k))*math.sqrt(math.log2(r)))) *math.sqrt(max_discrepancy_ratio) #todo: get r, k, which log?
+            log_base = 1.5
+            c_estimate = lowest_expansion / (min(math.sqrt(self.max_edge_size * math.log(k, log_base)),
+                                                 k * math.log(k, log_base) * math.log(math.log(k, log_base),
+                                                                                      log_base) * math.sqrt(
+                                                     math.log(self.max_edge_size, log_base))) * math.sqrt(
+                max_discrepancy_ratio))  # todo: get r(max edge size), which equation, which log?
+            print("C :" + str(c_estimate))
+            result.append((lowest_expansion_vertices, lowest_expansion, c_estimate))
         return result
 
     #    def generate_and_solve_sdp(self, W, vertices_list, number_vertices):

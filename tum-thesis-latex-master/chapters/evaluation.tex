@@ -48,3 +48,16 @@ estimate C
 
 TODO: find constants by analyzing quality?
 Analyze runtime of code? 
+
+todo: analyze different graph generation algorithms (expansion)
+
+analyze c with different ks, find out which side is more plausible
+
+
+todo: higher k was not feasible in \cref{eq:small_expansion} due to numerical issues of the implementation, therefore $|S|<\frac{24|V|}{k}$ can't be verified as k<5 here
+For estimating $C$, the inequality can be changed to
+\begin{equation}
+ C\ge \frac {\phi(S)}{ \min\{\sqrt{r \log k}, k \log k  \log \log k \sqrt{\log r} \} \cdot \sqrt{\xi}}
+\end{equation}
+
+Knowing an upper bound on C is desirable, as it would lead to small expansions.

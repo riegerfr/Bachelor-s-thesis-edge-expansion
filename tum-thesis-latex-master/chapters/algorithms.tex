@@ -147,7 +147,9 @@ As described in \cite{ChanLTZ16}, the following algorithm can be used:
 \end{algorithm}	
 \begin{fact}{Theorem 6.6 in \cite{ChanLTZ16}}
 	Given an a hypergraph $H = (V, E, w)$ and $k$ vectors $f_1, f_2, \ldots , f_k$ which are orthonormal in the weighted space with $ \max_{s \in [k]} D_w(f_s) \le \xi $, the following holds. \cref{alg:small_set_expansion} constructs a random set $S \subsetneq V$ in polynomial time such that with $\Omega(1)$ probability, $|S| \le \frac{24|V|}{k}$ and
-	 $$\phi(S) \le C \min\{\sqrt{r \log k}, k \log k  \log \log k \sqrt{\log r} \} \cdot \sqrt{\xi},$$ 
+	 \begin{equation}\label{eq:small_expansion}
+	 \phi(S) \le C \min\{\sqrt{r \log k}, k \log k  \log \log k \sqrt{\log r} \} \cdot \sqrt{\xi},
+	 \end{equation}
 	 where $C$ is an absolute constant and $r := \max_{e\in E} |e|$.
 \end{fact}
 

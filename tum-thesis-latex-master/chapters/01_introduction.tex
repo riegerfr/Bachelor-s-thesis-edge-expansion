@@ -3,23 +3,74 @@
 
 \chapter{Introduction}\label{chapter:introduction}
 
-...
+To introduce the reader to the topic, a short introduction to graphs and their generalization hypergraphs is given. Afterwards, the proplem of cuts, especially edge expansion, shall be introduced.
 \section{Simple Graphs} %todo: good title?
-In graph theory a graph $G := (V,E)$ is defined as a set of $n$ vertices $V = \{v_1, \ldots, v_n \}$ and a set of $ m $ edges $E = \{e_1, \ldots, e_m\}$ where each edge $e_i = \{v_k, v_l\} \in E$ connects two vertices $v_k, v_l \in V$. Some of the simplest graphs can be seen in ... (TODO:figure)
+In graph theory a graph $G := (V,E)$ is defined as a set of $n$ vertices $V = \{v_1, \ldots, v_n \}$ and a set of $ m $ edges $E = \{e_1, \ldots, e_m\}$ where each edge $e_i = \{v_k, v_l\} \in E$ connects two vertices $v_k, v_l \in V$. A simple graph can be seen in \cref{fig:exapmlegraph}. Note that in this thesis, an edge is not displayed as a line between the vertices but as a coloured shape around the vertices.
+
+
+
+\begin{figure} [htpb]
+	\centering
+	\begin{tikzpicture}
+	\node[vertex,label=below:\(v_1\)] (v1) {};
+	\node[vertex,right of=v1,label=below:\(v_2\)] (v2) {};
+	\node[vertex,below of=v2,label=below:\(v_3\)] (v3) {};
+
+	\begin{pgfonlayer}{background}
+	\draw[edge,color=yellow] (v1) -- (v2);
+
+	\draw[edge,color=red,opacity=0.5,line width=40pt] (v2) -- (v3);
+
+	\end{pgfonlayer}
+	
+	\node[elabel,color=yellow,label=right:\(e_1\)]  (e1) at (-3,0) {};
+	\node[elabel,below of=e1,color=red,label=right:\(e_2\)]  (e2) {};
+
+	\end{tikzpicture}
+	\caption[Example graph]{An example for a simple graph with three vertices and two edges $G=(\{v_1, v_2, v_3\},\{\{v_1, v_2\}, \{v_2,v_3\}\} )$}\label{fig:exapmlegraph}
+\end{figure}
 
 \section{Hypergraphs}
 This thesis will deal with a generalized form of simple graphs, namely hypergraphs.
 
-A weighted, undirected hypergraph $H = (V, E, w)$ consists of a set of $n$ vertices $V = \{v_1, \ldots, v_n\}$ and a set of $m$ (hyper-)edges $E = \{ e_1, \ldots , e_m | \forall i \in [i]: e_i \subseteq V \land e_i \neq \emptyset \} $ where every edge $e$ is a non-empty subset of $V$ and has a positive weight $w_e:= w(e) $, defined by the weight function $w: E \to  \mathbb{R}_+ $.
+A weighted, undirected hypergraph $H = (V, E, w)$ consists of a set of $n$ vertices $V = \{v_1, \ldots, v_n\}$ and a set of $m$ (hyper-)edges $E = \{ e_1, \ldots , e_m | \forall i \in [i]: e_i \subseteq V \land e_i \neq \emptyset \} $ where every edge $e$ is a non-empty subset of $V$ and has a positive weight $w_e:= w(e) $, defined by the weight function $w: E \to  \mathbb{R}_+ $. An example for a hypergraph can be seen in \cref{fig:exapmlehypergraph}.
+
+	
+\begin{figure} [htpb]
+	\centering
+	\begin{tikzpicture}
+	\node[vertex,label=below:\(v_1\)] (v1) {};
+	\node[vertex,right of=v1,label=below:\(v_2\)] (v2) {};
+	\node[vertex,right of=v2,label=below:\(v_3\)] (v3) {};
+	\node[vertex,below of=v2,label=below:\(v_4\)] (v4) {};	
+	
+	\begin{pgfonlayer}{background}
+	\draw[edge,color=yellow] (v1) -- (v2) -- (v3);
+	
+	\begin{scope}[transparency group,opacity=.5]
+	\draw[edge,opacity=1,color=red,line width=40pt] (v2) -- (v3) -- (v4) --(v2);
+	\fill[edge,opacity=1,color=red] (v2.center) -- (v3.center) -- (v4.center) -- (v2.center);
+	
+	\end{scope}
+
+	
+	\end{pgfonlayer}
+	
+	\node[elabel,color=yellow,label=right: {$e_1 , w_{e_1} = 0.7$}]  (e1) at (-3,0) {};
+	
+	\node[elabel,below of=e1,color=red,label=right:{$e_2, w_{e_2} = 1.3$}]  (e2) {};
+	
+	\end{tikzpicture}
+	\caption[Example graph]{An example for a simple hypergraph with four vertices and two hyperedges $G=(\{v_1, v_2, v_3, v_4\},\{\{v_1, v_2, v_3\}, \{v_2,v_3, v_4\}\} )$}\label{fig:exapmlehypergraph}
+\end{figure}
 
 
 \section{Cuts}
-On such graphs certain properties can be described, which are of theoretical interest but also have influence on the behaviour of a system which is described by such a graph. Some of these properties are so called cuts. A cut is described by its cut-set $\emptyset \neq S \subsetneq V$ a non-empty true subset of the vertices. Interesting cuts are for example the so called Minumum cut or the maximum cut which are defined by the minimum/maximum number of edges (or their added weight for weighted graphs) going between $S$ and $V \setminus S$. Formally $MinCut(G) := \min_{\emptyset \subsetneq S \subsetneq V} \sum_{e\in E:\exists u, v \in e: u \in S \land v \in V \setminus S } w_e $.
-For the min-cut there exists a polynomial time (in the number of vertices) algorithm TODO: find citation
-The max cut problem is known to be NP hard
+On such graphs certain properties can be described, which are of theoretical interest but also have influence on the behaviour of a system which is described by such a graph. Some of these properties are so called cuts. A cut is described by its cut-set $\emptyset \neq S \subsetneq V$, a non-empty strict subset of the vertices. Interesting cuts are for example the so called minumum cut or the maximum cut which are defined by the minimum (or maximum respectively) number of edges (or their added weight for weighted graphs) going between $S$ and $V \setminus S$. Formally $MinCut(G) := \min_{\emptyset \subsetneq S \subsetneq V} \sum_{e\in E:\exists u, v \in e: u \in S \land v \in V \setminus S } w_e $.
+For computing the minimum cut there exists the polynomial time (in the number of vertices) Stoer–Wagner algorithm \cite{stoer1997simple}.
+The maximum cut problem is known to be NP hard \cite{karp1972reducibility}.
 
-Sparse cut: crossing edge weights/ min{w(S), w(V\ S)}
-The cut on which this thesis focuses on is the so called Edge Expansion, which is the quotient of the summed weight of the edges crossing S and V\ S and the summed weight of all the edges in S.
+The cut on which this thesis focuses on is the so called Edge Expansion, which is the quotient of the summed weight of the edges crossing $S$ and $V\setminus S$ and the summed weight of all the edges in S.
 
 This is also a np hard problem ?
 Therefore several approximation algorithms exist, which will be shown in the following
@@ -27,7 +78,7 @@ Out of Chan's proof that an algorithm with certain properties exists will be use
 The involved constants will be estimated in a empirical manner by running it multiple times on different random graphs (for which algorithms are evaluated)
 
 
-
+Sparse cut: crossing edge weights/ min{w(S), w(V\ S)}
 
 TODO: how to work with notation of next chapter here: minium
 TODO: example graphs (also example dataset?)

@@ -11,7 +11,7 @@
 \usepackage[%
   backend=biber,
   url=false,
-  style=alphabetic,
+  style=ieee,
   maxnames=4,
   minnames=3,
   maxbibnames=99,
@@ -22,6 +22,13 @@
 \usepackage{listings}
 \usepackage{lstautogobble}
 \usepackage{tikz}
+\usetikzlibrary{calc, positioning, fit, shapes.misc}
+\tikzstyle{vertex} = [fill,shape=circle,node distance=80pt]
+\tikzstyle{edge} = [fill,opacity=.5,fill opacity=.5,line cap=round, line join=round, line width=50pt]
+\tikzstyle{elabel} =  [fill,shape=circle,node distance=30pt]
+\pgfdeclarelayer{background}
+\pgfsetlayers{background,main}
+
 \usepackage{pgfplots}
 \usepackage{pgfplotstable}
 \usepackage{booktabs}

@@ -18,7 +18,99 @@
 
 
 \refsection{0}
-  \datalist[entry]{anyt/global//global/global}
+  \datalist[entry]{none/global//global/global}
+    \entry{stoer1997simple}{article}{}
+      \name{author}{2}{}{%
+        {{uniquename=0,uniquepart=base,hash=b0ac1b58d5a5eb40ba5c1190d8acae63}{%
+           family={Stoer},
+           familyi={S\bibinitperiod},
+           given={Mechthild},
+           giveni={M\bibinitperiod},
+           givenun=0}}%
+        {{uniquename=0,uniquepart=base,hash=3561537d773e73f265a933af9d2acf65}{%
+           family={Wagner},
+           familyi={W\bibinitperiod},
+           given={Frank},
+           giveni={F\bibinitperiod},
+           givenun=0}}%
+      }
+      \list{publisher}{1}{%
+        {ACM}%
+      }
+      \strng{namehash}{a5234befb37efe0b5dda904ac5ebc338}
+      \strng{fullhash}{a5234befb37efe0b5dda904ac5ebc338}
+      \strng{bibnamehash}{a5234befb37efe0b5dda904ac5ebc338}
+      \strng{authorbibnamehash}{a5234befb37efe0b5dda904ac5ebc338}
+      \strng{authornamehash}{a5234befb37efe0b5dda904ac5ebc338}
+      \strng{authorfullhash}{a5234befb37efe0b5dda904ac5ebc338}
+      \field{sortinit}{1}
+      \field{sortinithash}{2174f786c6195e7fe2ee1c229b416e29}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Journal of the ACM (JACM)}
+      \field{number}{4}
+      \field{title}{A simple min-cut algorithm}
+      \field{volume}{44}
+      \field{year}{1997}
+      \field{pages}{585\bibrangedash 591}
+      \range{pages}{7}
+    \endentry
+    \entry{karp1972reducibility}{incollection}{}
+      \name{author}{1}{}{%
+        {{uniquename=0,uniquepart=base,hash=5290385c419686f6312edeb3578dc9cf}{%
+           family={Karp},
+           familyi={K\bibinitperiod},
+           given={Richard\bibnamedelima M},
+           giveni={R\bibinitperiod\bibinitdelim M\bibinitperiod},
+           givenun=0}}%
+      }
+      \list{publisher}{1}{%
+        {Springer}%
+      }
+      \strng{namehash}{5290385c419686f6312edeb3578dc9cf}
+      \strng{fullhash}{5290385c419686f6312edeb3578dc9cf}
+      \strng{bibnamehash}{5290385c419686f6312edeb3578dc9cf}
+      \strng{authorbibnamehash}{5290385c419686f6312edeb3578dc9cf}
+      \strng{authornamehash}{5290385c419686f6312edeb3578dc9cf}
+      \strng{authorfullhash}{5290385c419686f6312edeb3578dc9cf}
+      \field{sortinit}{2}
+      \field{sortinithash}{cbff857e587bcb4635511624d773949e}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{Complexity of computer computations}
+      \field{title}{Reducibility among combinatorial problems}
+      \field{year}{1972}
+      \field{pages}{85\bibrangedash 103}
+      \range{pages}{19}
+    \endentry
+    \entry{kaibel2004expansion}{incollection}{}
+      \name{author}{1}{}{%
+        {{uniquename=0,uniquepart=base,hash=9f5d0a01b8b2cabe3a5e31aca28df3de}{%
+           family={Kaibel},
+           familyi={K\bibinitperiod},
+           given={Volker},
+           giveni={V\bibinitperiod},
+           givenun=0}}%
+      }
+      \list{publisher}{1}{%
+        {SIAM}%
+      }
+      \strng{namehash}{9f5d0a01b8b2cabe3a5e31aca28df3de}
+      \strng{fullhash}{9f5d0a01b8b2cabe3a5e31aca28df3de}
+      \strng{bibnamehash}{9f5d0a01b8b2cabe3a5e31aca28df3de}
+      \strng{authorbibnamehash}{9f5d0a01b8b2cabe3a5e31aca28df3de}
+      \strng{authornamehash}{9f5d0a01b8b2cabe3a5e31aca28df3de}
+      \strng{authorfullhash}{9f5d0a01b8b2cabe3a5e31aca28df3de}
+      \field{sortinit}{3}
+      \field{sortinithash}{a4b52e5432884761f50fb9571273b93e}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{The Sharpest Cut: The Impact of Manfred Padberg and His Work}
+      \field{title}{On the expansion of graphs of 0/1-polytopes}
+      \field{year}{2004}
+      \field{pages}{199\bibrangedash 216}
+      \range{pages}{18}
+    \endentry
     \entry{ChanLTZ16}{article}{}
       \name{author}{4}{}{%
         {{uniquename=0,uniquepart=base,hash=661f9d525966376a6e8864681a9bed7c}{%
@@ -52,9 +144,8 @@
       \strng{authorbibnamehash}{dacab671acc80b1da9cc7a4e2b433308}
       \strng{authornamehash}{dacab671acc80b1da9cc7a4e2b433308}
       \strng{authorfullhash}{dacab671acc80b1da9cc7a4e2b433308}
-      \field{labelalpha}{Cha+16}
-      \field{sortinit}{C}
-      \field{sortinithash}{963e9d84a3da2344e8833203de5aed05}
+      \field{sortinit}{4}
+      \field{sortinithash}{11cdaee3b18e01d77f3f428b13c1fc76}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{eprinttype}{arXiv}
@@ -71,35 +162,6 @@
       \verb{url}
       \verb http://arxiv.org/abs/1605.01483
       \endverb
-    \endentry
-    \entry{kaibel2004expansion}{incollection}{}
-      \name{author}{1}{}{%
-        {{uniquename=0,uniquepart=base,hash=9f5d0a01b8b2cabe3a5e31aca28df3de}{%
-           family={Kaibel},
-           familyi={K\bibinitperiod},
-           given={Volker},
-           giveni={V\bibinitperiod},
-           givenun=0}}%
-      }
-      \list{publisher}{1}{%
-        {SIAM}%
-      }
-      \strng{namehash}{9f5d0a01b8b2cabe3a5e31aca28df3de}
-      \strng{fullhash}{9f5d0a01b8b2cabe3a5e31aca28df3de}
-      \strng{bibnamehash}{9f5d0a01b8b2cabe3a5e31aca28df3de}
-      \strng{authorbibnamehash}{9f5d0a01b8b2cabe3a5e31aca28df3de}
-      \strng{authornamehash}{9f5d0a01b8b2cabe3a5e31aca28df3de}
-      \strng{authorfullhash}{9f5d0a01b8b2cabe3a5e31aca28df3de}
-      \field{labelalpha}{Kai04}
-      \field{sortinit}{K}
-      \field{sortinithash}{9fd838a31ba64d981e8f44562bd33f89}
-      \field{labelnamesource}{author}
-      \field{labeltitlesource}{title}
-      \field{booktitle}{The Sharpest Cut: The Impact of Manfred Padberg and His Work}
-      \field{title}{On the expansion of graphs of 0/1-polytopes}
-      \field{year}{2004}
-      \field{pages}{199\bibrangedash 216}
-      \range{pages}{18}
     \endentry
     \entry{LouisM14}{inproceedings}{}
       \name{author}{2}{}{%
@@ -153,9 +215,8 @@
       \strng{editorbibnamehash}{ef6495a2e26f1523592ccb718f41cc7b}
       \strng{editornamehash}{ef6495a2e26f1523592ccb718f41cc7b}
       \strng{editorfullhash}{ef6495a2e26f1523592ccb718f41cc7b}
-      \field{labelalpha}{LM14}
-      \field{sortinit}{L}
-      \field{sortinithash}{2c7981aaabc885868aba60f0c09ee20f}
+      \field{sortinit}{8}
+      \field{sortinithash}{07edf88d4ea82509b9c4b4d13f41c452}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{annotation}{Keywords: Approximation Algorithms, Graph Expansion, Hypergraph Expansion, Vertex Expansion}

@@ -2,15 +2,23 @@ import random
 
 
 class Vertex_Vector:
-    def __init__(self, graph, values=None, vertex_list=None):  # todo: assert values have correct order
+    def __init__(self, graph, values=None):  # todo: assert values have correct order
         self.graph = graph
         self.vector = {}
         if values is not None:
-            assert len(values) == len(vertex_list)
-            for i, vertex in enumerate(vertex_list):
+            assert len(values) == len(graph.vertices)
+            for i, vertex in enumerate(graph.vertices):
+                assert i == vertex.index  # todo: remove that
                 self.vector[vertex] = values[i]
         else:
             self.insert_random_values()
+
+    def get_plain_vector(self):
+        plain_vector = []
+        for i, vertex in enumerate(self.graph.vertices):
+            assert i == vertex.index
+            plain_vector.append(self.vector[vertex])
+        return plain_vector
 
     def insert_random_values(self):
         for vertex in self.graph.vertices:

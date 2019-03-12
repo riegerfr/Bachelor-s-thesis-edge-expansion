@@ -1,46 +1,86 @@
 \chapter{Algorithms}\label{chapter:algorithms}
-In the following chapter different approaches for generating small expansion sets $S$ will be discussed.
+In the following chapter different approaches for generating small expansion sets $S$ as well as the edge expansion of hypergraphs are discussed.
 %TODO: NP-hard? --> approximation needed
 %todo: which tense to use where?
-TODO: why  phi (S) and not phi(H)?
+
 
 
 \section{Brute force}
-One obvoius approach is to brute-force the problem:
-\begin{algorithm}[h!]
-	\caption{Brute-force  \label{alg:brute_force}}
+One obvoius approach for generating the edge expansion $\Phi(H)$ of a hypergraph $H$ is to brute-force the problem like in \cref{alg:brute_force}.
+\begin{algorithm}[H]
+	\caption{Brute-force edge expansion on a hypergraph \label{alg:brute_force}}
 	\begin{algorithmic}
+		\Function{BruteForceEdgeExpansion}{$H := (V,E, w)$}
 		\State $best\_S := null$
-		\State $lowest\_expansion := \inf$
+		\State $lowest\_expansion := \infty$
 		\For{$\emptyset \neq S \subsetneq V$}
-		\State $expansion := \Phi(S)$
+		\State $expansion :=  \max{ \Phi(S), \Phi({V\setminus S})}$
 		\If{$expansion < lowest\_expansion$}
 			\State $lowest\_expansion := expansion$
 			\State $best\_S := S$
 		\EndIf
 		\EndFor	
 		\State return $best\_S$
+		\EndFunction
 	\end{algorithmic}
 \end{algorithm}
 
 
-Correctness: This as this algorithm iterates over all $\emptyset \neq S \subsetneq V$, it computes $\arg\min_{\emptyset \subsetneq S \subsetneq V} \Phi(S)$.
+As \cref{alg:brute_force} iterates over all $\emptyset \neq S \subsetneq V$, it computes $\arg\min_{\emptyset \subsetneq S \subsetneq V} \max{( \Phi(S), \Phi({V\setminus S}))}$.
 
-TODO: what else to prove?
-
-
-Complexity:
-There are $2^{|V|}-2 = 2^{n}-2 \in O(2^n) $ combinations for $\emptyset \neq S \subsetneq V$, namely all the $2^{|V|}$ subsets of $V$ excluding the empty set $\emptyset$ and $V$ itself. Therefore, this algorithm is of exponential time complexity in $n$ and is therefore not efficient for larger graphs.
+There are $2^{|V|}-2 = 2^{n}-2 \in O(2^n) $ combinations for $\emptyset \neq S \subsetneq V$, namely all the $2^{|V|}$ subsets of $V$ excluding the empty set $\emptyset$ and $V$ itself. Hence, this algorithm is of exponential time complexity in $n$ and is therefore not efficient for larger graphs as evaluated in ....
 %TODO: In fact the problem is  unique games conjecture, np-hard
 
-TODO: refine brute-force to only $\phi(S)$ not $\phi(H)$ possibly with $a<|S|<b$
+For the purpose of analyzing the graph creation algorithms in \cref{chapter:random_hypergraphs}, it can be insightful to observe the lowest expansion of each possible size (in the number of vertices) like in \cref{alg:brute_force_size}.
+
+\begin{algorithm}[H]
+	\caption{Brute-force edge expansion of a hypergraph for every size   \label{alg:brute_force_size}}
+	\begin{algorithmic}
+		\Function{BruteForceEdgeExpansionSizes}{$H := (V,E, w)$}
+		\State $best\_S_of_size := \{\}$
+		\State $lowest\_expansion\_of\_size := \{1:\infty, 2:\infty, \ldots, n-1: \infty \}$
+		\For{$\emptyset \neq S \subsetneq V$}
+		\State $expansion := \max{ \Phi(S), \Phi({V\setminus S})}$
+		\If{$expansion < lowest\_expansion\_of\_size[|S|]$}
+		\State $ lowest\_expansion\_of\_size[|S|] := expansion$
+		\State $best\_S\_of\_size[|S|] := S$
+		\EndIf
+		\EndFor	
+		\State return $best\_S\_of\_size$
+		\EndFunction
+	\end{algorithmic}
+\end{algorithm}
+
+
+In order to analyze the results from \cref{alg:ses}, which only computes $\Phi(S)$, the expansion of a set $S$, not the whole graph, it makes sense to compare it with the best result possible for the same size of $S$. Therefore, just the line for the computation of the expansion \cref{alg:brute_force_size} needs to be changed to get \cref{alg:brute_force_size_just_one_side}.
+
+\begin{algorithm}[H]
+	\caption{Brute-force edge expansion of sets for every size   \label{alg:brute_force_size_just_one_side}}
+	\begin{algorithmic}
+		\Function{BruteForceEdgeExpansionSizes}{$H := (V,E, w)$}
+		\State $best\_S_of_size := \{\}$
+		\State $lowest\_expansion\_of\_size := \{1:\infty, 2:\infty, \ldots, n-1: \infty \}$
+		\For{$\emptyset \neq S \subsetneq V$}
+		\State $expansion :=  \Phi(S)$
+		\If{$expansion < lowest\_expansion\_of\_size[|S|]$}
+		\State $ lowest\_expansion\_of\_size[|S|] := expansion$
+		\State $best\_S\_of\_size[|S|] := S$
+		\EndIf
+		\EndFor	
+		\State return $best\_S\_of\_size$
+		\EndFunction
+	\end{algorithmic}
+\end{algorithm}
+For \cref{alg:brute_force_size} and \cref{alg:brute_force_size_just_one_side} the above argument of for exponential complexity holds as well.
 
 \section{Orthonormal vectors}
-As described in \cite{ChanLTZ16}, the following algorithm can be used:
+As described in \cite{ChanLTZ16}, an algortihm for generating a random small expansion set can be derived. For that, a set of orthonormal vectors $\{f_1, \ldots, f_k\}$ needs to be created, where each vector $f_i \in \mathbb{R}^V$ gives a value to each vertex. Because of \cref{fact:small_xi} it will be of importance for \cref{alg:small_set_expansion} that  $\xi := \max_{s \in [k]} D_w(f_s)   $ is small.
 
 
 
-\begin{algorithm}[h!]
+
+
+\begin{algorithm}[H]
 	\caption{Small Set Expansion (according to Algorithm 1 in \cite{ChanLTZ16}) \label{alg:small_set_expansion}} %todo: better name
 	
 	
@@ -85,7 +125,7 @@ As described in \cite{ChanLTZ16}, the following algorithm can be used:
 \end{algorithm} %todo: explain list syntax in notation
 
 
-\begin{algorithm}[h!]
+\begin{algorithm}[htpb]
 	\caption{Orthogonal Separator (combination of Lemma 18 and algorithm Theorem 10 in \cite{LouisM14} (also Fact 6.7 in \cite{ChanLTZ16})) \label{alg:orthogonal_separator}} 
 \begin{algorithmic}
 	\Function{OrthogonalSeparator}{$\{\tilde{u}_i\}_{i\in V} , \beta = \frac{99}{100}, \tau = k$}
@@ -123,7 +163,7 @@ As described in \cite{ChanLTZ16}, the following algorithm can be used:
 
 	
 	
-\begin{algorithm}[h!]
+\begin{algorithm}[htpb]
 	\caption{Sample Assignments (proof of Lemma 18 in \cite{LouisM14}) \label{alg:sample_assignments}} 
 	\begin{algorithmic}
 	\Function{SampleAssignments}{$l, V, \beta$}
@@ -145,15 +185,15 @@ As described in \cite{ChanLTZ16}, the following algorithm can be used:
 	\EndFunction %todo: 1-vector explain
 \end{algorithmic}
 \end{algorithm}	
-\begin{fact}{Theorem 6.6 in \cite{ChanLTZ16}}
-	Given an a hypergraph $H = (V, E, w)$ and $k$ vectors $f_1, f_2, \ldots , f_k$ which are orthonormal in the weighted space with $ \max_{s \in [k]} D_w(f_s) \le \xi $, the following holds. \cref{alg:small_set_expansion} constructs a random set $S \subsetneq V$ in polynomial time such that with $\Omega(1)$ probability, $|S| \le \frac{24|V|}{k}$ and
+\begin{fact}{(Theorem 6.6 in \cite{ChanLTZ16})}\label{fact:small_xi}
+	Given a hypergraph $H = (V, E, w)$ and $k$ vectors $f_1, f_2, \ldots , f_k$ which are orthonormal in the weighted space with $ \max_{s \in [k]} D_w(f_s) \le \xi $, the following holds: Algorithm \ref{alg:small_set_expansion} constructs a random set $S \subsetneq V$ in polynomial time such that with $\Omega(1)$ probability, $|S| \le \frac{24|V|}{k}$ and
 	 \begin{equation}\label{eq:small_expansion}
 	 \phi(S) \le C \min\{\sqrt{r \log k}, k \log k  \log \log k \sqrt{\log r} \} \cdot \sqrt{\xi},
 	 \end{equation}
 	 where $C$ is an absolute constant and $r := \max_{e\in E} |e|$.
 \end{fact}
 
-With the following way to create orthonormal vectors, algorithm ... can be executed. This results in ... according to ...
+With \cref{alg:sdp} to create orthonormal vectors, algorithm \cref{alg:ses} can be executed. This combination results in \cref{alg:ses} according to ...
 
 
 
@@ -167,24 +207,37 @@ With the following way to create orthonormal vectors, algorithm ... can be execu
 
 SDP
 
-\begin{algorithm}[h!]
+\begin{algorithm}[htpb]
 	\caption{Rounding Algorithm for Computing Eigenvalues (Algorithm 3 in \cite{ChanLTZ16}) \label{alg:sdp}} 
 	\begin{algorithmic}
-		\Function{SampleRandomVectors}{$H$}
+		\Function{SampleRandomVector}{$H, f_1, \ldots, f_{k-1}$}
 		\State Solve SDP \ref{SDP} to generate vectors $\vec{g_v} \in \mathbb{R}^n $ for $v \in V$
 		\State $\vec{z} := sample(\mathcal{N}(0,1^n))$
 		\For{$v\in V $}
 		\State $f(v) := <\vec{g_v}, \vec{z}>$
 		\EndFor
-		\State return f
+		\State return $f$
 		\EndFunction 
 	\end{algorithmic}
 \end{algorithm}	
 
+\begin{algorithm}[htpb]
+	\caption{Procedural Minimizer \label{alg:sdp}} 
+	\begin{algorithmic}
+		\Function{SampleSmallVectors}{$H,k$}
+		\State $f_:1= \frac{\vec{1}}{||\vec{1}||_w}$
+	
+		\For{$i = 2, \ldots, k$}
+		\State $f_i := $\Call{SampleRandomVector}{$H, f_1, \ldots, f_{i-1}$}
+		\EndFor
+		\State return $f_1, \ldots , f_k$
+		\EndFunction 
+	\end{algorithmic}
+\end{algorithm}	
 
 So for a given Graph $H$ we can find a small expansion set with the following algorithm: 
-\begin{algorithm}[h!]
-	\caption{Find Small Expansion Set} 
+\begin{algorithm}[htpb]
+	\caption{Find Small Expansion Set \label{alg:ses}} 
 	\begin{algorithmic}
 		\Function{SES}{$H$}
 		\State $f := $\Call{SampleRandomVectors}{$H$}

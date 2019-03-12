@@ -35,6 +35,9 @@ This thesis will deal with a generalized form of simple graphs, namely hypergrap
 
 A weighted, undirected hypergraph $H = (V, E, w)$ consists of a set of $n$ vertices $V = \{v_1, \ldots, v_n\}$ and a set of $m$ (hyper-)edges $E = \{ e_1, \ldots , e_m | \forall i \in [i]: e_i \subseteq V \land e_i \neq \emptyset \} $ where every edge $e$ is a non-empty subset of $V$ and has a positive weight $w_e:= w(e) $, defined by the weight function $w: E \to  \mathbb{R}_+ $. An example for a hypergraph can be seen in \cref{fig:exapmlehypergraph}.
 
+
+The weight $w_v$ of a vertex $v$ is defined by summing up the weights of its edges: $w_v = \sum_{e\in E: v\in e} w_e$. Accordingly, a subset $S\subseteq V$ of vertices has weight $w_S := \sum_{v\in S}$ and a subset $F \subseteq E $ of edges has weight $w_F = \sum_{e\in F} w_e$.
+
 	
 \begin{figure} [htpb]
 	\centering
@@ -61,30 +64,87 @@ A weighted, undirected hypergraph $H = (V, E, w)$ consists of a set of $n$ verti
 	\node[elabel,below of=e1,color=red,label=right:{$e_2, w_{e_2} = 1.3$}]  (e2) {};
 	
 	\end{tikzpicture}
-	\caption[Example graph]{An example for a simple hypergraph with four vertices and two hyperedges $G=(\{v_1, v_2, v_3, v_4\},\{\{v_1, v_2, v_3\}, \{v_2,v_3, v_4\}\} )$}\label{fig:exapmlehypergraph}
+	\caption[Example hypergraph]{An example for a simple hypergraph with four vertices and two hyperedges $G=(\{v_1, v_2, v_3, v_4\},\{\{v_1, v_2, v_3\}, \{v_2,v_3, v_4\}\} )$}\label{fig:exapmlehypergraph}
 \end{figure}
 
 
 \section{Cuts}
-On such graphs certain properties can be described, which are of theoretical interest but also have influence on the behaviour of a system which is described by such a graph. Some of these properties are so called cuts. A cut is described by its cut-set $\emptyset \neq S \subsetneq V$, a non-empty strict subset of the vertices. Interesting cuts are for example the so called minumum cut or the maximum cut which are defined by the minimum (or maximum respectively) number of edges (or their added weight for weighted graphs) going between $S$ and $V \setminus S$. Formally $MinCut(G) := \min_{\emptyset \subsetneq S \subsetneq V} \sum_{e\in E:\exists u, v \in e: u \in S \land v \in V \setminus S } w_e $.
-For computing the minimum cut there exists the polynomial time (in the number of vertices) Stoer–Wagner algorithm \cite{stoer1997simple}.
-The maximum cut problem is known to be NP hard \cite{karp1972reducibility}.
+On such hypergraphs certain properties can be described, which are of theoretical interest but also have influence on the behaviour of a system which is described by such a graph. Some of these properties are so called cuts. A cut is described by its cut-set $\emptyset \neq S \subsetneq V$, a non-empty strict subset of the vertices. Interesting cuts are for example the so called minumum cut or the maximum cut which are defined by the minimum (or maximum respectively) number of edges (or their added weight for weighted graphs) going between $S$ and $V \setminus S$. Formally, this can be expressed by the following equation: \begin{equation}
+MinCut(G) := \min_{\emptyset \subsetneq S \subsetneq V} \sum_{e\in E:\exists u, v \in e: u \in S \land v \in V \setminus S } w_e
+\end{equation}
+For computing the minimum cut the Stoer–Wagner algorithm can be used, which has a polynomial time complexity in the number of vertices \cite{stoer1997simple}.
+The maximum cut problem however is known to be NP-hard \cite{karp1972reducibility}.
 
-The cut on which this thesis focuses on is the so called Edge Expansion, which is the quotient of the summed weight of the edges crossing $S$ and $V\setminus S$ and the summed weight of all the edges in S.
+\section{Edge Expansion}
+The cut on which this thesis focuses on is the so called Edge Expansion, which is the quotient of the summed weight of the edges crossing $S$ and $V\setminus S$ and the summed weight of all the edges in S. The formal notation is introduuced in the following.
 
-This is also a np hard problem ?
-Therefore several approximation algorithms exist, which will be shown in the following
-Out of Chan's proof that an algorithm with certain properties exists will be used to extract that algorithm.
+The set of edges which are cut by $S$ contains all the edges, which have at least one vertex in $S$ and at least one vertex in $V\setminus S$ and is defined as \begin{equation}
+\partial S:= \{e\in E : e \cap S \neq \emptyset \land  e \cap (V \setminus S) \neq \emptyset  \}.
+\end{equation} 
+The edge expansion of a non-empty set of vertices $S \subseteq V$ is defined by \begin{equation}
+\Phi(S):= \frac{w(\partial S)}{w(S)}.
+\end{equation}
+Observe that $\Phi(S)$ is bounded: \begin{equation} \label{eq:phi_bounded}
+\forall \emptyset \neq S \subset V : 0\le \Phi(S) \le 1 
+\end{equation} The first inequality holds because the edge-weights are positive. The second inequality holds because $W(S) \ge W(\partial S)$, as $W(S)$ takes at least every edge (and therefore the corresponding weight), which is also considered by $W(\partial S)$, into account.
+
+
+With this, the expansion of a graph $H$ is defined as \begin{equation}
+\Phi(H) := \min_{\emptyset \subsetneq S \subsetneq V} \max \{\Phi(S), \Phi(V\setminus S)\}.
+\end{equation} Here again, $0\le \Phi(H)\le 1$ holds because of \cref{eq:phi_bounded}.
+
+In order to understand the edge expansion of a graph better, some special cases shall be considered.
+For not connected graphs $\Phi(H) = 0$ holds, which can be verified by observing a $S$ which only contains vertices of one connection component, for example in \cref{fig:exapmle_non_connected_hypergraph}. Therefore, only connected graphs shall be of interest here.
+
+\begin{figure} [htpb]
+	\centering
+	\begin{tikzpicture}
+	\node[vertex,label=below:\(v_1\)] (v1) {};
+	\node[vertex,right of=v1,label=below:\(v_2\)] (v2) {};
+	\node[vertex,right of=v2,label=below:\(v_3\)] (v3) {};
+	\node[vertex,below of=v2,label=below:\(v_4\)] (v4) {};	
+	\node[vertex,below of=v3,label=below:\(v_5\)] (v5) {};	
+	\node[vertex,right of=v5,label=below:\(v_6\)] (v6) {};	
+	\begin{pgfonlayer}{background}
+	\draw[edge,color=yellow] (v1) -- (v2) -- (v3);
+	\draw[edge,color=green] (v5) -- (v6) ;
+	
+	\begin{scope}[transparency group,opacity=.5]
+	\draw[edge,opacity=1,color=red,line width=40pt] (v2) -- (v3) -- (v4) --(v2);
+	\fill[edge,opacity=1,color=red] (v2.center) -- (v3.center) -- (v4.center) -- (v2.center);
+	
+	\end{scope}
+	
+	
+	\end{pgfonlayer}
+	
+	\node[elabel,color=yellow,label=right: {$e_1 , w_{e_1} = 0.7$}]  (e1) at (-3,0) {};
+	
+	\node[elabel,below of=e1,color=red,label=right:{$e_2, w_{e_2} = 1.3$}]  (e2) {};
+	\node[elabel,below of=e2,color=green,label=right:{$e_3, w_{e_3} = 1.5$}]  (e3) {};
+	
+	\end{tikzpicture}
+	\caption[Example non connected hypergraph]{An example for a non connected hypergraph with two connection components. For $S:= \{v_5, v_6\} $ it can be verified that $\delta S = 0$, hence $\Phi(S) =\Phi(V\setminus S) = 0$. }\label{fig:exapmle_non_connected_hypergraph}
+\end{figure}
+
+Observe that for a graph $H$, which is obtained by connecting two connection components with an edge with small weight, $\Phi(H)$ takes a small value, which can be seen when $S$ is chosen to be one of the previously seperated connection components. For a fully connected graph with equal edge-weights,  $\partial S$ will be big for every $S\subsetneq V$. Therefore $\Phi(S)$ and ultimately also $\Phi(H)$ will take a large value.
+
+The problem of computing the expansion $\Phi(H)$ on a hypergraph is NP-hard, as it is already NP-hard on 2-uniform-graphs, a special case of hypergraphs \cite{kaibel2004expansion}.
+However, there exist polynomial time approximation algorithms for some relaxations of this problem, one of them will be focused on here:
+For certain applications, it can be interesting to find small expansion sets $S$, where the vertices are strongly connected within the set but only have a weak connection to the rest of the vertices. Small refers to the number of vertices, so $|S|$ should be low. In the presented algorithm sets which have at max a constant fraction $\frac{1}{c}$ of the total number of vertices $|V|$ are computed, formally $|S|\le \frac{|V|}{c}$. Furthermore, strong and weak connections are determined by $\Phi(S)$ here. Finding such a $S$ will be achieved by \cref{alg:ses}, which was deducted from results from Chan in \cite{ChanLTZ16}.
+
+
+
 The involved constants will be estimated in a empirical manner by running it multiple times on different random graphs (for which algorithms are evaluated)
 
 
 Sparse cut: crossing edge weights/ min{w(S), w(V\ S)}
 
-TODO: how to work with notation of next chapter here: minium
-TODO: example graphs (also example dataset?)
+
+TODO: other approximations?
 TODO: Mincut, Sparsest Cut, Edge expansion
 
-For normal graphs Np-Hard \cite{kaibel2004expansion}
+
 
 %\section{Section}
 %Citation test~\parencite{latex}.

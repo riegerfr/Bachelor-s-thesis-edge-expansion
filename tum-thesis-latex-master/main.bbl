@@ -131,12 +131,12 @@
            given={Zhihao\bibnamedelima Gavin},
            giveni={Z\bibinitperiod\bibinitdelim G\bibinitperiod},
            givenun=0}}%
-        {{uniquename=0,uniquepart=base,hash=a0b50907cc44f5f691fd43c7d1f4044e}{%
+        {{uniquename=1,uniquepart=given,hash=a0b50907cc44f5f691fd43c7d1f4044e}{%
            family={Zhang},
            familyi={Z\bibinitperiod},
            given={Chenzi},
            giveni={C\bibinitperiod},
-           givenun=0}}%
+           givenun=1}}%
       }
       \strng{namehash}{dacab671acc80b1da9cc7a4e2b433308}
       \strng{fullhash}{dacab671acc80b1da9cc7a4e2b433308}
@@ -215,8 +215,8 @@
       \strng{editorbibnamehash}{ef6495a2e26f1523592ccb718f41cc7b}
       \strng{editornamehash}{ef6495a2e26f1523592ccb718f41cc7b}
       \strng{editorfullhash}{ef6495a2e26f1523592ccb718f41cc7b}
-      \field{sortinit}{8}
-      \field{sortinithash}{07edf88d4ea82509b9c4b4d13f41c452}
+      \field{sortinit}{1}
+      \field{sortinithash}{2174f786c6195e7fe2ee1c229b416e29}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{annotation}{Keywords: Approximation Algorithms, Graph Expansion, Hypergraph Expansion, Vertex Expansion}
@@ -238,6 +238,90 @@
       \verb{url}
       \verb http://drops.dagstuhl.de/opus/volltexte/2014/4707
       \endverb
+    \endentry
+    \entry{ghoshal2009random}{article}{}
+      \name{author}{4}{}{%
+        {{uniquename=0,uniquepart=base,hash=f3a50a51656c45b67ebd266458832b26}{%
+           family={Ghoshal},
+           familyi={G\bibinitperiod},
+           given={Gourab},
+           giveni={G\bibinitperiod},
+           givenun=0}}%
+        {{uniquename=0,uniquepart=base,hash=182abd40c4078060960649add0692eba}{%
+           family={Zlati{ć}},
+           familyi={Z\bibinitperiod},
+           given={Vinko},
+           giveni={V\bibinitperiod},
+           givenun=0}}%
+        {{uniquename=0,uniquepart=base,hash=e7b00e797d140adf1c921c6c2e28ace3}{%
+           family={Caldarelli},
+           familyi={C\bibinitperiod},
+           given={Guido},
+           giveni={G\bibinitperiod},
+           givenun=0}}%
+        {{uniquename=0,uniquepart=base,hash=214f45e2823b5430ca6f11c0fb3b6552}{%
+           family={Newman},
+           familyi={N\bibinitperiod},
+           given={Mark\bibnamedelima EJ},
+           giveni={M\bibinitperiod\bibinitdelim E\bibinitperiod},
+           givenun=0}}%
+      }
+      \list{publisher}{1}{%
+        {APS}%
+      }
+      \strng{namehash}{827984bacf4dd9565c525bc919d2a412}
+      \strng{fullhash}{827984bacf4dd9565c525bc919d2a412}
+      \strng{bibnamehash}{827984bacf4dd9565c525bc919d2a412}
+      \strng{authorbibnamehash}{827984bacf4dd9565c525bc919d2a412}
+      \strng{authornamehash}{827984bacf4dd9565c525bc919d2a412}
+      \strng{authorfullhash}{827984bacf4dd9565c525bc919d2a412}
+      \field{sortinit}{1}
+      \field{sortinithash}{2174f786c6195e7fe2ee1c229b416e29}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Physical Review E}
+      \field{number}{6}
+      \field{title}{Random hypergraphs and their applications}
+      \field{volume}{79}
+      \field{year}{2009}
+      \field{pages}{066118}
+      \range{pages}{1}
+    \endentry
+    \entry{zhang2010hypergraph}{article}{}
+      \name{author}{2}{}{%
+        {{uniquename=1,uniquepart=given,hash=de8acbd5d4d5daa1de68ff88393f20d1}{%
+           family={Zhang},
+           familyi={Z\bibinitperiod},
+           given={Zi-Ke},
+           giveni={Z\bibinithyphendelim K\bibinitperiod},
+           givenun=1}}%
+        {{uniquename=0,uniquepart=base,hash=2069ae3ae188262d66ed8e61d78aac2b}{%
+           family={Liu},
+           familyi={L\bibinitperiod},
+           given={Chuang},
+           giveni={C\bibinitperiod},
+           givenun=0}}%
+      }
+      \list{publisher}{1}{%
+        {IOP Publishing}%
+      }
+      \strng{namehash}{f7c72337f964c434194fc28778caaf0d}
+      \strng{fullhash}{f7c72337f964c434194fc28778caaf0d}
+      \strng{bibnamehash}{f7c72337f964c434194fc28778caaf0d}
+      \strng{authorbibnamehash}{f7c72337f964c434194fc28778caaf0d}
+      \strng{authornamehash}{f7c72337f964c434194fc28778caaf0d}
+      \strng{authorfullhash}{f7c72337f964c434194fc28778caaf0d}
+      \field{sortinit}{1}
+      \field{sortinithash}{2174f786c6195e7fe2ee1c229b416e29}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Journal of Statistical Mechanics: Theory and Experiment}
+      \field{number}{10}
+      \field{title}{A hypergraph model of social tagging networks}
+      \field{volume}{2010}
+      \field{year}{2010}
+      \field{pages}{P10005}
+      \range{pages}{-1}
     \endentry
   \enddatalist
 \endrefsection

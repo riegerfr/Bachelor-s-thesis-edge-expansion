@@ -591,17 +591,20 @@ class Graph:
 
         return nominator / denominator
 
-    def generate_small_discrepancy_ratio_vertex_vectors(self, k):  # algorithm 3
+    def generate_small_discrepancy_ratio_vertex_vectors(self, k, random_repetitions_gaussian=100):  # algorithm 3
 
         number_vertices = len(self.vertices)
         W = np.zeros(shape=(number_vertices, number_vertices))
-        for i, vertex in enumerate(self.vertices):  # todo assert vertices are a list
-            W[i, i] = vertex.weight
+        for vertex in self.vertices:  # todo assert vertices are a list
+            W[vertex.index, vertex.index] = vertex.weight
 
         f = []
 
-        f.append(np.ones(number_vertices))
-        f[0] /= self.weighted_norm(W, f[0])  # f_1 = 1_vector / ||1_vector||_w
+        first_f = np.ones(number_vertices)
+        first_f = first_f / self.weighted_norm(W, first_f)
+        first_f = Vertex_Vector(self, first_f)  # f_1 = 1_vector / ||1_vector||_w
+
+        f.append(first_f)
 
         number_constructed_vectors = 1
         # g = {}  # SDP 8.3
@@ -628,19 +631,31 @@ class Graph:
             print("optimization success")
             g = np.reshape(g.x, (number_vertices, number_vertices))  # todo: transpose?
 
-            z = np.random.normal(loc=0, scale=1, size=(number_vertices))
-            new_f = np.zeros(number_vertices)
-            for i, vertex in enumerate(
-                    self.vertices):  # todo: check whether g needs transposing and whether the vertex-order is correct
-                np.put(new_f, i, np.multiply(g[i], z))
+            best_new_f = None
+            lowest_new_f_discrepancy_ratio = math.inf
+            for _ in range(random_repetitions_gaussian):
+                z = np.random.normal(loc=0, scale=1, size=(number_vertices))
+                new_f_candidate = np.zeros(number_vertices)
+                for vertex in self.vertices:  # todo: check whether g needs transposing and whether the vertex-order is correct
+                    np.put(new_f_candidate, vertex.index, np.multiply(g[vertex.index], z))
 
-            f.append(new_f)
+                new_f_candidate = Vertex_Vector(self, new_f_candidate)
+
+                candidate_discrepancy_ratio = self.discrepancy_ratio(new_f_candidate)
+                if candidate_discrepancy_ratio < lowest_new_f_discrepancy_ratio:
+                    print("new lowest discrepancy ratio: " + str(candidate_discrepancy_ratio))
+                    best_new_f = new_f_candidate
+                    lowest_new_f_discrepancy_ratio = candidate_discrepancy_ratio
+
+            f.append(best_new_f)
             number_constructed_vectors += 1
 
         # todo: test whether the vectors are (at least mostly?) orthogonal : assert self.weighted_inner_product(W , f[0], f[1]) < small_threshold (0.02)
 
         for g, h in itertools.combinations(f, 2):
-            assert self.weighted_inner_product(W, g, h) < 0.0001  # todo: adjust threshold
+            assert self.weighted_inner_product(W, g.get_plain_vector(),
+                                               h.get_plain_vector()) < 0.0001  # make sure all vectors are orthonormal todo: adjust threshold
+
         return f
 
     def weighted_vertex_g_sum(self, g):
@@ -669,11 +684,12 @@ class Graph:
 
     def weighted_vertex_g_f_sum_alternative_f_as_list_of_np_arrays(self, g, f_list):
         total_value = 0
-        for a in f_list:
+        for f_vertex_vector in f_list:
             vector = np.zeros(self.number_vertices)
             for vertex in self.vertices:
-                vector += vertex.weight * a[vertex.index] * g[len(self.vertices) * vertex.index: len(self.vertices) * (
-                        vertex.index + 1)]  # todo: value[?]?
+                vector += vertex.weight * f_vertex_vector.vector[vertex] * g[len(self.vertices) * vertex.index: len(
+                    self.vertices) * (
+                                                                                                                        vertex.index + 1)]  # todo: value[?]?
 
             value = np.linalg.norm(vector)
 
@@ -694,18 +710,20 @@ class Graph:
             value += edge.weight * max_g_discrepancy_in_g_values
         return value
 
-    def generate_small_expansion_set(self, k, random_projection_repetitions=20):  # algorithm 1
+    def generate_small_expansion_set(self, k, random_projection_repetitions=20,
+                                     random_repetitions_gaussian=100):  # algorithm 1
 
         vertex_list = list(self.vertices)  # use vertex indexing? todo: make sure always same order
         self.vertices = vertex_list  # todo: get rid of this technical dept (make it a list from the beginning on)
         for i, vertex in enumerate(vertex_list):
             vertex.index = i  # todo: technical dept
 
-        f_list = self.generate_small_discrepancy_ratio_vertex_vectors(k)  # vectors
-        f_vertex_vectors_list = []
-        for i in range(k):
-            f_vertex_vectors_list.append(Vertex_Vector(self, f_list[i], self.vertices  # todo: technical dept
-                                                       ))  # todo ensure list has same order, vertex indexing
+        f_vertex_vectors_list = self.generate_small_discrepancy_ratio_vertex_vectors(k,
+                                                                                     random_repetitions_gaussian=random_repetitions_gaussian)  # vectors
+        # f_vertex_vectors_list = []
+        # for i in range(k):
+        #     f_vertex_vectors_list.append(Vertex_Vector(self, f_list[i], self.vertices  # todo: technical dept
+        #                                                ))  # todo ensure list has same order, vertex indexing
 
         max_discrepancy_ratio = 0
 

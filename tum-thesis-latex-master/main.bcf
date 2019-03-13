@@ -2005,19 +2005,21 @@
     <bcf:citekey order="7">ChanLTZ16</bcf:citekey>
     <bcf:citekey order="8">ChanLTZ16</bcf:citekey>
     <bcf:citekey order="9">ChanLTZ16</bcf:citekey>
-    <bcf:citekey order="10">LouisM14</bcf:citekey>
+    <bcf:citekey order="10">ChanLTZ16</bcf:citekey>
     <bcf:citekey order="11">ChanLTZ16</bcf:citekey>
-    <bcf:citekey order="12">LouisM14</bcf:citekey>
+    <bcf:citekey order="12">ChanLTZ16</bcf:citekey>
     <bcf:citekey order="13">ChanLTZ16</bcf:citekey>
     <bcf:citekey order="14">LouisM14</bcf:citekey>
-    <bcf:citekey order="15">LouisM14</bcf:citekey>
-    <bcf:citekey order="16">ChanLTZ16</bcf:citekey>
+    <bcf:citekey order="15">ChanLTZ16</bcf:citekey>
+    <bcf:citekey order="16">LouisM14</bcf:citekey>
     <bcf:citekey order="17">ChanLTZ16</bcf:citekey>
-    <bcf:citekey order="18">ChanLTZ16</bcf:citekey>
-    <bcf:citekey order="19">ghoshal2009random</bcf:citekey>
-    <bcf:citekey order="19">zhang2010hypergraph</bcf:citekey>
-    <bcf:citekey order="20">ghoshal2009random</bcf:citekey>
+    <bcf:citekey order="18">LouisM14</bcf:citekey>
+    <bcf:citekey order="19">LouisM14</bcf:citekey>
+    <bcf:citekey order="20">ChanLTZ16</bcf:citekey>
+    <bcf:citekey order="21">ghoshal2009random</bcf:citekey>
     <bcf:citekey order="21">zhang2010hypergraph</bcf:citekey>
+    <bcf:citekey order="22">ghoshal2009random</bcf:citekey>
+    <bcf:citekey order="23">zhang2010hypergraph</bcf:citekey>
   </bcf:section>
   <!-- SORTING TEMPLATES -->
   <bcf:sortingtemplate name="none">

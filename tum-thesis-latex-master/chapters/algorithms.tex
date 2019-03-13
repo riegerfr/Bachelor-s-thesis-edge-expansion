@@ -74,8 +74,77 @@ In order to analyze the results from \cref{alg:ses}, which only computes $\Phi(S
 For \cref{alg:brute_force_size} and \cref{alg:brute_force_size_just_one_side} the above argument of for exponential complexity holds as well.
 
 \section{Orthonormal vectors}
-As described in \cite{ChanLTZ16}, an algortihm for generating a random small expansion set can be derived. For that, a set of orthonormal vectors $\{f_1, \ldots, f_k\}$ needs to be created, where each vector $f_i \in \mathbb{R}^V$ gives a value to each vertex. Because of \cref{fact:small_xi} it will be of importance for \cref{alg:small_set_expansion} that  $\xi := \max_{s \in [k]} D_w(f_s)   $ is small.
+As described in \cite{ChanLTZ16}, an algortihm for generating a random small expansion set can be derived. 
 
+
+For a given Graph $H$ we can find a small expansion set with \cref{alg:ses}, where $k \ge 2$ is an integer.
+
+
+
+\begin{algorithm}[htpb]
+	\caption{Find Small Expansion Set \label{alg:ses}} 
+	\begin{algorithmic}
+		\Function{SES}{$H, k$}
+		\State $f_1 \ldots, f_k := $\Call{SampleSmallVectors}{$H, k$}
+		\State return \Call{SmallSetExpansion}{$H, f_1 \ldots, f_k$}
+		\EndFunction 
+	\end{algorithmic}
+\end{algorithm}	
+
+In the main algorithm, the first call to \cref{alg:procedural_minimizer}, returns a set of orthonormal vectors $\{f_1, \ldots, f_k\}$, where each vector $f_i \in \mathbb{R}^V$ gives a value to each vertex. Because of \cref{fact:small_xi} it is of importance for \cref{alg:small_set_expansion} that  $\xi := \max_{s \in [k]} D_w(f_s)$ is small. 
+At first, $f_1$ is set to be $\frac{\vec{1}}{||\vec{1}||_w}$. Following that, the other vectors $f_2, \ldots, f_k$ are sampeled after another, using \cref{alg:sdp}. This sampling of vectores after another where the discrepancy ratio of the next vector shall be minimal is also refeered to as procedural minimizers. In this way an approximation for the ideal vectors, which achieve $\xi_k$ as defined in \cref{eq:xi} is achieved.
+
+
+ 
+\begin{algorithm}[htpb]
+	\caption{Procedural Minimizer \label{alg:procedural_minimizer}} 
+	\begin{algorithmic}
+		\Function{SampleSmallVectors}{$H,k$}
+		\State $f_:1= \frac{\vec{1}}{||\vec{1}||_w}$
+		
+		\For{$i = 2, \ldots, k$}
+		\State $f_i := $\Call{SampleRandomVector}{$H, f_1, \ldots, f_{i-1}$}
+		\EndFor
+		\State return $f_1, \ldots , f_k$
+		\EndFunction 
+	\end{algorithmic}
+\end{algorithm}	
+
+\begin{sdp}{SDP for minimizing $g$, (SDP 8.3 in \cite{ChanLTZ16}) \label{SDP}} %todo: better name, where from
+	\begin{mini*}
+		{g}{\text{SDPval} := \sum_{e\in E} w_e \max_{u,v\in e} ||\vec{g_u} -\vec{g_v} ||^2}{}{}
+		\addConstraint{ \sum_{u\in V} w_v ||\vec{g_v}||^2 }{= 1}{}
+		\addConstraint{ \sum_{u\in V} w_v f_i(v)  \vec{g_v} }{=\vec{0},\quad}{\forall i \in [k-1]}
+	\end{mini*}
+\end{sdp}
+
+
+In \cref{alg:sdp}, SDP \ref{SDP} is solved in order to generate vectors $\vec{g_v} \in \mathbb{R}^n $ for $v \in V$. The idea behind the vector $\vec{g_v}$ is to represent the coordinate $v$ in the next vector $f$, which is being created. Therefore, $\vec{g_v} $ in the SDP relates to $f_v $ in the discrepancy ratio defined in \cref{eq:discrepancy_ratio}. The first constraint limits the norm of the vector whilst the following ensure orthonormality to the already existing vectors. By sampling a vector from a gaussian and multiplying it with all the $\vec{g_v}$, the coordinates of $f$ are created. According to fact \ref{fact:small_discrepancy_ratio}, the maximal discrepancy ratio $ \max_{s \in [k]} D_w(f_s)$, among the vectors which are returned by \cref{alg:sdp}, is small with high probability. Therefore, in the implementation of \cref{alg:sdp}, the steps after solving the SDP are repeated several times and the $f$ with the smallest $D_w(f)$ is returned.
+
+\begin{fact}{(Theorem 8.1 in \cite{ChanLTZ16}) \label{fact:small_discrepancy_ratio}}
+There exists a randomized polynomial time algorithm that, given a hypergraph $H = (V,E,w)$ and a parameter$ k < |V |$, outputs $k$ orthonormal vectors $f_1, \ldots , f_k$ in the weighted space such that with high probability, for each $i  \in [k],$
+\begin{equation}
+	D_w(f_i) \le \mathcal{O} (i \xi_i \log r  ) .
+\end{equation}	
+\end{fact}
+
+\begin{algorithm}[htpb]
+	\caption{Rounding Algorithm for Computing Eigenvalues (Algorithm 3 in \cite{ChanLTZ16}) \label{alg:sdp}} 
+	\begin{algorithmic}
+		\Function{SampleRandomVector}{$H, f_1, \ldots, f_{i-k}$}
+		\State Solve SDP \ref{SDP} to generate vectors $\vec{g_v} \in \mathbb{R}^n $ for $v \in V$
+		\State $\vec{z} := sample(\mathcal{N}(0,I_n))$
+		\For{$v\in V $}
+		\State $f(v) := <\vec{g_v}, \vec{z}>$
+		\EndFor
+		\State return $f$
+		\EndFunction 
+	\end{algorithmic}
+\end{algorithm}	
+
+After sampling of the vectors $f_1, \ldots, f_k$, \cref{alg:ses} calls \cref{alg:small_set_expansion}. There the vectors $f_1 , \ldots , f_k$ are flipped to form $u_v$. Each $u_v$ represents the $f$-values for a vector $v\in V$.
+After normalizing each $u_i$ to $\tilde{u}_i $, they are handed over to \cref{alg:orthogonal_separator}, which returns a subset of the $\tilde{u}_v$s. With this subset, a vector $X$ is constructed. $X_i$  takes the value $||u_v||$ if $\tilde{u}_v \in \hat{S} $, otherwise $0$. Then, $X$ is sorted in decreasing order. 
+Afterwards all the prefixes of $X$ are analyzed for the expansion of their respecting vertices. The set of vertices $S$ with the lowest expansion is returned.
 
 
 
@@ -89,30 +158,30 @@ As described in \cite{ChanLTZ16}, an algortihm for generating a random small exp
 		\State assert $\xi == \max_{s\in [k]} \{D_w(f_s)\}$
 		\State assert $\forall f_i, f_j \in \{f_1, \ldots , f_k\} \subset \mathbb{R}^n, i\neq j: f_i \text{ and } f_j \text{ orthonormal in weighted space} $
 		
-		\For{$i \in V$}
+		\For{$v \in V$}
 		\For{$s\in [k]$}
-		\State	$u_i(s) := f_s(i) $
+		\State	$u_v(s) := f_s(v) $
 		\EndFor
 		\EndFor
 		
-		\For{$i \in V$}
-		\State $\tilde{u}_i := \frac{u_i}{||u_i||}$
+		\For{$v \in V$}
+		\State $\tilde{u}_v := \frac{u_v}{||u_v||}$
 		\EndFor
 		
-		\State $\hat{S} := $ \Call{OrthogonalSeparator}{$\{\tilde{u}_i\}_{i\in V} , \beta = \frac{99}{100}, \tau = k$ }
+		\State $\hat{S} := $ \Call{OrthogonalSeparator}{$\{\tilde{u}_v\}_{v\in V} , \beta = \frac{99}{100}, \tau = k$ }
 		
 		\For {$i \in S$}
-		\If {$\tilde{u}_i \in \hat{S}$ }
+		\If {$\tilde{u}_v \in \hat{S}$ }
 
-		\State $X_i := ||u_i||^2$
+		\State $X_v := ||u_v||^2$
 		\Else
-		\State $X_i := 0$
+		\State $X_v := 0$
 		\EndIf
 		
 		\EndFor
-		\State $X:= $ sort $ list(\{X_i\}_{i \in V})$
-		\State $V := [i]_{\text{in order of X}}$
-		\State $S := \arg \min_{\{P: O \text{ is prefix of }V\}}\phi(O)$
+		\State $X:= $ sort $ list(\{X_v\}_{v \in V})$
+		\State $V := [v]_{\text{in order of X}}$
+		\State $S := \arg \min_{\{P \text{ is prefix of }V\}}\phi(P)$
 		
 		\State return $S$
 		
@@ -125,34 +194,35 @@ As described in \cite{ChanLTZ16}, an algortihm for generating a random small exp
 \end{algorithm} %todo: explain list syntax in notation
 
 
+In \cref{alg:orthogonal_separator} a number of $l := \lceil \frac{\log_2 k}{1-\log_2 k}\rceil$ assignments are sampled for each vertex $u \in V$ with the help of \cref{alg:sample_assignments}. Assignment $j \in [l]$ assigns a value $w_j(u) \in \{0,1\}$ to each vertex $u$. With that, for each vertex $u$, a word $W(u) =  w_1(u)w_2(u)\cdots w_l(u)$ can be defined. Then a random word is picked, depending on the size of $n$ and $2^l$, either from $\{0,1\}^l$ or from all the constructed words with the same probability. In this case, $|V|-\# \text{distinct words in }W$ are constructed and added to the set of words to pick from. Following, a value $r\in(0,1)$ is chosen uniformly at random. Only those vertices $v$ whose word $W(v)$ equals the chosen $word$ and whose vector $\tilde{u}_v$ is smaller than $r$ get selected into the set $S$ which is returned to \cref{alg:small_set_expansion}.
+
 \begin{algorithm}[htpb]
 	\caption{Orthogonal Separator (combination of Lemma 18 and algorithm Theorem 10 in \cite{LouisM14} (also Fact 6.7 in \cite{ChanLTZ16})) \label{alg:orthogonal_separator}} 
 \begin{algorithmic}
-	\Function{OrthogonalSeparator}{$\{\tilde{u}_i\}_{i\in V} , \beta = \frac{99}{100}, \tau = k$}
+	\Function{OrthogonalSeparator}{$\{\tilde{u}_v\}_{v\in V} , \beta = \frac{99}{100}, \tau = k$}
 	\State $l := \lceil \frac{\log_2 k}{1-\log_2 k}\rceil$
-	\State $g \sim \mathcal{N} (0,I_n)$ where each component $g_i$ is mutually independent and sampled from $\mathcal{N} (0,1)$
-	
+
 
 	
 	\State $w := $\Call{SampleAssignments}{$l, V, \beta$}
 	
-	\For{$ i \in V$}
-	\State $W(u) := w_1(u)w_2(u)\cdots w_j(u)$
+	\For{$ v \in V$}
+	\State $W(u) := w_1(v)w_2(v)\cdots w_l(v)$
 	\EndFor
 	
 	\If{$n\ge 2^l$}
-	\State $word := random( \{0,1\}^l)$ uniform
+	\State $word := random( \{0,1\}^l)$ \Comment uniform
 	
 	\Else
 	 
-	\State $words := set({w(i): i\in V})$  no multiset
-	\State $words \cup= \{w_1, \ldots , w_{|V|-|words|} \in \{0,1\}^l\} $ random choice
-	\State $word := random(words)$ uniform
+	\State $words := set({w(v): v\in V})$ \Comment no multiset
+	\State $words = words \uplus \{w_1, \ldots , w_{|V|-|words|} \in \{0,1\}^l\} $ 
+	\State $word := random(words)$ \Comment uniform
 	
 	\EndIf
 	
 	\State $r := uniform(0,1)$
-	\State $S := \{i \in V: ||i||^2 \ge r \land W(u) = word \}$
+	\State $S := \{v \in V: ||u_v||^2 \ge r \land W(u) = word \}$
 	\State return $S$
 	
 	\EndFunction %todo: 1-vector explain;
@@ -161,23 +231,28 @@ As described in \cite{ChanLTZ16}, an algortihm for generating a random small exp
 \end{algorithmic}
 \end{algorithm}	
 
-	
+For sampling the assignments \cref{alg:sample_assignments} uses a poisson process on $\mathbb{R}$ with rate $\lambda$. It is important to note that for one call of the algorithm, the times on which the events happen do not change. Therefore, given a time $t$, the process returns the number of events which have happened between $t_0 = 0$ and $t$. Observe that $t\in \mathbb{R}$ can also take negative values.
+Additionally, a vector $g \in \mathbb{R}^n$ is sampelled where each component is sampelled independently from $\mathcal{N}(0,1)$. Then for each vertex $v$ and for $i = 1, 2, \ldots, l$ a 'time' $t = \langle g, \tilde{u}_v \rangle $ is calculated. Depending on whether the number of events happened in the poisson process until $t$, is even or odd, $w_i(v)$ is set to $0$ or $1$. Finally, $w$ is returned.
 	
 \begin{algorithm}[htpb]
 	\caption{Sample Assignments (proof of Lemma 18 in \cite{LouisM14}) \label{alg:sample_assignments}} 
 	\begin{algorithmic}
 	\Function{SampleAssignments}{$l, V, \beta$}
-		\State $\lambda := \frac{1}{\sqrt{\beta}}$ 
-		\For {$j = 1, 2, \ldots, l$}
-	\For{$i\in V$}
+		\State $\lambda := \frac{1}{\sqrt{\beta}}$
+			\State $g:=$ sample($\mathcal{N}(0,I_n)$) \Comment all components $g_i$ are mutually independent 
+	
+	\State $poisson\_process := N(\lambda)$ \Comment N is a poisson process on $\mathbb{R}$ with rate $\lambda$
+		 
+	\For {$i = 1, 2, \ldots, l$}
+	\For{$v\in V$}
 	
 	
-	\State $t_i := \langle g, \tilde{u}_i \rangle $
-	\State $poisson\_count_i := N(t_i, \lambda)$ where N is a poisson process on $\mathbb{R}$ (same process for each call)
-	\If{$poisson\_count_i \mod 2 == 0 $}
-	\State $w_j(i) := 1$
+	\State $t := \langle g, \tilde{u}_v \rangle $
+	\State $poisson\_count := poisson\_process(t)$ \Comment \# events between $t=0$ and $t_v$
+	\If{$poisson\_count \mod 2 == 0 $}
+	\State $w_i(v) := 1$
 	\Else
-	\State  $w_j(i) := 0$
+	\State  $w_i(v) := 0$
 	\EndIf
 	\EndFor
 	\EndFor
@@ -193,58 +268,14 @@ As described in \cite{ChanLTZ16}, an algortihm for generating a random small exp
 	 where $C$ is an absolute constant and $r := \max_{e\in E} |e|$.
 \end{fact}
 
-With \cref{alg:sdp} to create orthonormal vectors, algorithm \cref{alg:ses} can be executed. This combination results in \cref{alg:ses} according to ...
+
+
+Todo: this makes use of the spectral properties... Rayleigh, laplacian, cheeger, 
 
 
 
-\begin{mini}
-	{g}{\text{SDPval} := \sum_{e\in E} w_e \max_{u,v\in e} ||\vec{g_u} -\vec{g_v} ||^2}{}{}
-	\addConstraint{ \sum_{u\in V} w_v ||\vec{g_v}||^2 }{= 1}{}
-	\addConstraint{ \sum_{u\in V} w_v f_i(v)  \vec{g_v} }{=\vec{0},\quad}{\forall i \in [k-1]}
-	\label{SDP}
-\end{mini}
 
 
-SDP
-
-\begin{algorithm}[htpb]
-	\caption{Rounding Algorithm for Computing Eigenvalues (Algorithm 3 in \cite{ChanLTZ16}) \label{alg:sdp}} 
-	\begin{algorithmic}
-		\Function{SampleRandomVector}{$H, f_1, \ldots, f_{k-1}$}
-		\State Solve SDP \ref{SDP} to generate vectors $\vec{g_v} \in \mathbb{R}^n $ for $v \in V$
-		\State $\vec{z} := sample(\mathcal{N}(0,1^n))$
-		\For{$v\in V $}
-		\State $f(v) := <\vec{g_v}, \vec{z}>$
-		\EndFor
-		\State return $f$
-		\EndFunction 
-	\end{algorithmic}
-\end{algorithm}	
-
-\begin{algorithm}[htpb]
-	\caption{Procedural Minimizer \label{alg:sdp}} 
-	\begin{algorithmic}
-		\Function{SampleSmallVectors}{$H,k$}
-		\State $f_:1= \frac{\vec{1}}{||\vec{1}||_w}$
-	
-		\For{$i = 2, \ldots, k$}
-		\State $f_i := $\Call{SampleRandomVector}{$H, f_1, \ldots, f_{i-1}$}
-		\EndFor
-		\State return $f_1, \ldots , f_k$
-		\EndFunction 
-	\end{algorithmic}
-\end{algorithm}	
-
-So for a given Graph $H$ we can find a small expansion set with the following algorithm: 
-\begin{algorithm}[htpb]
-	\caption{Find Small Expansion Set \label{alg:ses}} 
-	\begin{algorithmic}
-		\Function{SES}{$H$}
-		\State $f := $\Call{SampleRandomVectors}{$H$}
-		\State return \Call{SmallSetExpansion}{$H, f$}
-		\EndFunction 
-	\end{algorithmic}
-\end{algorithm}	
 
 %todo: Algorithm instead of algorithm at sentence-beginning
 %todo: formatting

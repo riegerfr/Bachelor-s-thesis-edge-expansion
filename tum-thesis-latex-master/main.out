@@ -11,17 +11,21 @@
 \BOOKMARK [1][-]{section.3.1}{Brute force}{chapter.3}% 11
 \BOOKMARK [1][-]{section.3.2}{Orthonormal vectors}{chapter.3}% 12
 \BOOKMARK [0][-]{chapter.4}{Random Hypergraphs}{}% 13
-\BOOKMARK [1][-]{section.4.1}{random edges with discard if not connected}{chapter.4}% 14
-\BOOKMARK [1][-]{section.4.2}{connected edges with discard if not connected or not regular}{chapter.4}% 15
-\BOOKMARK [0][-]{chapter.5}{Implementation}{}% 16
-\BOOKMARK [1][-]{section.5.1}{Technologies}{chapter.5}% 17
-\BOOKMARK [1][-]{section.5.2}{Code}{chapter.5}% 18
-\BOOKMARK [0][-]{chapter.6}{Evaluation}{}% 19
-\BOOKMARK [1][-]{section.6.1}{Graph size}{chapter.6}% 20
-\BOOKMARK [1][-]{section.6.2}{random Generation methods}{chapter.6}% 21
-\BOOKMARK [1][-]{section.6.3}{title}{chapter.6}% 22
-\BOOKMARK [0][-]{chapter.7}{Applications}{}% 23
-\BOOKMARK [0][-]{chapter.8}{Resume and Further Work}{}% 24
-\BOOKMARK [0][-]{chapter*.9}{List of Figures}{}% 25
-\BOOKMARK [0][-]{chapter*.10}{List of Tables}{}% 26
-\BOOKMARK [0][-]{chapter*.11}{Bibliography}{}% 27
+\BOOKMARK [1][-]{section.4.1}{Generation by adding random edges}{chapter.4}% 14
+\BOOKMARK [1][-]{section.4.2}{Generation with bound on degree}{chapter.4}% 15
+\BOOKMARK [1][-]{section.4.3}{Generation by sampling from low degree vertices}{chapter.4}% 16
+\BOOKMARK [1][-]{section.4.4}{Generation by resampling whole graph until connected}{chapter.4}% 17
+\BOOKMARK [1][-]{section.4.5}{Generation by randomly swapping edges}{chapter.4}% 18
+\BOOKMARK [1][-]{section.4.6}{Generation by creating a spanning tree}{chapter.4}% 19
+\BOOKMARK [0][-]{chapter.5}{Implementation}{}% 20
+\BOOKMARK [1][-]{section.5.1}{Technologies}{chapter.5}% 21
+\BOOKMARK [1][-]{section.5.2}{Code}{chapter.5}% 22
+\BOOKMARK [0][-]{chapter.6}{Evaluation}{}% 23
+\BOOKMARK [1][-]{section.6.1}{Graph size}{chapter.6}% 24
+\BOOKMARK [1][-]{section.6.2}{random Generation methods}{chapter.6}% 25
+\BOOKMARK [1][-]{section.6.3}{title}{chapter.6}% 26
+\BOOKMARK [0][-]{chapter.7}{Applications}{}% 27
+\BOOKMARK [0][-]{chapter.8}{Resume and Further Work}{}% 28
+\BOOKMARK [0][-]{chapter*.15}{List of Figures}{}% 29
+\BOOKMARK [0][-]{chapter*.16}{List of Tables}{}% 30
+\BOOKMARK [0][-]{chapter*.17}{Bibliography}{}% 31

@@ -68,6 +68,16 @@ The weight $w_v$ of a vertex $v$ is defined by summing up the weights of its edg
 \end{figure}
 
 
+The degree of a vertex $v\in V$ is defined as $deg(v) = |\{e\in E: v\in e\}|$.
+A hypergraph where every vertex has exactly degree $d$, formally $\forall v\in V : deg(v) =d $ ,  is called $d$-regular. 
+A hypergraph where every edge contains exactly $r$ vertices, formally $\forall e\in E : |e| =r $ is called $r$-uniform.
+
+For $d$-regular, $r$-uniform graphs, the following correlation with the number of vertices $n$ and the number of edges $m$ holds:
+\begin{equation}\label{eq:ndmr}
+	 n d = m r
+\end{equation}
+ This can be verified in the following way: If a 'connection' is defined to be the where an edge and a vertex connect, one can count these connections from the vertices' perspective by summing up the degrees of all the vertices (which equals to $n*r$ for regular graphs). But one can also consider the count of connections from the edges perspective by summing up the ranks of the edges, which equates to $m*r$ for uniform graphs. (todo: source)
+
 \section{Cuts}
 On such hypergraphs certain properties can be described, which are of theoretical interest but also have influence on the behaviour of a system which is described by such a graph. Some of these properties are so called cuts. A cut is described by its cut-set $\emptyset \neq S \subsetneq V$, a non-empty strict subset of the vertices. Interesting cuts are for example the so called minumum cut or the maximum cut which are defined by the minimum (or maximum respectively) number of edges (or their added weight for weighted graphs) going between $S$ and $V \setminus S$. Formally, this can be expressed by the following equation: \begin{equation}
 MinCut(G) := \min_{\emptyset \subsetneq S \subsetneq V} \sum_{e\in E:\exists u, v \in e: u \in S \land v \in V \setminus S } w_e
@@ -143,6 +153,7 @@ Sparse cut: crossing edge weights/ min{w(S), w(V\ S)}
 
 TODO: other approximations?
 TODO: Mincut, Sparsest Cut, Edge expansion
+TODO: small/low big/high?
 
 
 

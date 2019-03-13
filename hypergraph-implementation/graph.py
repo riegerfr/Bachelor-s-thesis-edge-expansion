@@ -97,8 +97,10 @@ class Graph:
 
         self.compute_connection_components()
         counter = 0
-        while len(self.connection_components) > 1 and counter < 1000:
+        while len(self.connection_components) > 1  :
             self.shuffle()
+
+            print("shuffeling edges to connect, time "+str(counter))
             counter += 1
 
         assert len(self.connection_components) == 1  # todo: proper error messsage
@@ -111,15 +113,15 @@ class Graph:
             new_vertex = Vertex(self)
             self.vertices.add(new_vertex)
 
-        number_edges = number_vertices * avg_degree / rank  # todo: math correct? insert assert
-        if not number_edges.is_integer():
-            print("no integer number of edges, rounding up")
-            number_edges = math.ceil(number_edges)
+        number_edges = int(math.ceil(number_vertices * avg_degree / rank )) # todo: math correct? insert assert
+
 
         for _ in range(number_edges):
             next_edge_vertices = set(random.sample(self.vertices, rank))
+
             for edge in self.edges:  # todo: activate
-                assert not edge in next_edge_vertices  # this ensures that the two sets are not the same making the new edge actually new
+                if edge in next_edge_vertices:
+                    print("doubled edge") # this ensures that the two sets are not the same making the new edge actually new
 
             next_edge = Edge(self, random.uniform(min_weight, max_weight), next_edge_vertices)
             self.edges.add(next_edge)
@@ -127,10 +129,27 @@ class Graph:
         self.compute_connection_components()
         if len(self.connection_components) != 1:
             print("the created graph is not connected")
-
+        uniform = True
         for vertex in self.vertices:
             if vertex.degree != avg_degree:
-                print(" graph not uniform")
+                uniform = False
+        if not uniform: print(" graph not uniform")
+
+    def create_only_connected_graphs_by_random_edge_adding(self,  number_vertices, rank, avg_degree, min_weight,
+                                                     max_weight):
+
+        self.create_random_graph_by_randomly_adding_edges( number_vertices, rank, avg_degree, min_weight,
+                                                     max_weight)
+
+        self.compute_connection_components()
+        while len(self.connection_components) != 1:
+            print("sampling new graph")
+            self.__dict__.update( Graph().__dict__) # creating a new graph
+            self.create_random_graph_by_randomly_adding_edges( number_vertices, rank, avg_degree, min_weight,
+                                                         max_weight)
+
+            self.compute_connection_components()
+
 
     def compute_connection_components(self):  # todo: change to recompute?
         for vertex in self.vertices:

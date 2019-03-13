@@ -23,6 +23,17 @@
 \usepackage{lstautogobble}
 \usepackage{tikz}
 \usepackage{float}
+
+\usepackage{ifluatex}
+\ifluatex
+\usepackage{pdftexcmds}
+\makeatletter
+\let\pdfstrcmp\pdf@strcmp
+\let\pdffilemoddate\pdf@filemoddate
+\makeatother
+\fi
+\usepackage{svg}
+
 \usetikzlibrary{calc, positioning, fit, shapes.misc}
 \tikzstyle{vertex} = [fill,shape=circle,node distance=80pt]
 \tikzstyle{edge} = [fill,opacity=.5,fill opacity=.5,line cap=round, line join=round, line width=50pt]
@@ -83,6 +94,7 @@
 \usepackage{algorithm}
 \usepackage[noend]{algpseudocode}
 \usepackage{cleveref}
-\newtheorem{fact}{Fact}[section] 
+\newtheorem{fact}{Fact}%[section] 
 %\usepackage{algorithm2e}
+\newtheorem{sdp}{SDP}
 \usepackage[long]{optidef}

@@ -59,8 +59,8 @@ class Graph:
 
         self.total_vertex_weight = 0
 
-    def create_random_uniform_regular_graph_until_connected(self, number_vertices, rank, degree, min_weight,
-                                                            max_weight):  # degree >= 2, random weights, uniform distribution. TODO: other distributions
+    def create_connected_graph_low_degrees_shuffel_edges_until_connected(self, number_vertices, rank, degree, min_weight,
+                                                                         max_weight):  # degree >= 2, random weights, uniform distribution. TODO: other distributions
         self.number_vertices = number_vertices
         self.max_edge_size = rank
         self.min_edge_size = rank
@@ -135,9 +135,10 @@ class Graph:
                 uniform = False
         if not uniform: print(" graph not uniform")
 
-    def create_only_connected_graphs_by_random_edge_adding(self,  number_vertices, rank, avg_degree, min_weight,
-                                                     max_weight):
-
+    def create_connected_graph_random_edge_adding_resampling(self, number_vertices, rank, avg_degree, min_weight,
+                                                             max_weight):
+        self.max_edge_size = rank
+        self.min_edge_size = rank
         self.create_random_graph_by_randomly_adding_edges( number_vertices, rank, avg_degree, min_weight,
                                                      max_weight)
 
@@ -252,8 +253,8 @@ class Graph:
             # edges[1].recompute()
         self.compute_connection_components()
 
-    def create_random_uniform_regular_connected_graph(self, number_vertices, rank, degree, min_weight,
-                                                      max_weight):  # degree >= 2, random weights, uniform distribution. TODO: other distributions
+    def create_connected_graph_spanning_tree_low_degrees(self, number_vertices, rank, degree, min_weight,
+                                                         max_weight):  # degree >= 2, random weights, uniform distribution. TODO: other distributions
         self.number_vertices = number_vertices
         self.max_edge_size = rank
         self.min_edge_size = rank
@@ -796,13 +797,17 @@ class Graph:
                     lowest_expansion_vertices = vertices
 
             print("lowest expansion: " + str(lowest_expansion))
-            log_base = 1.5
-            c_estimate = lowest_expansion / (min(math.sqrt(self.max_edge_size * math.log(k, log_base)),
+
+            log_base = math.e
+            c_estimate = -1
+            if k>=3:
+                c_estimate = lowest_expansion / (min(math.sqrt(self.max_edge_size * math.log(k, log_base)),
                                                  k * math.log(k, log_base) * math.log(math.log(k, log_base),
                                                                                       log_base) * math.sqrt(
                                                      math.log(self.max_edge_size, log_base))) * math.sqrt(
                 max_discrepancy_ratio))  # todo: get r(max edge size), which equation, which log?
-            print("C :" + str(c_estimate))
+                print("C :" + str(c_estimate))
+
             result.append((lowest_expansion_vertices, lowest_expansion, c_estimate))
         return result
 
@@ -824,7 +829,7 @@ class Graph:
         # 3
         vertices_words = {vertex: [] for vertex in self.vertices}
         for _ in range(word_length):
-            self.assign_to_vertices(beta, normalized_u, vertices_words)  # 2
+            self.assign_words_to_vertices(beta, normalized_u, vertices_words)  # 2
 
         # 4
         i = 0
@@ -864,7 +869,7 @@ class Graph:
         print("resampled times: " + str(i))
         return orthogonal_separator
 
-    def assign_to_vertices(self, beta, normalized_u, vertices_words):  # lemma 18
+    def assign_words_to_vertices(self, beta, normalized_u, vertices_words):  # lemma 18
 
         min_time, max_time = 0, 0
         lambda_poisson = 1 / math.sqrt(beta)

@@ -1,13 +1,10 @@
 \chapter{Resume and Further Work}\label{chapter:resmue_further_work}
 
-Several aspects for further work remain. 
-For one, the efficiency of the implementation can be improved. As the bottleneck of the implemenatation is the SDP optimization, biggest improvements can be achieved there. One could try adjusting the options for the current optimizer, try different optimizers altogether and as well improve the calculation of the SDPvalue and the constraints. As of now, for better overview, these calculations rerquire accessing different Python-dictionaries, which could be handeled more efficiently.
-Another aspect for the future is evaluating the algorithms on a larger scale with a more powerful computer and more time. Not only the $n, r, d$ and $k$ can be increased, but also the number of repetitions per graph. As a result, this would give a more precise picture about the properties of the algorithms, especially the value of the constant $C$ of \cref{eq:c_estimate}. Furthermore, even more combinations of ranks $r$ and degrees $d$, can be evaluated. Also the algorithms should be evaluated on, non-regular, non-uniform graphs. 
+Several aspects for further work can be found. 
+For one, the efficiency of the implementation can be improved. As the bottleneck of the implementation is the SDP optimization, biggest improvements can be achieved there. One could try adjusting the options for the current optimizer, try different optimizers altogether and as well speed up the calculation of the $SDPvalue$ and the constraints. As of now, for better overview, these calculations rerquire accessing different Python-dictionaries, which could be handled more efficiently.
+Another aspect for the future is evaluating the algorithms on a larger scale with a more powerful computer and more time. Not only the $n, r, d$ and $k$ can be increased, but also the number of repetitions per graph. As a result, this would give a more precise picture about the properties of the algorithms, especially the value of the constant $C$ of \cref{eq:c_estimate}. Furthermore, even more combinations of ranks $r$ and degrees $d$, can be evaluated. Also, for more insight the algorithms could be evaluated on, non-uniform graphs. 
 
-Challenges: extraction and understanding of the algorithms, creation of random graphs, optimizer
+The biggest challenge in this thesis were the extraction and understanding of the estimation algorithm and the algorithms it depends on. Furthermore, developing algorithms for the creation of random graphs with specific properties proved tricky. During implementation especially finding a suitable optimizer for the SDP and finding the right parameters for it were challenging.
 
-
-
-Implement and compare to other algorithms
-Evaluate on other graphs size, denser / less dense, weights, different way of generating
+All in all, small set approximations showed to be an interesting topic from a theoretical perspective, but they also have applications in the real world. Especially finding an algorithm for creating a random hypergraph proved appetizing. 
 

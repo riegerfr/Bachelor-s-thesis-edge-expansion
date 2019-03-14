@@ -1,15 +1,17 @@
 [0] Config.pm:304> INFO - This is Biber 2.12
 [0] Config.pm:307> INFO - Logfile is 'main.blg'
-[52] biber-MSWIN32:315> INFO - === 
-[101] Biber.pm:371> INFO - Reading 'main.bcf'
-[273] Biber.pm:889> INFO - Found 7 citekeys in bib section 0
-[300] Biber.pm:4093> INFO - Processing section 0
-[336] Biber.pm:4254> INFO - Looking for bibtex format file 'bibliography.bib' for section 0
-[342] bibtex.pm:1523> INFO - LaTeX decoding ...
-[381] bibtex.pm:1340> INFO - Found BibTeX data source 'bibliography.bib'
-[518] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'variable = shifted' with 'variable = non-ignorable'
-[518] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'normalization = NFD' with 'normalization = prenormalized'
-[518] Biber.pm:3921> INFO - Sorting list 'none/global//global/global' of type 'entry' with template 'none' and locale 'en-US'
-[519] Biber.pm:3927> INFO - No sort tailoring available for locale 'en-US'
-[536] bbl.pm:636> INFO - Writing 'main.bbl' with encoding 'UTF-8'
-[547] bbl.pm:739> INFO - Output to main.bbl
+[55] biber-MSWIN32:315> INFO - === 
+[97] Biber.pm:371> INFO - Reading 'main.bcf'
+[222] Biber.pm:889> INFO - Found 11 citekeys in bib section 0
+[242] Biber.pm:4093> INFO - Processing section 0
+[260] Biber.pm:4254> INFO - Looking for bibtex format file 'bibliography.bib' for section 0
+[266] bibtex.pm:1523> INFO - LaTeX decoding ...
+[291] bibtex.pm:1340> INFO - Found BibTeX data source 'bibliography.bib'
+[390] Utils.pm:193> WARN - I didn't find a database entry for 'eq:ndmr' (section 0)
+[487] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'variable = shifted' with 'variable = non-ignorable'
+[487] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'normalization = NFD' with 'normalization = prenormalized'
+[487] Biber.pm:3921> INFO - Sorting list 'none/global//global/global' of type 'entry' with template 'none' and locale 'en-US'
+[487] Biber.pm:3927> INFO - No sort tailoring available for locale 'en-US'
+[518] bbl.pm:636> INFO - Writing 'main.bbl' with encoding 'UTF-8'
+[534] bbl.pm:739> INFO - Output to main.bbl
+[536] Biber.pm:110> INFO - WARNINGS: 1

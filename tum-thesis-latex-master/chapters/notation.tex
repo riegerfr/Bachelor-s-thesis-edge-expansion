@@ -1,11 +1,11 @@
 \chapter{Notation}\label{chapter:notation}
-
+For further use, especially for the facts and the algorithms called by \cref{alg:ses}, some noation shall be introduced.
 The notation used in this thesis is orientated on \cite{ChanLTZ16}.
 
 
 
-The weight matrix can be denoted as \begin{equation}
-	W = 
+The weight matrix of a hypergraph, which contains the vertices' weights on its diagonal can be denoted as \begin{equation}
+	W := 
 	\begin{pmatrix}
 	w_{v_1} & 0 & 0&\dots &0 \\
 	0 & w_{v_2} & 0 & \ldots & 0 \\
@@ -18,23 +18,29 @@ The weight matrix can be denoted as \begin{equation}
 
 The discrepancy ratio of a graph, given a non-zero vector $f \in \mathbb{R}^V$ is defined as \begin{equation}\label{eq:discrepancy_ratio}
 D_w(f) := \frac{\sum_{e\in E} w_e \max_{u,v\in e}(f_u - f_v)^2}{\sum_{u\in V} w_u f_u^2}.
-\end{equation} Observe that $0\le D_w(f) \le 2 $ \cite{ChanLTZ16}.
+\end{equation} To understand the discrepancy ratio TODO
+ Observe that $0\le D_w(f) \le 2 $ \cite{ChanLTZ16}.
 
 In the weighted space, in which the discrepancy ratio is defined like above, for two vectors $f, g \in \mathbb{R}^V$ the inner product is defined as $ \langle f,g \rangle_w := f^T W g$. Accordingly, the norm is $||f||_w = \sqrt{ \langle f,f \rangle_w}$.
-If $ \langle f,g \rangle_w   = 0 $, $f$ and $g$ are said to be orthonormal in the weighted space.
+If $ \langle f,g \rangle_w   = 0 $, $f$ and $g$ are said to be orthonormal in the weighted space. 
 
-
+The discrepancy ratio can also be defined on the so called normalized space with $x\in \mathbb{R}^n$:
 \begin{equation}
 \mathcal{D}(x) = D_w(W^{-\frac{1}{2}}x)
 \end{equation}
+
+A so called orthogonal minimaximizer can be defined as follows. For $k$ mutually orthogonal non-zero vectors of the weighted space:
 \begin{equation}\label{eq:xi}
-	\xi_k := \min_{x_1, \ldots , x_k} \max_{i \in [k]} \mathcal{D}(x_i)
+	\xi_k := \min_{x_1, \ldots , x_k, orthogonal} \max_{i \in [k]} \mathcal{D}(x_i)
 \end{equation}
 
+TODO:explain weighted space + normalized space 
 
 Todo explain minimaximizer, Discrepancy ration in ... space, gamma 2
 Todo: weighted in which space orthogonal
 Laplacian? Eigenvalues?
+TODO: move content to other chapters?
+
 
 %TODO: small/big correct words?
 

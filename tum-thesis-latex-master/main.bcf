@@ -1998,8 +1998,8 @@
   <bcf:section number="0">
     <bcf:citekey order="1">stoer1997simple</bcf:citekey>
     <bcf:citekey order="2">karp1972reducibility</bcf:citekey>
-    <bcf:citekey order="3">kaibel2004expansion</bcf:citekey>
-    <bcf:citekey order="4">ChanLTZ16</bcf:citekey>
+    <bcf:citekey order="3">ChanLTZ16</bcf:citekey>
+    <bcf:citekey order="4">kaibel2004expansion</bcf:citekey>
     <bcf:citekey order="5">ChanLTZ16</bcf:citekey>
     <bcf:citekey order="6">ChanLTZ16</bcf:citekey>
     <bcf:citekey order="7">ChanLTZ16</bcf:citekey>
@@ -2009,17 +2009,21 @@
     <bcf:citekey order="11">ChanLTZ16</bcf:citekey>
     <bcf:citekey order="12">ChanLTZ16</bcf:citekey>
     <bcf:citekey order="13">ChanLTZ16</bcf:citekey>
-    <bcf:citekey order="14">LouisM14</bcf:citekey>
-    <bcf:citekey order="15">ChanLTZ16</bcf:citekey>
-    <bcf:citekey order="16">LouisM14</bcf:citekey>
-    <bcf:citekey order="17">ChanLTZ16</bcf:citekey>
-    <bcf:citekey order="18">LouisM14</bcf:citekey>
+    <bcf:citekey order="14">ChanLTZ16</bcf:citekey>
+    <bcf:citekey order="15">LouisM14</bcf:citekey>
+    <bcf:citekey order="16">ChanLTZ16</bcf:citekey>
+    <bcf:citekey order="17">LouisM14</bcf:citekey>
+    <bcf:citekey order="18">ChanLTZ16</bcf:citekey>
     <bcf:citekey order="19">LouisM14</bcf:citekey>
-    <bcf:citekey order="20">ChanLTZ16</bcf:citekey>
-    <bcf:citekey order="21">ghoshal2009random</bcf:citekey>
-    <bcf:citekey order="21">zhang2010hypergraph</bcf:citekey>
+    <bcf:citekey order="20">LouisM14</bcf:citekey>
+    <bcf:citekey order="21">ChanLTZ16</bcf:citekey>
     <bcf:citekey order="22">ghoshal2009random</bcf:citekey>
-    <bcf:citekey order="23">zhang2010hypergraph</bcf:citekey>
+    <bcf:citekey order="22">zhang2010hypergraph</bcf:citekey>
+    <bcf:citekey order="23">numpy</bcf:citekey>
+    <bcf:citekey order="24">scipy</bcf:citekey>
+    <bcf:citekey order="25">matplotlib</bcf:citekey>
+    <bcf:citekey order="26">zhang2010hypergraph</bcf:citekey>
+    <bcf:citekey order="27">ghoshal2009random</bcf:citekey>
   </bcf:section>
   <!-- SORTING TEMPLATES -->
   <bcf:sortingtemplate name="none">

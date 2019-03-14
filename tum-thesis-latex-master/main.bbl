@@ -275,8 +275,8 @@
       \strng{authorbibnamehash}{827984bacf4dd9565c525bc919d2a412}
       \strng{authornamehash}{827984bacf4dd9565c525bc919d2a412}
       \strng{authorfullhash}{827984bacf4dd9565c525bc919d2a412}
-      \field{sortinit}{1}
-      \field{sortinithash}{2174f786c6195e7fe2ee1c229b416e29}
+      \field{sortinit}{2}
+      \field{sortinithash}{cbff857e587bcb4635511624d773949e}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{journaltitle}{Physical Review E}
@@ -311,8 +311,8 @@
       \strng{authorbibnamehash}{f7c72337f964c434194fc28778caaf0d}
       \strng{authornamehash}{f7c72337f964c434194fc28778caaf0d}
       \strng{authorfullhash}{f7c72337f964c434194fc28778caaf0d}
-      \field{sortinit}{1}
-      \field{sortinithash}{2174f786c6195e7fe2ee1c229b416e29}
+      \field{sortinit}{2}
+      \field{sortinithash}{cbff857e587bcb4635511624d773949e}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{journaltitle}{Journal of Statistical Mechanics: Theory and Experiment}
@@ -323,7 +323,115 @@
       \field{pages}{P10005}
       \range{pages}{-1}
     \endentry
+    \entry{numpy}{misc}{}
+      \name{author}{1}{}{%
+        {{uniquename=0,uniquepart=base,hash=84194a0ad9431322c2f58a085b3991f0}{%
+           family={Oliphant},
+           familyi={O\bibinitperiod},
+           given={Travis},
+           giveni={T\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{84194a0ad9431322c2f58a085b3991f0}
+      \strng{fullhash}{84194a0ad9431322c2f58a085b3991f0}
+      \strng{bibnamehash}{84194a0ad9431322c2f58a085b3991f0}
+      \strng{authorbibnamehash}{84194a0ad9431322c2f58a085b3991f0}
+      \strng{authornamehash}{84194a0ad9431322c2f58a085b3991f0}
+      \strng{authorfullhash}{84194a0ad9431322c2f58a085b3991f0}
+      \field{sortinit}{2}
+      \field{sortinithash}{cbff857e587bcb4635511624d773949e}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{howpublished}{USA: Trelgol Publishing}
+      \field{note}{[Online; accessed March 2019]}
+      \field{title}{{NumPy}: A guide to {NumPy}}
+      \field{year}{2006}
+      \verb{urlraw}
+      \verb http://www.numpy.org/
+      \endverb
+      \verb{url}
+      \verb http://www.numpy.org/
+      \endverb
+    \endentry
+    \entry{scipy}{misc}{}
+      \true{moreauthor}
+      \true{morelabelname}
+      \name{author}{3}{}{%
+        {{uniquename=0,uniquepart=base,hash=4b3d26f886661aa723985bcfd835ba18}{%
+           family={Jones},
+           familyi={J\bibinitperiod},
+           given={Eric},
+           giveni={E\bibinitperiod},
+           givenun=0}}%
+        {{uniquename=0,uniquepart=base,hash=84194a0ad9431322c2f58a085b3991f0}{%
+           family={Oliphant},
+           familyi={O\bibinitperiod},
+           given={Travis},
+           giveni={T\bibinitperiod},
+           givenun=0}}%
+        {{uniquename=0,uniquepart=base,hash=3d6efaaa3d9682e20787eb06ff70a3d7}{%
+           family={Peterson},
+           familyi={P\bibinitperiod},
+           given={Pearu},
+           giveni={P\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{0fc4e01109f422119afc29f3251df541}
+      \strng{fullhash}{0fc4e01109f422119afc29f3251df541}
+      \strng{bibnamehash}{0fc4e01109f422119afc29f3251df541}
+      \strng{authorbibnamehash}{0fc4e01109f422119afc29f3251df541}
+      \strng{authornamehash}{0fc4e01109f422119afc29f3251df541}
+      \strng{authorfullhash}{0fc4e01109f422119afc29f3251df541}
+      \field{sortinit}{2}
+      \field{sortinithash}{cbff857e587bcb4635511624d773949e}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{note}{[Online; accessed March 2019]}
+      \field{title}{{SciPy}: Open source scientific tools for {Python}}
+      \field{year}{2001}
+      \verb{urlraw}
+      \verb http://www.scipy.org/
+      \endverb
+      \verb{url}
+      \verb http://www.scipy.org/
+      \endverb
+    \endentry
+    \entry{matplotlib}{article}{}
+      \name{author}{1}{}{%
+        {{uniquename=0,uniquepart=base,hash=a27d092a3c70c59360ac990a48514314}{%
+           family={Hunter},
+           familyi={H\bibinitperiod},
+           given={J.\bibnamedelimi D.},
+           giveni={J\bibinitperiod\bibinitdelim D\bibinitperiod},
+           givenun=0}}%
+      }
+      \list{publisher}{1}{%
+        {IEEE COMPUTER SOC}%
+      }
+      \strng{namehash}{a27d092a3c70c59360ac990a48514314}
+      \strng{fullhash}{a27d092a3c70c59360ac990a48514314}
+      \strng{bibnamehash}{a27d092a3c70c59360ac990a48514314}
+      \strng{authorbibnamehash}{a27d092a3c70c59360ac990a48514314}
+      \strng{authornamehash}{a27d092a3c70c59360ac990a48514314}
+      \strng{authorfullhash}{a27d092a3c70c59360ac990a48514314}
+      \field{sortinit}{2}
+      \field{sortinithash}{cbff857e587bcb4635511624d773949e}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{Matplotlib is a 2D graphics package used for Python for application development, interactive scripting, and publication-quality image generation across user interfaces and operating systems.}
+      \field{journaltitle}{Computing In Science \& Engineering}
+      \field{number}{3}
+      \field{title}{Matplotlib: A 2D graphics environment}
+      \field{volume}{9}
+      \field{year}{2007}
+      \field{pages}{90\bibrangedash 95}
+      \range{pages}{6}
+      \verb{doi}
+      \verb 10.1109/MCSE.2007.55
+      \endverb
+    \endentry
   \enddatalist
+  \missing{eq:ndmr}
 \endrefsection
 \endinput
 

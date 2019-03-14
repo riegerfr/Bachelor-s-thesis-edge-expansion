@@ -1,43 +1,47 @@
 \chapter{Notation}\label{chapter:notation}
-For further use, especially for the facts and the algorithms called by \cref{alg:ses}, some noation shall be introduced.
+For further use, especially for the upcoming facts and the algorithms called by \cref{alg:ses}, some notation of spectral properties of graphs shall be introduced.
 The notation used in this thesis is orientated on \cite{ChanLTZ16}.
 
-
-
-The weight matrix of a hypergraph, which contains the vertices' weights on its diagonal can be denoted as \begin{equation}
-	W := 
-	\begin{pmatrix}
-	w_{v_1} & 0 & 0&\dots &0 \\
-	0 & w_{v_2} & 0 & \ldots & 0 \\
-	0 & 0 & w_{v_3} & \ldots & 0 \\
-	\vdots & \vdots & \vdots & \ddots & \vdots \\
-	0 &0&0& \ldots  & w_{v_n}
-	\end{pmatrix} \in \mathbb{R}_{0+}^{n \times n} .
+In the algorithms, values are assigned to each vertex $v\in V$ in the form of vectors in $\mathbb{R}^V$. These values can be defined in the so-called weighted space but also transformed to the normalized space, which are equivalent up to a transformation. Vectors in the weighted space are commonly denoted by $f,g\in \mathbb{R}^V$ and are related to vectors in the normalized space $x,y \in \mathbb{R}^V$ by $x = W^\frac{1}{2}f$. The used weight matrix $W$ of a hypergraph, which contains the vertices' weights on its diagonal can be denoted as \begin{equation}
+W := 
+\begin{pmatrix}
+w_{v_1} & 0 & 0&\dots &0 \\
+0 & w_{v_2} & 0 & \ldots & 0 \\
+0 & 0 & w_{v_3} & \ldots & 0 \\
+\vdots & \vdots & \vdots & \ddots & \vdots \\
+0 &0&0& \ldots  & w_{v_n}
+\end{pmatrix} \in \mathbb{R}_{0+}^{n \times n} .
 \end{equation} 
-% TODO: needed?
-
-The discrepancy ratio of a graph, given a non-zero vector $f \in \mathbb{R}^V$ is defined as \begin{equation}\label{eq:discrepancy_ratio}
-D_w(f) := \frac{\sum_{e\in E} w_e \max_{u,v\in e}(f_u - f_v)^2}{\sum_{u\in V} w_u f_u^2}.
-\end{equation} To understand the discrepancy ratio TODO
- Observe that $0\le D_w(f) \le 2 $ \cite{ChanLTZ16}.
-
-In the weighted space, in which the discrepancy ratio is defined like above, for two vectors $f, g \in \mathbb{R}^V$ the inner product is defined as $ \langle f,g \rangle_w := f^T W g$. Accordingly, the norm is $||f||_w = \sqrt{ \langle f,f \rangle_w}$.
+In the weighted space, for two vectors $f, g \in \mathbb{R}^V$ the inner product is defined as $ \langle f,g \rangle_w := f^T W g$. Accordingly, the norm is $||f||_w = \sqrt{ \langle f,f \rangle_w}$.
 If $ \langle f,g \rangle_w   = 0 $, $f$ and $g$ are said to be orthonormal in the weighted space. 
 
-The discrepancy ratio can also be defined on the so called normalized space with $x\in \mathbb{R}^n$:
-\begin{equation}
-\mathcal{D}(x) = D_w(W^{-\frac{1}{2}}x)
-\end{equation}
+The discrepancy ratio of a graph, given a non-zero vector $f \in \mathbb{R}^V$ in the weighted space is defined as \begin{equation}\label{eq:discrepancy_ratio}
+D_w(f) := \frac{\sum_{e\in E} w_e \max_{u,v\in e}(f_u - f_v)^2}{\sum_{u\in V} w_u f_u^2}.
+\end{equation} 
+Observe that $0\le D_w(f) \le 2 $ \cite{ChanLTZ16}. For a vector $f$ where all entries take the same value it can be seen that $D_w(f) =0$.
+ 
+The reason, the discrepancy ratio important is because it is connected to the edge expansion $\Phi(S)$ of a set $S$. This can be seen by choosing $f$ to be the indicator vector for the set, so \begin{equation}
+	f_v=\begin{cases}
+	1, & \text{if } v\in S\\
+	0, & \text{otherwise}
+	\end{cases}.
+\end{equation} Then, the nominator of $D_w(f)$ would sum over all the edges in $\delta S$, because if and only if one vertex of an edge is in $S$ and the other one is not in $S$, the expression $(f_u - f_v)^2 $ would be $1$, (it is $0$ otherwise). The denominator however, already computes $w(S)$, which makes the discrepancy ratio equal to the expansion $\Phi(S)$. Therefore, computing vectors with a low discrepancy ratio can help in finding an expansion set with a low expansion value.
 
-A so called orthogonal minimaximizer can be defined as follows. For $k$ mutually orthogonal non-zero vectors of the weighted space:
+
+%The discrepancy ratio can also be defined on the so called normalized space with $x\in \mathbb{R}^V$:
+%\begin{equation}
+%\mathcal{D}(x) = D_w(W^{-\frac{1}{2}}x)
+%\end{equation}
+It shall be seen in \cref{alg:small_set_expansion} that one can create a small expansion set, if several orthogonal vectors whose maximal discrepancy ratio is low are found. The lowest value, which can be achieved, is described by a so-called orthogonal minimaximizer which is defined as follows for $k$ mutually orthogonal non-zero vectors of the weighted space:
 \begin{equation}\label{eq:xi}
-	\xi_k := \min_{x_1, \ldots , x_k, orthogonal} \max_{i \in [k]} \mathcal{D}(x_i)
+\xi_k := \min_{0 \neq x_1, \ldots , x_k  \text{ orthogonal}} \max_{i \in [k]} D_w(x_i)
 \end{equation}
+However, there is no efficient way of computing the value (and the corresponding vectors) known. Therefore, an approximation is given with \cref{alg:procedural_minimizer}.
 
-TODO:explain weighted space + normalized space 
+% TODO: needed?
 
-Todo explain minimaximizer, Discrepancy ration in ... space, gamma 2
-Todo: weighted in which space orthogonal
+
+Todo explain minimaximizer, gamma 2
 Laplacian? Eigenvalues?
 TODO: move content to other chapters?
 

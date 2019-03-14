@@ -1,10 +1,10 @@
 \chapter{Expansion Algorithms}\label{chapter:algorithms}
-In the following chapter different approaches for generating small expansion sets $S$ as well as the edge expansion of hypergraphs are discussed.
+In this chapter, different approaches for generating expansion sets $S$ with a low edge expansion are discussed. First, brute-force algorithms for finding the sets with the lowest expansion for the whole graph, % $ \max\{ \Phi(S), \Phi({V\setminus S})\}$, 
+for just a set,  %$ \Phi(S)$
+and also for sets of all possible sizes  %$ \Phi(S), |S|=i$ 
+are shown. Following, a more efficient approximation algorithm, which is based on the results of \cite{ChanLTZ16}, for finding small expansion sets is presented.
 %TODO: NP-hard? --> approximation needed
 %todo: which tense to use where?
-
-
-
 \section{Brute Force}
 One obvious approach for generating the edge expansion $\Phi(H)$ of a hypergraph $H$ is to brute-force the problem like in \cref{alg:brute_force}.
 \begin{algorithm}[H]
@@ -24,21 +24,18 @@ One obvious approach for generating the edge expansion $\Phi(H)$ of a hypergraph
 		\EndFunction
 	\end{algorithmic}
 \end{algorithm}
-
-
-As \cref{alg:brute_force} iterates over all the possible subsets $\emptyset \neq S \subsetneq V$, it computes \begin{equation}
+As it iterates over all the possible subsets $\emptyset \neq S \subsetneq V$, it computes \begin{equation}
 \arg\min_{\emptyset \subsetneq S \subsetneq V} \max{( \Phi(S), \Phi({V\setminus S}))} = \Phi(H).
 \end{equation}
-
-There are $2^{|V|}-2 = 2^{n}-2 \in O(2^n) $ combinations for $\emptyset \neq S \subsetneq V$, namely all the $2^{|V|}$ subsets of $V$ excluding the empty set $\emptyset$ and $V$ itself. Hence, this algorithm is of exponential time complexity in $n$ and is therefore not efficient for larger graphs as evaluated in \cref{fig:no_vertices_time}.
+However, there are $2^{|V|}-2 = 2^{n}-2 \in O(2^n) $ combinations for $\emptyset \neq S \subsetneq V$, namely all the $2^{|V|}$ subsets of $V$ excluding the empty set $\emptyset$ and $V$ itself. Hence, this algorithm is of exponential time complexity in $n$ and is therefore not efficient for larger graphs as evaluated in \cref{fig:no_vertices_time}.
 %TODO: In fact the problem is  unique games conjecture, np-hard
 
-For the purpose of analyzing the graph creation algorithms in \cref{chapter:random_hypergraphs}, it can be insightful to observe the lowest expansion of each possible size (in the number of vertices) like in \cref{alg:brute_force_size}.
+For the purpose of analyzing the graph creation algorithms in \cref{chapter:random_hypergraphs}, it can be insightful to examine the lowest expansion of each possible size (in the number of vertices) like in \cref{alg:brute_force_size}.
 
 \begin{algorithm}[H]
-	\caption{Brute-force edge expansion of a hypergraph for every size   \label{alg:brute_force_size}}
+	\caption{Brute-force expansion of a hypergraph for every size of the expansion set\label{alg:brute_force_size}}
 	\begin{algorithmic}
-		\Function{BruteForceEdgeExpansionSizes}{$H := (V,E, w)$}
+		\Function{BruteForceEdgeExpansionSizesGraph}{$H := (V,E, w)$}
 		\State $best\_S\_of\_size := \{\}$
 		\State $lowest\_expansion\_of\_size := \{1:\infty, 2:\infty, \ldots, n-1: \infty \}$
 		\For{$\emptyset \neq S \subsetneq V$}
@@ -57,9 +54,9 @@ For the purpose of analyzing the graph creation algorithms in \cref{chapter:rand
 In order to analyze the results from \cref{alg:ses}, which only computes $\Phi(S)$, the expansion of a set $S$, not the whole graph, it makes sense to compare it with the best result possible for the same size of $S$. Therefore, just the line for the computation of the expansion \cref{alg:brute_force_size} needs to be changed to get \cref{alg:brute_force_size_just_one_side}.
 
 \begin{algorithm}[H]
-	\caption{Brute-force edge expansion of sets for every size   \label{alg:brute_force_size_just_one_side}}
+	\caption{Brute-force expansion of sets for every size   \label{alg:brute_force_size_just_one_side}}
 	\begin{algorithmic}
-		\Function{BruteForceEdgeExpansionSizes}{$H := (V,E, w)$}
+		\Function{BruteForceEdgeExpansionSizesSets}{$H := (V,E, w)$}
 		\State $best\_S_of_size := \{\}$
 		\State $lowest\_expansion\_of\_size := \{1:\infty, 2:\infty, \ldots, n-1: \infty \}$
 		\For{$\emptyset \neq S \subsetneq V$}
@@ -73,15 +70,12 @@ In order to analyze the results from \cref{alg:ses}, which only computes $\Phi(S
 		\EndFunction
 	\end{algorithmic}
 \end{algorithm}
-For \cref{alg:brute_force_size} and \cref{alg:brute_force_size_just_one_side} the above argument of for exponential complexity holds as well.
+For \cref{alg:brute_force_size} and \cref{alg:brute_force_size_just_one_side} the above argument for exponential time complexity holds as well. Therefore, a more efficient approximation shall be given in the following section.
 
 \section{Approximation of small expansion sets}
-As described in \cite{ChanLTZ16}, an algorthm for generating a random small expansion set can be derived. 
 
-
-For a given Graph $H$ we can find a small expansion set with \cref{alg:ses}, where $k \ge 2$ is an integer.
-
-
+As described in \cite{ChanLTZ16}, an algorithm for generating a random small expansion set can be derived by first creating a set of $k\ge2$  non-zero vectors $f_1, \ldots, f_k$, which are orthogonal in the weighted space and have a low maximal discrepancy ratio $\xi = max_{f_1, \ldots, f_k} D_w(f_k)$.
+Then, the set of vectors can be inputted to \cref{alg:small_set_expansion} which is algorithm 1 in \cite{ChanLTZ16}. There, the vectors are used to create an set of vertices which are then returned. The combination of these steps results in \cref{alg:ses}, which takes a graph $H$ and an integer $k \ge 2$ and returns a small expansion set. In the following, the subroutines of this algorithm shall be elaborated.
 
 \begin{algorithm}[htpb]
 	\caption{Find Small Expansion Set \label{alg:ses}} 
@@ -93,9 +87,17 @@ For a given Graph $H$ we can find a small expansion set with \cref{alg:ses}, whe
 	\end{algorithmic}
 \end{algorithm}	
 
-In the main algorithm, the first call to \cref{alg:procedural_minimizer}, returns a set of orthonormal vectors $\{f_1, \ldots, f_k\}$, where each vector $f_i \in \mathbb{R}^V$ gives a value to each vertex. Because of \cref{fact:small_xi} it is of importance for \cref{alg:small_set_expansion} that  $\xi := \max_{s \in [k]} D_w(f_s)$ is small. 
-At first, $f_1$ is set to be $\frac{\vec{1}}{||\vec{1}||_w}$. Following that, the other vectors $f_2, \ldots, f_k$ are sampled after another, using \cref{alg:sample_random_vector}. This sampling of vectors after another where the discrepancy ratio of the next vector shall be minimal is also referred to as procedural minimizers. In this way an approximation for the ideal vectors, which achieve $\xi_k$ as defined in \cref{eq:xi} is achieved.
+\subsection{Creation of orthogonal vectors with low discrepancy ratio}
+As there is no known, efficient way of achieving the optimal value $\xi_k$, an approximation is given through solving a SDP problem in the proof of Theorem 8.1 in \cite{ChanLTZ16}, which results in \cref{alg:procedural_minimizer}. This algorithm is called first and generates one vector $f_i$ after another by repeatedly solving the SDP. 
+It returns a set of non-zero orthonormal vectors $\{f_1, \ldots, f_k\}$, where each vector $f_i \in \mathbb{R}^V$ gives a value to each vertex. Because of \cref{fact:small_xi} it is of importance for \cref{alg:small_set_expansion} that the maximal discrepancy ratio $\xi := \max_{s \in [k]} D_w(f_s)$ is small, as explained before, the value of the discrepancy ratio is correlated with the value of the resulting expansion.
+At first, $f_1$ is set to be $\frac{\vec{1}}{||\vec{1}||_w}$, as this results in a minimal $D_w(f_1) =0$. Following that, the other vectors $f_2, \ldots, f_k$ are sampled after another, using \cref{alg:sample_random_vector}. This sampling of vectors after another where the discrepancy ratio of the next vector shall be minimal, given that it has to be orthogonal to the already constructed vectors is also referred to as procedural minimizer, hence the name of the algorithm. In this way an approximation for the ideal vectors, which achieve $\xi_k$ as defined in \cref{eq:xi} is performed.
 
+\begin{fact}{(Theorem 8.1 in \cite{ChanLTZ16}) \label{fact:small_discrepancy_ratio}}
+	There exists a randomized polynomial time algorithm that, given a hypergraph $H = (V,E,w)$ and a parameter $ k < |V |$, outputs $k$ orthonormal vectors $f_1, \ldots , f_k$ in the weighted space such that with high probability, for each $i  \in [k],$
+	\begin{equation}
+	D_w(f_i) \le \mathcal{O} (i \xi_i \log r  ) .
+	\end{equation}	
+\end{fact}
 
  
 \begin{algorithm}[htpb]
@@ -106,11 +108,15 @@ At first, $f_1$ is set to be $\frac{\vec{1}}{||\vec{1}||_w}$. Following that, th
 		
 		\For{$i = 2, \ldots, k$}
 		\State $f_i := $\Call{SampleRandomVector}{$H, f_1, \ldots, f_{i-1}$}
+		\State $f_i = \frac{f_i}{||f_i||_w}$
 		\EndFor
 		\State return $f_1, \ldots , f_k$
 		\EndFunction 
 	\end{algorithmic}
 \end{algorithm}	
+
+
+
 
 \begin{sdp}{SDP for minimizing $g$, (SDP 8.3 in \cite{ChanLTZ16}) \label{SDP}} %todo: better name, where from
 	\begin{mini*}
@@ -123,34 +129,27 @@ At first, $f_1$ is set to be $\frac{\vec{1}}{||\vec{1}||_w}$. Following that, th
 
 In \cref{alg:sample_random_vector}, SDP \ref{SDP} is solved in order to generate vectors $\vec{g_v} \in \mathbb{R}^n $ for $v \in V$. The idea behind the vector $\vec{g_v}$ is to represent the coordinate $v$ in the next vector $f$, which is being created. Therefore, $\vec{g_v} $ in the SDP relates to $f_v $ in the discrepancy ratio defined in \cref{eq:discrepancy_ratio}. The first constraint limits the norm of the vector whilst the following ensure orthonormality to the already existing vectors. By sampling a vector from a gaussian and multiplying it with all the $\vec{g_v}$, the coordinates of $f$ are created. According to fact \ref{fact:small_discrepancy_ratio}, the maximal discrepancy ratio $ \max_{s \in [k]} D_w(f_s)$, among the vectors which are returned by \cref{alg:sample_random_vector}, is small with high probability. Therefore, in the implementation of \cref{alg:sample_random_vector}, the steps after solving the SDP are repeated several times and the $f$ with the smallest $D_w(f)$ is returned.
 
-\begin{fact}{(Theorem 8.1 in \cite{ChanLTZ16}) \label{fact:small_discrepancy_ratio}}
-There exists a randomized polynomial time algorithm that, given a hypergraph $H = (V,E,w)$ and a parameter $ k < |V |$, outputs $k$ orthonormal vectors $f_1, \ldots , f_k$ in the weighted space such that with high probability, for each $i  \in [k],$
-\begin{equation}
-	D_w(f_i) \le \mathcal{O} (i \xi_i \log r  ) .
-\end{equation}	
-\end{fact}
+
 
 \begin{algorithm}[htpb]
 	\caption{Sample Random Vector (Algorithm 3 in \cite{ChanLTZ16}) \label{alg:sample_random_vector}} 
 	\begin{algorithmic}
 		\Function{SampleRandomVector}{$H, f_1, \ldots, f_{i-k}$}
 		\State Solve SDP \ref{SDP} to generate vectors $\vec{g_v} \in \mathbb{R}^n $ for $v \in V$
-		\State $\vec{z} := sample(\mathcal{N}(0,I_n))$
+		\State $\vec{z} := sample(\mathcal{N}(0,I_n))$\Comment random gaussian vector
 		\For{$v\in V $}
-		\State $f(v) := <\vec{g_v}, \vec{z}>$
+		\State $f(v) := \langle \vec{g_v}, \vec{z} \rangle$
 		\EndFor
 		\State return $f$
 		\EndFunction 
 	\end{algorithmic}
 \end{algorithm}	
 
+\subsection{Calculating a small expansion set}
+
 After sampling of the vectors $f_1, \ldots, f_k$, \cref{alg:ses} calls \cref{alg:small_set_expansion}. There the vectors $f_1 , \ldots , f_k$ are flipped to form $u_v$. Each $u_v$ represents the $f$-values for a vector $v\in V$.
-After normalizing each $u_i$ to $\tilde{u}_i $, they are handed over to \cref{alg:orthogonal_separator}, which returns a subset of the $\tilde{u}_v$s. With this subset, a vector $X$ is constructed. $X_i$  takes the value $||u_v||$ if $\tilde{u}_v \in \hat{S} $, otherwise $0$. Then, $X$ is sorted in decreasing order. 
-Afterwards all the prefixes of $X$ are analyzed for the expansion of their respecting vertices. The set of vertices $S$ with the lowest expansion is returned.
-
-
-
-
+After normalizing each $u_i$ to $\tilde{u}_i $, they are handed over to \cref{alg:orthogonal_separator}, which returns a subset of the $\tilde{u}_v$ which represents the candidate vertices for the expansion. With this subset, a vector $X$ is constructed. $X_i$  takes the value $||u_v||$ if $\tilde{u}_v \in \hat{S} $ and $0$ otherwise. Then, $X$ is sorted in decreasing order and all the prefixes of $X$ are analyzed for the expansion value of their respecting vertices. The set of vertices $S$ with the lowest expansion is returned. According to \cref{fact:small_xi}, there is an upper bound on the expansion value of the expansion set, which this algorithm returns. Therefore, with the right input vectors, the algorithm can create useful results.
+Here again, in the implementation, this algorithm is repeated several times as its results are based on randomness and compared to the optimization of the SDP, the calculation is inexpensive and only takes a small amount of time. In that way, the best result of many, i.e. the one with the lowest expansion, can be returned.
 \begin{algorithm}[H]
 	\caption{Small Set Expansion (according to Algorithm 1 in \cite{ChanLTZ16}) \label{alg:small_set_expansion}} %todo: better name
 	
@@ -172,7 +171,7 @@ Afterwards all the prefixes of $X$ are analyzed for the expansion of their respe
 		
 		\State $\hat{S} := $ \Call{OrthogonalSeparator}{$\{\tilde{u}_v\}_{v\in V} , \beta = \frac{99}{100}, \tau = k$ }
 		
-		\For {$i \in S$}
+		\For {$i \in V$}
 		\If {$\tilde{u}_v \in \hat{S}$ }
 
 		\State $X_v := ||u_v||^2$
@@ -194,22 +193,29 @@ Afterwards all the prefixes of $X$ are analyzed for the expansion of their respe
 		
 	\end{algorithmic}
 \end{algorithm} %todo: explain list syntax in notation
+\begin{fact}{(Theorem 6.6 in \cite{ChanLTZ16})}\label{fact:small_xi}
+	Given a hypergraph $H = (V, E, w)$ and $k$ vectors $f_1, f_2, \ldots , f_k$ which are orthonormal in the weighted space with $ \max_{s \in [k]} D_w(f_s) \le \xi $, the following holds: Algorithm \ref{alg:small_set_expansion} constructs a random set $S \subsetneq V$ in polynomial time such that with $\Omega(1)$ probability, $|S| \le \frac{24|V|}{k}$ and
+	\begin{equation}\label{eq:small_expansion}
+	\phi(S) \le C \min\{\sqrt{r \log k}, k \log k  \log \log k \sqrt{\log r} \} \cdot \sqrt{\xi},
+	\end{equation}
+	where $C$ is an absolute constant and $r := \max_{e\in E} |e|$.
+\end{fact}
 
 
-In \cref{alg:orthogonal_separator} a number of $l := \lceil \frac{\log_2 k}{1-\log_2 k}\rceil$ assignments are sampled for each vertex $u \in V$ with the help of \cref{alg:sample_assignments}. Assignment $j \in [l]$ assigns a value $w_j(u) \in \{0,1\}$ to each vertex $u$. With that, for each vertex $u$, a word $W(u) =  w_1(u)w_2(u)\cdots w_l(u)$ can be defined. Then a random word is picked, depending on the size of $n$ and $2^l$, either from $\{0,1\}^l$ or from all the constructed words with the same probability. In this case, $|V|-\# \text{distinct words in }W$ are constructed and added to the set of words to pick from. Following, a value $r\in(0,1)$ is chosen uniformly at random. Only those vertices $v$ whose word $W(v)$ equals the chosen $word$ and whose vector $\tilde{u}_v$ is smaller than $r$ get selected into the set $S$ which is returned to \cref{alg:small_set_expansion}.
+In \cref{alg:orthogonal_separator} a number of $l := \lceil \frac{\log_2 k}{1-\log_2 (1+\frac{2}{log_2 k})}\rceil$ assignments are sampled for each vertex $u \in V$ with the help of \cref{alg:sample_assignments}, which assigns a value $w_j(u) \in \{0,1\}$ to each vertex $u$ for $j \in [l]$. With that, for each vertex $u$, a word $W(u) =  w_1(u)w_2(u)\cdots w_l(u)$ can be defined out of the assignments. Then, a random $word$ is picked, depending on whether $n\ge 2^l$, either from $\{0,1\}^l$ or from all the constructed words with the same probability. In this case, $|V|-|W| $ new, distinct words are constructed, if there are duplicates within the words $W(u)$. $|W|$ refers to the number of unique words in $W$. The constructed words are added to the set of words to pick from. Following, a value $r\in(0,1)$ is chosen uniformly at random. Only those vertices $v$ whose word $W(v)$ equals the chosen $word$ and whose vector $\tilde{u}_v$ is smaller than $r$ get selected into the set $S$ which is returned to \cref{alg:small_set_expansion}. In the implementation, if a word, is chosen, which does not belong to any vertex, the process of sampling a word is repeated, as an empty $S$ would not be useful.
 
 \begin{algorithm}[htpb]
 	\caption{Orthogonal Separator (combination of Lemma 18 and algorithm Theorem 10 in \cite{LouisM14} (also Fact 6.7 in \cite{ChanLTZ16})) \label{alg:orthogonal_separator}} 
 \begin{algorithmic}
 	\Function{OrthogonalSeparator}{$\{\tilde{u}_v\}_{v\in V} , \beta = \frac{99}{100}, \tau = k$}
-	\State $l := \lceil \frac{\log_2 k}{1-\log_2 k}\rceil$
+	\State $l := \lceil \frac{\log_2 k}{1-\log_2 (1+\frac{2}{log_2 k})}\rceil$
 
 
 	
-	\State $w := $\Call{SampleAssignments}{$l, V, \beta$}
+	\State $w := $\Call{SampleAssignments}{$\{\tilde{u}_v\}_{v\in V},l, V, \beta$}
 	
 	\For{$ v \in V$}
-	\State $W(u) := w_1(v)w_2(v)\cdots w_l(v)$
+	\State $W(v) := w_1(v)w_2(v)\cdots w_l(v)$
 	\EndFor
 	
 	\If{$n\ge 2^l$}
@@ -233,46 +239,46 @@ In \cref{alg:orthogonal_separator} a number of $l := \lceil \frac{\log_2 k}{1-\l
 \end{algorithmic}
 \end{algorithm}	
 
-For sampling the assignments \cref{alg:sample_assignments} uses a Poisson process on $\mathbb{R}$ with rate $\lambda$. It is important to note that for one call of the algorithm, the times on which the events happen do not change. Therefore, given a time $t$, the process returns the number of events which have happened between $t_0 = 0$ and $t$. Observe that $t\in \mathbb{R}$ can also take negative values.
-Additionally, a vector $g \in \mathbb{R}^n$ is sampled where each component is sampled independently from $\mathcal{N}(0,1)$. Then for each vertex $v$ and for $i = 1, 2, \ldots, l$ a 'time' $t = \langle g, \tilde{u}_v \rangle $ is calculated. Depending on whether the number of events happened in the Poisson process until $t$, is even or odd, $w_i(v)$ is set to $0$ or $1$. Finally, $w$ is returned.
-	
+For sampling the assignments, \cref{alg:sample_assignments} uses a Poisson process on $\mathbb{R}$ with rate $\lambda$. It is important to note that for one call of the algorithm, the times on which the events happen do not change. Therefore, given a time $t$, the process returns the number of events which have happened between $t_0 = 0$ and $t$. Observe that $t\in \mathbb{R}$ can also take negative values, which does not create a problem since in the Poisson process events happen continuously and $t_0$ can be set on any possible event, which naturally has predecessors.
+Additionally, a vector $g \in \mathbb{R}^k$ is sampled where each component is sampled independently from $\mathcal{N}(0,1)$. Then for each vertex $v$ and for $i = 1, 2, \ldots, l$ a 'time' $t = \langle g, \tilde{u}_v \rangle $ is calculated.
+Depending on whether the number of events happened in the Poisson process until $t$, is even or odd, $w_i(v)$ is set to $0$ or $1$. Finally, $w$ is returned.
+
 \begin{algorithm}[htpb]
 	\caption{Sample Assignments (proof of Lemma 18 in \cite{LouisM14}) \label{alg:sample_assignments}} 
 	\begin{algorithmic}
-	\Function{SampleAssignments}{$l, V, \beta$}
+		\Function{SampleAssignments}{$\{\tilde{u}_v\}_{v\in V},l, V, \beta$}
 		\State $\lambda := \frac{1}{\sqrt{\beta}}$
-			\State $g:=$ sample($\mathcal{N}(0,I_n)$) \Comment all components $g_i$ are mutually independent 
-	
-	\State $poisson\_process := N(\lambda)$ \Comment N is a Poisson process on $\mathbb{R}$ with rate $\lambda$
-		 
-	\For {$i = 1, 2, \ldots, l$}
-	\For{$v\in V$}
-	
-	
-	\State $t := \langle g, \tilde{u}_v \rangle $
-	\State $poisson\_count := poisson\_process(t)$ \Comment \# events between $t=0$ and $t_v$
-	\If{$poisson\_count \mod 2 == 0 $}
-	\State $w_i(v) := 1$
-	\Else
-	\State  $w_i(v) := 0$
-	\EndIf
-	\EndFor
-	\EndFor
-	\State return $w$
-	\EndFunction %todo: 1-vector explain
-\end{algorithmic}
+		\State $k:= |\tilde{u}|$ \Comment number of entries for each vertex
+		\State $g:=$ sample($\mathcal{N}(0,I_k)$) \Comment all components $g_i$ are mutually independent 
+		
+		\State $poisson\_process := N(\lambda)$ \Comment N is a Poisson process on $\mathbb{R}$ with rate $\lambda$
+		
+		\For {$i = 1, 2, \ldots, l$}
+		\For{$v\in V$}
+		
+		
+		\State $t := \langle g, \tilde{u}_v \rangle $
+		\State $poisson\_count := poisson\_process(t)$ \Comment \# events between $t=0$ and $t_v$
+		\If{$poisson\_count \mod 2 == 0 $}
+		\State $w_i(v) := 1$
+		\Else
+		\State  $w_i(v) := 0$
+		\EndIf
+		\EndFor
+		\EndFor
+		\State return $w$
+		\EndFunction %todo: 1-vector explain
+	\end{algorithmic}
 \end{algorithm}	
-\begin{fact}{(Theorem 6.6 in \cite{ChanLTZ16})}\label{fact:small_xi}
-	Given a hypergraph $H = (V, E, w)$ and $k$ vectors $f_1, f_2, \ldots , f_k$ which are orthonormal in the weighted space with $ \max_{s \in [k]} D_w(f_s) \le \xi $, the following holds: Algorithm \ref{alg:small_set_expansion} constructs a random set $S \subsetneq V$ in polynomial time such that with $\Omega(1)$ probability, $|S| \le \frac{24|V|}{k}$ and
-	 \begin{equation}\label{eq:small_expansion}
-	 \phi(S) \le C \min\{\sqrt{r \log k}, k \log k  \log \log k \sqrt{\log r} \} \cdot \sqrt{\xi},
-	 \end{equation}
-	 where $C$ is an absolute constant and $r := \max_{e\in E} |e|$.
-\end{fact}
+
+
+ 
+This is the crucial point of the whole algorithm: For each vector $v\in V$, a $\tilde{u}_v$ was created, whose components $\tilde{u}_{v,1} , \ldots, \tilde{u}_{v,k}$ represent the entries of the orthogonal vectors with low maximal discrepancy ratio $\xi$ of \cref{alg:procedural_minimizer}. Therefore, vertices $a,b\in V$ whose $f$-values are similar, i.e. $f_i(a)\approx f_i(b)$, also receive a similar time through the inner product, so $ t_a = \langle g, \tilde{u}_a \rangle \approx  \langle g, \tilde{u}_b \rangle =t_b $. Therefore, it is likely that they also receive the same assignment as in the Poisson process, it is unlikely for an event to happen in a short difference of time. So, with high probability, $\forall i\in [k]: w_i(a) = w_i(b)$, which means they get the same word. As only one word gets selected in \cref{alg:orthogonal_separator}, that means that those vertices (or, to be precise, their $\tilde{u}$-values) are returned together to \cref{alg:small_set_expansion} if their word is selected. There, the sorting ensures that not all the combinations of the returned vertices need to be checked, which would be inefficient, as just checking the prefixes is sufficient. The fact that vectors $f_1, \ldots, f_k$ with low discrepancy ratios show this characteristic is due to the spectral properties of hypergraphs, which are discussed in \cite{ChanLTZ16}.
+It can also be seen why the number of vertices in the expansion set returned by \cref{alg:small_set_expansion} decreases with a higher $k$ according to \cref{fact:small_xi}: As $k$ increases, $l$ also increases. Therefore, the words get longer, and it is more likely for two vertices to have a letter in their word which differs, making it less likely they are sampled together.
+	
 
 
 
-Todo: this makes use of the spectral properties... Rayleigh, laplacian, cheeger, 
 
 
 

@@ -10,28 +10,30 @@
 \BOOKMARK [0][-]{chapter.3}{Expansion Algorithms}{}% 10
 \BOOKMARK [1][-]{section.3.1}{Brute Force}{chapter.3}% 11
 \BOOKMARK [1][-]{section.3.2}{Approximation of small expansion sets}{chapter.3}% 12
-\BOOKMARK [0][-]{chapter.4}{Random hypergraph generation}{}% 13
-\BOOKMARK [1][-]{section.4.1}{Creating all Graphs}{chapter.4}% 14
-\BOOKMARK [1][-]{section.4.2}{Adding random edges}{chapter.4}% 15
-\BOOKMARK [1][-]{section.4.3}{Bound on vertex degrees}{chapter.4}% 16
-\BOOKMARK [1][-]{section.4.4}{Sampling from low degree vertices}{chapter.4}% 17
-\BOOKMARK [1][-]{section.4.5}{Resampling whole graph until connected}{chapter.4}% 18
-\BOOKMARK [1][-]{section.4.6}{Swapping edges at random}{chapter.4}% 19
-\BOOKMARK [1][-]{section.4.7}{Creating of spanning tree}{chapter.4}% 20
-\BOOKMARK [1][-]{section.4.8}{Overview}{chapter.4}% 21
-\BOOKMARK [0][-]{chapter.5}{Implementation}{}% 22
-\BOOKMARK [1][-]{section.5.1}{Technologies}{chapter.5}% 23
-\BOOKMARK [1][-]{section.5.2}{Code}{chapter.5}% 24
-\BOOKMARK [0][-]{chapter.6}{Evaluation}{}% 25
-\BOOKMARK [1][-]{section.6.1}{Input graph sizes}{chapter.6}% 26
-\BOOKMARK [1][-]{section.6.2}{Rank degree combinations}{chapter.6}% 27
-\BOOKMARK [1][-]{section.6.3}{Evaluation of k}{chapter.6}% 28
-\BOOKMARK [1][-]{section.6.4}{Small expansion sizes}{chapter.6}% 29
-\BOOKMARK [1][-]{section.6.5}{Random graphs comparison}{chapter.6}% 30
-\BOOKMARK [1][-]{section.6.6}{Estimation of C}{chapter.6}% 31
-\BOOKMARK [1][-]{section.6.7}{Comparison of expansion values}{chapter.6}% 32
-\BOOKMARK [0][-]{chapter.7}{Applications}{}% 33
-\BOOKMARK [0][-]{chapter.8}{Resume and Further Work}{}% 34
-\BOOKMARK [0][-]{chapter*.16}{List of Figures}{}% 35
-\BOOKMARK [0][-]{chapter*.17}{List of Tables}{}% 36
-\BOOKMARK [0][-]{chapter*.18}{Bibliography}{}% 37
+\BOOKMARK [2][-]{subsection.3.2.1}{Creation of orthogonal vectors with low discrepancy ratio}{section.3.2}% 13
+\BOOKMARK [2][-]{subsection.3.2.2}{Calculating a small expansion set}{section.3.2}% 14
+\BOOKMARK [0][-]{chapter.4}{Random hypergraph generation}{}% 15
+\BOOKMARK [1][-]{section.4.1}{Creating all graphs}{chapter.4}% 16
+\BOOKMARK [1][-]{section.4.2}{Adding random edges}{chapter.4}% 17
+\BOOKMARK [1][-]{section.4.3}{Bound on vertex degrees}{chapter.4}% 18
+\BOOKMARK [1][-]{section.4.4}{Sampling from low degree vertices}{chapter.4}% 19
+\BOOKMARK [1][-]{section.4.5}{Resampling whole graph until connected}{chapter.4}% 20
+\BOOKMARK [1][-]{section.4.6}{Swapping edges at random}{chapter.4}% 21
+\BOOKMARK [1][-]{section.4.7}{Creating of spanning tree}{chapter.4}% 22
+\BOOKMARK [1][-]{section.4.8}{Overview}{chapter.4}% 23
+\BOOKMARK [0][-]{chapter.5}{Implementation}{}% 24
+\BOOKMARK [1][-]{section.5.1}{Technologies}{chapter.5}% 25
+\BOOKMARK [1][-]{section.5.2}{Code structure}{chapter.5}% 26
+\BOOKMARK [0][-]{chapter.6}{Evaluation}{}% 27
+\BOOKMARK [1][-]{section.6.1}{Input graph sizes}{chapter.6}% 28
+\BOOKMARK [1][-]{section.6.2}{Rank degree combinations}{chapter.6}% 29
+\BOOKMARK [1][-]{section.6.3}{Evaluation of k}{chapter.6}% 30
+\BOOKMARK [1][-]{section.6.4}{Small expansion sizes}{chapter.6}% 31
+\BOOKMARK [1][-]{section.6.5}{Random graphs comparison}{chapter.6}% 32
+\BOOKMARK [1][-]{section.6.6}{Estimation of C}{chapter.6}% 33
+\BOOKMARK [1][-]{section.6.7}{Comparison of expansion values}{chapter.6}% 34
+\BOOKMARK [0][-]{chapter.7}{Applications}{}% 35
+\BOOKMARK [0][-]{chapter.8}{Conclusion and Further Work}{}% 36
+\BOOKMARK [0][-]{chapter*.17}{List of Figures}{}% 37
+\BOOKMARK [0][-]{chapter*.18}{List of Tables}{}% 38
+\BOOKMARK [0][-]{chapter*.19}{Bibliography}{}% 39

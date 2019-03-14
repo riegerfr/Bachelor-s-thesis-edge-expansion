@@ -10,7 +10,7 @@ from graph import Graph
 import math
 import scipy.optimize
 
-from log import Log
+from graph_log import Graph_Log
 
 min_weight = 0.1
 max_weight = 1.1
@@ -48,14 +48,14 @@ def evaluate_creation_algorithm(log_path=None, log_filename="creation_algorithm_
 
             graph_total_time = time.time() - graph_start_time
             print("For this graph, it took " + str(graph_total_time) + " seconds in total")
-            log["log_list"].append(Log(creation_algorithm_number=creation_algorithm_name, graph_number=j,
-                                       graph=graph, brute_force_best_sets=brute_force_best_sets,
-                                       brute_force_lowest_expansion_values=brute_force_lowest_expansion_values,
-                                       brute_force_average_expansion_values=brute_force_average_expansion_values,
-                                       brute_force_median_expansion_values=brute_force_median_expansion_values,
-                                       creation_time=creation_time, brute_force_time=brute_force_time,
-                                       graph_total_time=graph_total_time,
-                                       brute_force_smallest_percentile_expansion=brute_force_smallest_percentile_expansion))
+            log["log_list"].append(Graph_Log(creation_algorithm_number=creation_algorithm_name, graph_number=j,
+                                             graph=graph, brute_force_best_sets=brute_force_best_sets,
+                                             brute_force_lowest_expansion_values=brute_force_lowest_expansion_values,
+                                             brute_force_average_expansion_values=brute_force_average_expansion_values,
+                                             brute_force_median_expansion_values=brute_force_median_expansion_values,
+                                             creation_time=creation_time, brute_force_time=brute_force_time,
+                                             graph_total_time=graph_total_time,
+                                             brute_force_smallest_percentile_expansion=brute_force_smallest_percentile_expansion))
             save_log(log, log_filename, log_path)
             if plot:
                 plot_creation_algorithm_differences(log_path, log_filename)
@@ -127,13 +127,13 @@ def evaluate_quality(log_path=None, log_filename="quality_evaluation_log_called"
             small_expansion_times.append(small_expansion_time)
             graph_total_time = time.time() - graph_start_time
             print("For this graph, it took " + str(graph_total_time) + " seconds in total")
-            log["log_list"].append(Log(creation_algorithm_name, j,
-                                       graph, brute_force_best_sets, brute_force_lowest_expansion_values,
-                                       brute_force_average_expansion_values, brute_force_median_expansion_values,
-                                       small_expansion_vertices_list,
-                                       small_expansion_value_list, creation_time, small_expansion_times,
-                                       brute_force_time,
-                                       graph_total_time, k, c_estimates, brute_force_smallest_percent_expansion))
+            log["log_list"].append(Graph_Log(creation_algorithm_name, j,
+                                             graph, brute_force_best_sets, brute_force_lowest_expansion_values,
+                                             brute_force_average_expansion_values, brute_force_median_expansion_values,
+                                             small_expansion_vertices_list,
+                                             small_expansion_value_list, creation_time, small_expansion_times,
+                                             brute_force_time,
+                                             graph_total_time, k, c_estimates, brute_force_smallest_percent_expansion))
             save_log(log, log_filename, log_path)
             if plot:
                 plot_values(log_path, log_filename)
@@ -190,7 +190,7 @@ def analyze_run_time_number_vertices(log_path, log_filename="number_vertices_all
         plot_times(log_path, log_filename)
 
 
-def analyze_run_time_k(log_path, log_filename="k_all_logs", max_k=5, number_vertices=20):
+def analyze_run_time_k(log_path, log_filename="k_all_logs", max_k=3, number_vertices=20):
     start_time = time.time()
     logs = {}
     for k in range(1, max_k + 1):
@@ -210,7 +210,7 @@ def analyze_run_time_k(log_path, log_filename="k_all_logs", max_k=5, number_vert
 
 
 def analyze_run_time_rank_degree_combinations(log_path, log_filename="rank_degree_combinations_all_logs",
-                                              number_vertices=20, rank_degree_combinations=None, k = 3):
+                                              number_vertices=20, rank_degree_combinations=None, k = 2):
     if rank_degree_combinations == None:
         rank_degree_combinations = [(2, 2), (3, 3), (4, 4), (5, 5), (6, 6), (7, 7), (8, 8), (2, 4), (4, 2), (2, 8),
                                     (8, 2), (3, 6), (6, 3), (4, 8), (8, 4)]
@@ -492,6 +492,8 @@ np.random.seed(123)
 
 log_path = Path("logs/")
 n = 20
+k=3
+graphs_per_algorithm = 3
 plot_values(log_path, log_filename="quality_evaluation_log")
 plot_times(log_path, log_filename="number_vertices_all_logs", xlabel="number of vertices", ylabel="time in s")
 plot_expansion_sizes(log_path, log_filename="k_all_logs")
@@ -500,101 +502,17 @@ plot_times(log_path, log_filename="k_all_logs", xlabel="k", ylabel="time in s")
 plot_times(log_path, log_filename="rank_degree_combinations_all_logs", xlabel="(rank, degree)", ylabel="time in s")
 
 evaluate_quality(log_path, log_filename="quality_evaluation_log", number_vertices=n, rank=3, degree=3,
-                 graphs_per_algorithm=3,  # todo: 10?
-                 random_small_expansion_tries_per_graph=100, k=3, plot=True)
+                 graphs_per_algorithm=graphs_per_algorithm,  # todo: 10?
+                 random_small_expansion_tries_per_graph=100, k=k, plot=True)
 evaluate_creation_algorithm(log_path, log_filename="creation_algorithm_log", number_vertices=n, rank=3,
                             degree=3,
-                            graphs_per_algorithm=10,
+                            graphs_per_algorithm=graphs_per_algorithm,
                             plot=True)
 
-# todo: compare best x% to best x% of brute-force
 
-# todo: analyze time
-analyze_run_time_rank_degree_combinations(log_path, log_filename="rank_degree_combinations_all_logs", number_vertices=n)
-analyze_run_time_number_vertices(log_path, log_filename="number_vertices_all_logs", max_number_vertices=n)
-analyze_run_time_k(log_path, log_filename="k_all_logs", number_vertices=n)
+# analyze_run_time_rank_degree_combinations(log_path, log_filename="rank_degree_combinations_all_logs", number_vertices=n)
+# analyze_run_time_number_vertices(log_path, log_filename="number_vertices_all_logs", max_number_vertices=n)
+# analyze_run_time_k(log_path, log_filename="k_all_logs", number_vertices=n)
 
 print("done")
 
-# times = []
-#
-# m = 15
-# for i in range(6, m):
-#     start_time = time.time()
-#
-#     graph = Graph(i)
-#     graph.create_random_uniform_regular_connected_graph(3, 6, 0.1, 1.1)
-#
-#     graph.generate_small_expansion_set(2)
-#
-#     end_time = time.time()
-#
-#     total_time = end_time-start_time
-#     times.append(total_time)
-#
-#     print("it took " + str(total_time) + " s generate a small expansion set for a graph of "+str(i)+ " vertices")
-#
-# for i in range( m-1):
-#     print(" for "+str(6+i)+" vertixes it took "+ str(times[i]) + " seconds")
-
-
-# graph = Graph()
-# # graph.create_random_uniform_regular_connected_graph(7, 3, 6, 0.1, 1.1)
-# # graph.create_random_graph_by_randomly_adding_edges(7, 3, 5, 0.1, 1.1)
-# graph.create_random_uniform_regular_graph_until_connected(10, 3, 6, 0.1, 1.1)
-#
-# graph.generate_small_expansion_set(2)  # todo: make work for 4
-#
-# graph.brute_force_smallest_hypergraph_expansion()
-# graph.brute_force_hypergraph_expansion()
-#
-# random_vertex_vector = Vertex_Vector(graph)
-# discrepancy_ratio = graph.discrepancy_ratio(random_vertex_vector)
-# print("Discrepancy ratio ", discrepancy_ratio)
-
-
-# evaluate_time(k):
-
-# for i in range (2, k+1):
-
-
-#   min_expansion_value_found = min(small_expansion_value_list)
-
-# plot
-
-
-# evaluation:
-# todo: brute force time eval on 10 random graphs (degrees?)
-# todo: for different algorithms to create graphs on 25 vertices
-# evaluate best and
-
-# generate x different graphs with each generation method
-
-# brute force all the graphs
-
-# use approcimation algorithm (... times for each graph, take best result
-
-# plot result
-
-
-#
-# repetitions = 5
-# construct_time_total = 0
-# brute_force_time_total = 0
-#
-# for _ in range(repetitions):
-#     start_time = time.time()
-#     graph = Graph(10)
-#     graph.create_random_uniform_regular_connected_graph(5, 10, 0.1, 1.1)
-#     end_time = time.time()
-#     construct_time = end_time - start_time
-#     construct_time_total += construct_time
-#     print("it took " + str(construct_time) + " s to create " + str(graph))
-#
-#     graph.brute_force_hypergraph_expansion()
-#     brute_force_time = time.time() - end_time
-#     print("it took " + str(brute_force_time) + " s to brute-force " + str(graph))
-#     brute_force_time_total += brute_force_time
-#
-# print("avg construct time: " + str(construct_time_total / repetitions) + ", avg brute-force time: " + str(
-#     brute_force_time_total / repetitions))

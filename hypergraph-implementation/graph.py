@@ -18,7 +18,7 @@ import statistics
 # n: # vertices
 # m: # edges
 # r: # max degree in edges
-from connection_component import ConnectionComponent
+from connection_component import Connection_Component
 
 # def update_edge(self, edge):
 #     new_vertices = set()
@@ -154,13 +154,13 @@ class Graph:
 
     def compute_connection_components(self):  # todo: change to recompute?
         for vertex in self.vertices:
-            vertex.connection_component = ConnectionComponent({vertex})
+            vertex.connection_component = Connection_Component({vertex})
 
         for edge in self.edges:
             components = [vertex.connection_component for vertex in edge.vertices]
 
             vertices = set([vertex for component in components for vertex in component.vertices])
-            new_component = ConnectionComponent(vertices)
+            new_component = Connection_Component(vertices)
 
             for vertex in vertices:
                 vertex.connection_component = new_component
@@ -658,7 +658,7 @@ class Graph:
                 new_f_candidate = np.zeros(number_vertices)
                 for vertex in self.vertices:  # todo: check whether g needs transposing and whether the vertex-order is correct
                     np.put(new_f_candidate, vertex.index, np.multiply(g[vertex.index], z))
-
+                new_f_candidate = new_f_candidate/ self.weighted_norm(W, new_f_candidate)# normalize
                 new_f_candidate = Vertex_Vector(self, new_f_candidate)
 
                 candidate_discrepancy_ratio = self.discrepancy_ratio(new_f_candidate)

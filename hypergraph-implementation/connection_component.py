@@ -1,4 +1,4 @@
-class ConnectionComponent:
+class Connection_Component:
     def __init__(self, vertices):
         # self.graph = vertices.graph
         # self.edges = set()

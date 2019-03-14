@@ -1,23 +1,26 @@
 \chapter{Implementation}\label{chapter:implementation}
 
-The discussed algorithms of \cref{chapter:algorithms} and some of were implemented in order to verify the results. For that some of the hypergraph creation algorithms of \cref{chapter:random_hypergraphs} were implemented as well.
+The discussed algorithms of \cref{chapter:algorithms} were imlemented in order to analyze the performance. To do so, some of the hypergraph creation algorithms of \cref{chapter:random_hypergraphs} were implemented, in order to have graphs on which the performance can be verified. This chapter shall give an overview over the used technologies and the structure of the code.
+
 \section{Technologies}
-The focus of the implementation was less on performance optimization but on demonstrating feasibility. Therefore, Python 3 in combination with several libraries was used.
-For vector representation and operations, NumPy \cite{numpy} proved useful and was therefore used. In order to optimize the semidefinite programming problem (SDP), the commonly used SciPy \cite{scipy} was chosen over tools like cvxpy or cvxopt as their implementation proved problematic due to lack of information about them as they are less known.
-
-For storing the results of the evaluation, Pickle was used. In order to plot the graphs, Matplotlib \cite{matplotlib}, in special PyPlot was utilized.
-
+The focus of the implementation is less on fast execution time but on demonstrating feasibility of the algorithms. Therefore, Python 3 in combination with several libraries is utilized.
+For vector representation and operations, NumPy \cite{numpy} proved useful and is therefore used. In order to optimize the semidefinite programming problem \cref{SDP}, the commonly used SciPy \cite{scipy} was chosen over less commonly used tools like cvxpy or cvxopt as an implementation using them proved problematic due to lack of information resources about them.
+For storing the results of the evaluation on graphs, Pickle is employed. In order to plot the graphs, Matplotlib \cite{matplotlib}, in special PyPlot was utilized.
 
 
-\section{Code}
+
+\section{Code structure}
 For representing hypergraphs, a simple implementation tailored to the requirements was created in order to comfortably being able to implement the graph creation algorithms as well as the small expansion algorithms.
-Therefore, several classes were used to represent the graph.
+Therefore, several classes are used to represent the whole graph.
 
-In order to represent the vertices, the class \textit{vertex} is used. As important attributes, it contains the set of edges it belongs to and the vertices' weight $w_v$ for a vertex $v$ (defined like in \cref{section:hypergraphs}). Except for its constructor, the method \textit{add\_to\_edge} is used by the construction algorithms when a new edge, containing $v$, is added. Additionally, for the resampling in \cref{alg:swap_edges}, the method \textit{recompute\_weights\_degrees} is needed to update the attributes of the vertex after an edge is changed.
+In order to represent the vertices, the class \textit{vertex} is used. As important attributes, it contains the set of edges it belongs to and the vertices' weight $w_v$ for a vertex $v$. Except for its constructor, the method \textit{add\_to\_edge} is used by the construction algorithms when a new edge, containing $v$, is added. Additionally, for the resampling in \cref{alg:swap_edges}, the method \textit{recompute\_weights\_degrees} is needed to update the attributes of the vertex after an edge is changed.
 
 Edges are represented by the class \textit{edge}, which contains a set of vertices and an attribute \textit{weight} to represent the weight $w_e$ of an edge $e$ and the set of vertices.
 
-A whole Graph $H$ is encapsulated by the class \textit{Graph}, which contains sets of the vertices as well as edges and as needed for the construction in \cref{alg:swap_edges} also a set of the connection components of the graph. They are computed by the method \textit{compute\_connection\_components}. This class also contains the algorithms of \cref{chapter:algorithms} and \ref{chapter:random_hypergraphs} as described in \cref{tab:algorithm_implementation_mapping}.
+
+Connection components are represented by the class \textit{Connection\_Component}, which contains the set of vertices in that component.
+
+A whole Graph $H$ is encapsulated by the class \textit{Graph}, which contains sets of the vertices as well as edges and, as needed for the construction in \cref{alg:swap_edges}, also a set of the connection components, which are computed by the method \textit{compute\_connection\_components}. This class also contains the algorithms of \cref{chapter:algorithms} and \ref{chapter:random_hypergraphs} as described in \cref{tab:algorithm_implementation_mapping}.
 
 \begin{table}
 	\centering
@@ -26,7 +29,7 @@ A whole Graph $H$ is encapsulated by the class \textit{Graph}, which contains se
 		\midrule
 		\ref{alg:brute_force} & \textit{brute\_force\_hypergraph\_expansion} \\
 		\ref{alg:brute_force_size}, \ref{alg:brute_force_size_just_one_side} & \textit{brute\_force\_hypergraph\_expansion\_each\_size}\\
-		& (has an option on how to calculate)\\
+		& (has an option on how to calculate the expansion)\\
 		\ref{alg:ses} & \textit{generate\_small\_expansion\_set} \\
 		\ref{alg:procedural_minimizer} & \textit{generate\_small\_discrepancy\_ratio\_vertex\_vectors} \\
 		\ref{alg:sample_random_vector} & in \textit{generate\_small\_discrepancy\_ratio\_vertex\_vectors} \\
@@ -43,12 +46,11 @@ A whole Graph $H$ is encapsulated by the class \textit{Graph}, which contains se
 \end{table}
 
 
-Connection components are represented by the class \textit{ConnectionComponent}, which contains the set of vertices in that component. 
 
-Furthermore, to generate small expansions, a static Poisson process in positive as well as negative time is required. Therefore, the class \textit{Poisson\_Process} was created. The constructor takes $\lambda$ and then calculates and holds the times when the events happened after as well as before the time 0. With the method \textit{get\_number\_events\_happened\_until\_t}, the number of events which happened between $t_0=0$ and the given $t$ is returned. 
-For convenient handling of the vectors $f$ generated by \cref{alg:sample_random_vector}, \textit{vertex\_vector} is used to access $f(v)$.
+Furthermore, to generate small expansions, a static Poisson process in positive as well as negative time is required. Therefore, the class \textit{Poisson\_Process} was created. The constructor takes $\lambda$ and then calculates and holds the times of the events after as well as before the time $t_0=0$. With the method \textit{get\_number\_events\_happened\_until\_t}, the number of events which happened between $t_0$ and the given $t$ is returned. 
+For convenient handling of the vectors $f$ generated by \cref{alg:sample_random_vector}, the class \textit{vertex\_vector} is used to access $f(v)$.
 
-For evaluating the algorithms and in order to create the plots several scripts are collected in \textit{evaluation.py}.
-After evaluating, the results are saved in a object of class $log$, which contains, among others, the graph, the smallest expansion found by brute-force and the small set expansion found by the approximation algorithm.
+For evaluating the algorithms and in order to create the plots, several scripts are collected in \textit{evaluation.py}.
+After evaluating, the results are saved in a object of class \textit{Graph\_Log}, which contains, among others, the graph, the smallest expansion found by brute-force and the small set expansion found by the approximation algorithm.
 
 The implementation can be found on \href{github.com}{github}. TODO %\hyperref{github.com}

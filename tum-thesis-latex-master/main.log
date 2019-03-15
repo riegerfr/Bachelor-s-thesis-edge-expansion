@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.19 (TeX Live 2018/W32TeX) (preloaded format=pdflatex 2018.12.6)  14 MAR 2019 22:11
+This is pdfTeX, Version 3.14159265-2.6-1.40.19 (TeX Live 2018/W32TeX) (preloaded format=pdflatex 2018.12.6)  15 MAR 2019 01:16
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1436,7 +1436,7 @@ LaTeX Info: Redefining \labelcpageref on input line 2370.
 Package cleveref Info: `algorithmicx' support loaded on input line 3120.
 Package cleveref Info: `listings' support loaded on input line 3131.
 )
-\c@fact=\count459
+\c@theorem=\count459
 \c@sdp=\count460
 
 (c:/texlive/2018/texmf-dist/tex/latex/optidef/optidef.sty
@@ -1829,13 +1829,12 @@ eady used, duplicate ignored
 <to be read again> 
                    \relax 
 l.60 		\State
-              $best\_S_of_size := \{\}$pdfTeX warning (ext4): destination with 
-the same identifier (name{ALG@line.3}) has been already used, duplicate ignored
-
+              $bestSofSize := \{\}$pdfTeX warning (ext4): destination with the 
+same identifier (name{ALG@line.3}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
 l.61 		\State
-              $lowest\_expansion\_of\_size := \{1:\infty, 2:\infty, \ldots, ...
+              $lowestExpansionOfSize := \{1:\infty, 2:\infty, \ldots, n-1: \...
 pdfTeX warning (ext4): destination with the same identifier (name{ALG@line.4}) 
 has been already used, duplicate ignored
 <to be read again> 
@@ -1852,27 +1851,25 @@ e same identifier (name{ALG@line.6}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
 l.64 		\If
-          {$expansion < lowest\_expansion\_of\_size[|S|]$}pdfTeX warning (ext4)
-: destination with the same identifier (name{ALG@line.7}) has been already used
-, duplicate ignored
+          {$expansion < lowestExpansionOfSize[|S|]$}pdfTeX warning (ext4): dest
+ination with the same identifier (name{ALG@line.7}) has been already used, dupl
+icate ignored
 <to be read again> 
                    \relax 
 l.65 		\State
-              $ lowest\_expansion\_of\_size[|S|] := expansion$pdfTeX warning (e
-xt4): destination with the same identifier (name{ALG@line.8}) has been already 
-used, duplicate ignored
+              $ lowestExpansionOfSize[|S|] := expansion$pdfTeX warning (ext4): 
+destination with the same identifier (name{ALG@line.8}) has been already used, 
+duplicate ignored
 <to be read again> 
                    \relax 
 l.66 		\State
-              $best\_S\_of\_size[|S|] := S$pdfTeX warning (ext4): destination w
-ith the same identifier (name{ALG@line.9}) has been already used, duplicate ign
-ored
+              $bestSofSize[|S|] := S$pdfTeX warning (ext4): destination with th
+e same identifier (name{ALG@line.9}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
 l.69 		\State
-              return $best\_S\_of\_size$ [9pdfTeX warning (ext4): destination w
-ith the same identifier (name{ALG@line.1}) has been already used, duplicate ign
-ored
+              return $bestSofSize$ [9pdfTeX warning (ext4): destination with th
+e same identifier (name{ALG@line.1}) has been already used, duplicate ignored
 
 \@EveryShipout@Output ...@Org@Shipout \box \@cclv 
                                                   
@@ -2064,163 +2061,174 @@ cate ignored
                    \relax 
 l.172 		\State
                $\hat{S} := $ \Call{OrthogonalSeparator}{$\{\tilde{u}_v\}_{v\...
-[11] [12]pdfTeX warning (ext4): destination with the same identifier (name{ALG@
-line.1}) has been already used, duplicate ignored
+[11]
+Overfull \hbox (1.22032pt too wide) in paragraph at lines 196--198
+[]\T1/pplx/m/it/10.95 (-20) (Theorem 6.6 in [[]4[]])[][] Given a hy-per-graph $
+\OML/zplm/m/it/10.95 H \OT1/zplm/m/n/10.95 = (\OML/zplm/m/it/10.95 V\OT1/pplx/m
+/n/10.95 (-20) , \OML/zplm/m/it/10.95 E\OT1/pplx/m/n/10.95 (-20) , \OML/zplm/m/
+it/10.95 w\OT1/zplm/m/n/10.95 )$ \T1/pplx/m/it/10.95 (-20) and $\OML/zplm/m/it/
+10.95 k$ \T1/pplx/m/it/10.95 (-20) vec-tors $\OML/zplm/m/it/10.95 f[]\OT1/pplx/
+m/n/10.95 (-20) , \OML/zplm/m/it/10.95 f[]\OT1/pplx/m/n/10.95 (-20) , [] , \OML
+/zplm/m/it/10.95 f[]$
+ []
+
+[12]pdfTeX warning (ext4): destination with the same identifier (name{ALG@line.
+1}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.210 	\Function
+l.211 	\Function
                 {OrthogonalSeparator}{$\{\tilde{u}_v\}_{v\in V} , \beta = \f...
 pdfTeX warning (ext4): destination with the same identifier (name{ALG@line.2}) 
 has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.211 	\State
+l.212 	\State
               $l := \lceil \frac{\log_2 k}{1-\log_2 (1+\frac{2}{log_2 k})}\r...
 pdfTeX warning (ext4): destination with the same identifier (name{ALG@line.3}) 
 has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.215 	\State
+l.216 	\State
               $w := $\Call{SampleAssignments}{$\{\tilde{u}_v\}_{v\in V},l, V...
 pdfTeX warning (ext4): destination with the same identifier (name{ALG@line.4}) 
 has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.217 	\For
+l.218 	\For
            {$ v \in V$}pdfTeX warning (ext4): destination with the same identif
 ier (name{ALG@line.5}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.218 	\State
+l.219 	\State
               $W(v) := w_1(v)w_2(v)\cdots w_l(v)$pdfTeX warning (ext4): destina
 tion with the same identifier (name{ALG@line.6}) has been already used, duplica
 te ignored
 <to be read again> 
                    \relax 
-l.221 	\If
+l.222 	\If
           {$n\ge 2^l$}pdfTeX warning (ext4): destination with the same identifi
 er (name{ALG@line.7}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.222 	\State
+l.223 	\State
               $word := random( \{0,1\}^l)$ \Comment uniformpdfTeX warning (ext4
 ): destination with the same identifier (name{ALG@line.8}) has been already use
 d, duplicate ignored
 <to be read again> 
                    \relax 
-l.224 	\Else
+l.225 	\Else
             pdfTeX warning (ext4): destination with the same identifier (name{A
 LG@line.9}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.226 	\State
+l.227 	\State
               $words := set({w(v): v\in V})$ \Comment no multisetpdfTeX warning
  (ext4): destination with the same identifier (name{ALG@line.10}) has been alre
 ady used, duplicate ignored
 <to be read again> 
                    \relax 
-l.227 	\State
+l.228 	\State
               $words = words \uplus \{w_1, \ldots , w_{|V|-|words|} \in \{0,...
 pdfTeX warning (ext4): destination with the same identifier (name{ALG@line.11})
  has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.228 	\State
+l.229 	\State
               $word := random(words)$ \Comment uniformpdfTeX warning (ext4): de
 stination with the same identifier (name{ALG@line.12}) has been already used, d
 uplicate ignored
 <to be read again> 
                    \relax 
-l.232 	\State
+l.233 	\State
               $r := uniform(0,1)$pdfTeX warning (ext4): destination with the sa
 me identifier (name{ALG@line.13}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.233 	\State
+l.234 	\State
               $S := \{v \in V: ||u_v||^2 \ge r \land W(u) = word \}$pdfTeX warn
 ing (ext4): destination with the same identifier (name{ALG@line.14}) has been a
 lready used, duplicate ignored
 <to be read again> 
                    \relax 
-l.234 	\State
+l.235 	\State
               return $S$pdfTeX warning (ext4): destination with the same identi
 fier (name{ALG@line.1}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.249 		\Function
+l.250 		\Function
                  {SampleAssignments}{$\{\tilde{u}_v\}_{v\in V},l, V, \beta$}pdf
 TeX warning (ext4): destination with the same identifier (name{ALG@line.2}) has
  been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.250 		\State
+l.251 		\State
                $\lambda := \frac{1}{\sqrt{\beta}}$pdfTeX warning (ext4): destin
 ation with the same identifier (name{ALG@line.3}) has been already used, duplic
 ate ignored
 <to be read again> 
                    \relax 
-l.251 		\State
+l.252 		\State
                $k:= |\tilde{u}|$ \Comment number of entries for each vertexpdfT
 eX warning (ext4): destination with the same identifier (name{ALG@line.4}) has 
 been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.252 		\State
+l.253 		\State
                $g:=$ sample($\mathcal{N}(0,I_k)$) \Comment all components $g...
 pdfTeX warning (ext4): destination with the same identifier (name{ALG@line.5}) 
 has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.254 		\State
+l.255 		\State
                $poisson\_process := N(\lambda)$ \Comment N is a Poisson proc...
 pdfTeX warning (ext4): destination with the same identifier (name{ALG@line.6}) 
 has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.256 		\For
+l.257 		\For
              {$i = 1, 2, \ldots, l$}pdfTeX warning (ext4): destination with the
  same identifier (name{ALG@line.7}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.257 		\For
+l.258 		\For
             {$v\in V$}pdfTeX warning (ext4): destination with the same identifi
 er (name{ALG@line.8}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.260 		\State
+l.261 		\State
                $t := \langle g, \tilde{u}_v \rangle $pdfTeX warning (ext4): des
 tination with the same identifier (name{ALG@line.9}) has been already used, dup
 licate ignored
 <to be read again> 
                    \relax 
-l.261 		\State
+l.262 		\State
                $poisson\_count := poisson\_process(t)$ \Comment \# events be...
 pdfTeX warning (ext4): destination with the same identifier (name{ALG@line.10})
  has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.262 		\If
+l.263 		\If
            {$poisson\_count \mod 2 == 0 $}pdfTeX warning (ext4): destination wi
 th the same identifier (name{ALG@line.11}) has been already used, duplicate ign
 ored
 <to be read again> 
                    \relax 
-l.263 		\State
+l.264 		\State
                $w_i(v) := 1$pdfTeX warning (ext4): destination with the same id
 entifier (name{ALG@line.12}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.264 		\Else
+l.265 		\Else
              pdfTeX warning (ext4): destination with the same identifier (name{
 ALG@line.13}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.265 		\State
+l.266 		\State
                 $w_i(v) := 0$pdfTeX warning (ext4): destination with the same i
 dentifier (name{ALG@line.14}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.269 		\State
+l.270 		\State
                return $w$ [13] [14]) (./chapters/random_graphs.tex [15]
 chapter 4.
 pdfTeX warning (ext4): destination with the same identifier (name{ALG@line.1}) 
@@ -2240,7 +2248,7 @@ has been already used, duplicate ignored
 <to be read again> 
                    \relax 
 l.15 		\State
-              return $H = choose(H_{n,r,d,  weightDistribution})$ \Comment u...
+              return $ choose(H_{n,r,d,  weightDistribution})$ \Comment unif...
 
 Package amsmath Warning: Foreign command \atopwithdelims;
 (amsmath)                \frac or \genfrac should be used instead
@@ -2636,38 +2644,38 @@ pdfTeX warning (ext4): destination with the same identifier (name{ALG@line.18})
                    \relax 
 l.259 			\If
              {$|smallestDegreeVertices| >= r$})
-(./chapters/implementation_tetail.tex [22] [23]
+(./chapters/implementation_tetail.tex [22] [23] [24]
 chapter 5.
-[24
+[25
 
 
-]) (./chapters/evaluation.tex [25]
+]) (./chapters/evaluation.tex [26]
 chapter 6.
-<figures/number_vertices_all_logs.pdf, id=628, 462.52798pt x 346.89601pt>
+<figures/number_vertices_all_logs.pdf, id=637, 462.52798pt x 346.89601pt>
 File: figures/number_vertices_all_logs.pdf Graphic file (type pdf)
 <use figures/number_vertices_all_logs.pdf>
 Package pdftex.def Info: figures/number_vertices_all_logs.pdf  used on input li
 ne 15.
 (pdftex.def)             Requested size: 370.02287pt x 277.51718pt.
-[26
+[27
 
 
-] [27 <./figures/number_vertices_all_logs.pdf>]
-<figures/rank_degree_combinations_all_logs.pdf, id=680, 462.52798pt x 346.89601
+] [28 <./figures/number_vertices_all_logs.pdf>]
+<figures/rank_degree_combinations_all_logs.pdf, id=689, 462.52798pt x 346.89601
 pt>
 File: figures/rank_degree_combinations_all_logs.pdf Graphic file (type pdf)
 <use figures/rank_degree_combinations_all_logs.pdf>
 Package pdftex.def Info: figures/rank_degree_combinations_all_logs.pdf  used on
  input line 28.
 (pdftex.def)             Requested size: 370.02287pt x 277.51718pt.
- [28 <./figures/rank_degree_combinations_all_logs.pdf>]
-<figures/k_all_logs.pdf, id=730, 462.52798pt x 346.89601pt>
+ [29 <./figures/rank_degree_combinations_all_logs.pdf>]
+<figures/k_all_logs.pdf, id=740, 462.52798pt x 346.89601pt>
 File: figures/k_all_logs.pdf Graphic file (type pdf)
 <use figures/k_all_logs.pdf>
 Package pdftex.def Info: figures/k_all_logs.pdf  used on input line 41.
 (pdftex.def)             Requested size: 370.02287pt x 277.51718pt.
- [29 <./figures/k_all_logs.pdf>]
-<figures/quality_evaluation_log_small_expansion_sizes.pdf, id=777, 462.52798pt 
+ [30 <./figures/k_all_logs.pdf>]
+<figures/quality_evaluation_log_small_expansion_sizes.pdf, id=786, 462.52798pt 
 x 346.89601pt>
 File: figures/quality_evaluation_log_small_expansion_sizes.pdf Graphic file (ty
 pe pdf)
@@ -2680,8 +2688,8 @@ Overfull \hbox (44.27129pt too wide) in paragraph at lines 59--60
  [][] 
  []
 
-[30 <./figures/quality_evaluation_log_small_expansion_sizes.pdf>]
-<figures/creation_algorithm_log_lowest_expansion.pdf, id=823, 462.52798pt x 346
+[31 <./figures/quality_evaluation_log_small_expansion_sizes.pdf>]
+<figures/creation_algorithm_log_lowest_expansion.pdf, id=831, 462.52798pt x 346
 .89601pt>
 File: figures/creation_algorithm_log_lowest_expansion.pdf Graphic file (type pd
 f)
@@ -2694,8 +2702,7 @@ Overfull \hbox (44.27129pt too wide) in paragraph at lines 71--72
  [][] 
  []
 
-[31 <./figures/creation_algorithm_log_lowest_expansion.pdf>]
-<figures/quality_evaluation_log_C_estimates.pdf, id=868, 462.52798pt x 346.8960
+<figures/quality_evaluation_log_C_estimates.pdf, id=840, 462.52798pt x 346.8960
 1pt>
 File: figures/quality_evaluation_log_C_estimates.pdf Graphic file (type pdf)
 <use figures/quality_evaluation_log_C_estimates.pdf>
@@ -2707,11 +2714,10 @@ Overfull \hbox (44.27129pt too wide) in paragraph at lines 89--90
  [][] 
  []
 
-
-LaTeX Warning: Reference `alg:lg:ses' on page 1 undefined on input line 102.
-
+[32] [33 <./figures/creation_algorithm_log_lowest_expansion.pdf>] [34 <./figure
+s/quality_evaluation_log_C_estimates.pdf>]
 <figures/quality_evaluation_log_expansion_values_for_same_number_verticies.pdf,
- id=872, 462.52798pt x 346.89601pt>
+ id=915, 462.52798pt x 346.89601pt>
 File: figures/quality_evaluation_log_expansion_values_for_same_number_verticies
 .pdf Graphic file (type pdf)
 <use figures/quality_evaluation_log_expansion_values_for_same_number_verticies.
@@ -2724,9 +2730,8 @@ Overfull \hbox (44.27129pt too wide) in paragraph at lines 109--110
  [][] 
  []
 
-) (./chapters/applications.tex [32] [33 <./figures/quality_evaluation_log_C_est
-imates.pdf>] [34 <./figures/quality_evaluation_log_expansion_values_for_same_nu
-mber_verticies.pdf>]
+) (./chapters/applications.tex [35] [36 <./figures/quality_evaluation_log_expan
+sion_values_for_same_number_verticies.pdf>]
 chapter 7.
 LaTeX Font Info:    Font shape `U/msa/m/n' will be
 (Font)              scaled to size 9.37807pt on input line 4.
@@ -2740,12 +2745,12 @@ LaTeX Font Info:    Font shape `U/msb/m/n' will be
 (Font)              scaled to size 7.29405pt on input line 4.
 LaTeX Font Info:    Font shape `U/msb/m/n' will be
 (Font)              scaled to size 5.21004pt on input line 4.
-) (./chapters/resume_further_work.tex [35
+) (./chapters/resume_further_work.tex [37
 
 
 ]
 chapter 8.
-) [36
+) [38
 
 
 ]
@@ -2755,7 +2760,7 @@ Package tocbasic Info: character protrusion at lof deactivated on input line 54
 \tf@lof=\write7
 \openout7 = `main.lof'.
 
- [37
+ [39
 
 
 ]
@@ -2765,7 +2770,7 @@ Package tocbasic Info: character protrusion at lot deactivated on input line 55
 \tf@lot=\write8
 \openout8 = `main.lot'.
 
- [38
+ [40
 
 
 ]
@@ -2780,7 +2785,7 @@ Package microtype Info: Loading generic protrusion settings for font family
 (microtype)             See the microtype manual for details.
 
 No complaints by nag.
-[39
+[41
 
 
 ]
@@ -2790,21 +2795,17 @@ Package atveryend Info: Empty hook `AfterLastShipout' on input line 59.
 Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 59.
 Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 59.
 Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: E2C8D34A03DF183B09729F712BE6EB69;2426.
-
-
-LaTeX Warning: There were undefined references.
-
+(rerunfilecheck)             Checksum: 3140F1B5B2E5C967C941A936CA902F18;2426.
 Package logreq Info: Writing requests to 'main.run.xml'.
 \openout1 = `main.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 55123 strings out of 492639
- 1196100 string characters out of 6133088
- 1890992 words of memory out of 5000000
- 57601 multiletter control sequences out of 15000+600000
- 613956 words of font info for 389 fonts, out of 8000000 for 9000
+ 55125 strings out of 492639
+ 1196022 string characters out of 6133088
+ 1891006 words of memory out of 5000000
+ 57589 multiletter control sequences out of 15000+600000
+ 614569 words of font info for 398 fonts, out of 8000000 for 9000
  1143 hyphenation exceptions out of 8191
  81i,16n,136p,9083b,2211s stack positions out of 5000i,500n,10000p,200000b,80000s
 {c:/texlive/2018/texmf-dist/fonts/enc/dvips/cm-super/cm-super-t1.enc}{c:/texl
@@ -2821,10 +2822,10 @@ blic/amsfonts/symbols/msbm10.pfb><c:/texlive/2018/texmf-dist/fonts/type1/public
 b8a.pfb><c:/texlive/2018/texmf-dist/fonts/type1/urw/palatino/uplr8a.pfb><c:/tex
 live/2018/texmf-dist/fonts/type1/urw/palatino/uplri8a.pfb><c:/texlive/2018/texm
 f-dist/fonts/type1/urw/zapfding/uzdr.pfb>
-Output written on main.pdf (46 pages, 829850 bytes).
+Output written on main.pdf (48 pages, 830521 bytes).
 PDF statistics:
- 1087 PDF objects out of 1200 (max. 8388607)
- 772 compressed objects within 8 object streams
- 175 named destinations out of 1000 (max. 500000)
+ 1101 PDF objects out of 1200 (max. 8388607)
+ 784 compressed objects within 8 object streams
+ 177 named destinations out of 1000 (max. 500000)
  46974 words of extra memory for PDF output out of 51595 (max. 10000000)
 

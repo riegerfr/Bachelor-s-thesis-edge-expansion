@@ -3,70 +3,15 @@
   <component name="ChangeListManager">
     <list default="true" id="d7dd21b4-8b73-491f-9d8d-668ce8fadae2" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/connection_component.py" beforeDir="false" afterPath="$PROJECT_DIR$/connection_component.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/evaluation.py" beforeDir="false" afterPath="$PROJECT_DIR$/evaluation.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/graph.py" beforeDir="false" afterPath="$PROJECT_DIR$/graph.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/log.py" beforeDir="false" afterPath="$PROJECT_DIR$/graph_log.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/logs/10verticeslog.pkl" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logs/11verticeslog.pkl" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logs/12verticeslog.pkl" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logs/13verticeslog.pkl" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logs/14verticeslog.pkl" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logs/15verticeslog.pkl" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logs/16verticeslog.pkl" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logs/17verticeslog.pkl" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logs/18verticeslog.pkl" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logs/19verticeslog.pkl" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logs/20verticeslog.pkl" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logs/21verticeslog.pkl" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logs/5verticeslog.pkl" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logs/6verticeslog.pkl" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logs/7verticeslog.pkl" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logs/8verticeslog.pkl" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logs/9verticeslog.pkl" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logs/all_logs.pkl" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logs/creation_algorithm_log.pdf" beforeDir="false" afterPath="$PROJECT_DIR$/logs/creation_algorithm_log.pdf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/logs/creation_algorithm_log.pkl" beforeDir="false" afterPath="$PROJECT_DIR$/logs/creation_algorithm_log.pkl" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/logs/creation_algorithm_log_lowest_expansion.pdf" beforeDir="false" afterPath="$PROJECT_DIR$/logs/creation_algorithm_log_lowest_expansion.pdf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/logs/degree2rank2rank_degree_combinations_all_logs.pkl" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logs/degree2rank4rank_degree_combinations_all_logs.pkl" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logs/degree3rank3rank_degree_combinations_all_logs.pkl" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logs/degree3rank6rank_degree_combinations_all_logs.pkl" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logs/degree4rank2rank_degree_combinations_all_logs.pkl" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logs/degree4rank4rank_degree_combinations_all_logs.pkl" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logs/degree5rank5rank_degree_combinations_all_logs.pkl" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logs/degree6rank3rank_degree_combinations_all_logs.pkl" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logs/degree6rank6rank_degree_combinations_all_logs.pkl" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logs/k_all_logs.pdf" beforeDir="false" afterPath="$PROJECT_DIR$/logs/k_all_logs.pdf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/logs/k_all_logs.pkl" beforeDir="false" afterPath="$PROJECT_DIR$/logs/k_all_logs.pkl" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/logs/log.pkl" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logs/number_vertices_all_logs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logs/number_vertices_all_logs.pdf" beforeDir="false" afterPath="$PROJECT_DIR$/logs/number_vertices_all_logs.pdf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/logs/number_vertices_all_logs.pkl" beforeDir="false" afterPath="$PROJECT_DIR$/logs/number_vertices_all_logs.pkl" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/logs/quality_evaluation_log" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logs/quality_evaluation_log.pkl" beforeDir="false" afterPath="$PROJECT_DIR$/logs/quality_evaluation_log.pkl" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/logs/quality_evaluation_log_C_estimates.pdf" beforeDir="false" afterPath="$PROJECT_DIR$/logs/quality_evaluation_log_C_estimates.pdf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/logs/quality_evaluation_log_expansion_values_for_same_number_verticies.pdf" beforeDir="false" afterPath="$PROJECT_DIR$/logs/quality_evaluation_log_expansion_values_for_same_number_verticies.pdf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/logs/quality_evaluation_log_small_expansion_sizes.pdf" beforeDir="false" afterPath="$PROJECT_DIR$/logs/quality_evaluation_log_small_expansion_sizes.pdf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/logs/rank_degree_combinations_all_logs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logs/rank_degree_combinations_all_logs.pdf" beforeDir="false" afterPath="$PROJECT_DIR$/logs/rank_degree_combinations_all_logs.pdf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/logs/rank_degree_combinations_all_logs.pkl" beforeDir="false" afterPath="$PROJECT_DIR$/logs/rank_degree_combinations_all_logs.pkl" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../tum-thesis-latex-master/chapters/01_introduction.tex" beforeDir="false" afterPath="$PROJECT_DIR$/../tum-thesis-latex-master/chapters/01_introduction.tex" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../tum-thesis-latex-master/chapters/algorithms.tex" beforeDir="false" afterPath="$PROJECT_DIR$/../tum-thesis-latex-master/chapters/algorithms.tex" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../tum-thesis-latex-master/chapters/evaluation.tex" beforeDir="false" afterPath="$PROJECT_DIR$/../tum-thesis-latex-master/chapters/evaluation.tex" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../tum-thesis-latex-master/chapters/implementation_tetail.tex" beforeDir="false" afterPath="$PROJECT_DIR$/../tum-thesis-latex-master/chapters/implementation_tetail.tex" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../tum-thesis-latex-master/chapters/notation.tex" beforeDir="false" afterPath="$PROJECT_DIR$/../tum-thesis-latex-master/chapters/notation.tex" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../tum-thesis-latex-master/chapters/random_graphs.tex" beforeDir="false" afterPath="$PROJECT_DIR$/../tum-thesis-latex-master/chapters/random_graphs.tex" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../tum-thesis-latex-master/main.aux" beforeDir="false" afterPath="$PROJECT_DIR$/../tum-thesis-latex-master/main.aux" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../tum-thesis-latex-master/main.bcf" beforeDir="false" afterPath="$PROJECT_DIR$/../tum-thesis-latex-master/main.bcf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../tum-thesis-latex-master/main.lof" beforeDir="false" afterPath="$PROJECT_DIR$/../tum-thesis-latex-master/main.lof" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../tum-thesis-latex-master/main.log" beforeDir="false" afterPath="$PROJECT_DIR$/../tum-thesis-latex-master/main.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../tum-thesis-latex-master/main.lot" beforeDir="false" afterPath="$PROJECT_DIR$/../tum-thesis-latex-master/main.lot" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../tum-thesis-latex-master/main.out" beforeDir="false" afterPath="$PROJECT_DIR$/../tum-thesis-latex-master/main.out" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../tum-thesis-latex-master/main.pdf" beforeDir="false" afterPath="$PROJECT_DIR$/../tum-thesis-latex-master/main.pdf" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../tum-thesis-latex-master/main.synctex.gz" beforeDir="false" afterPath="$PROJECT_DIR$/../tum-thesis-latex-master/main.synctex.gz" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../tum-thesis-latex-master/main.tex" beforeDir="false" afterPath="$PROJECT_DIR$/../tum-thesis-latex-master/main.tex" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../tum-thesis-latex-master/main.toc" beforeDir="false" afterPath="$PROJECT_DIR$/../tum-thesis-latex-master/main.toc" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../tum-thesis-latex-master/pages/abstract.tex" beforeDir="false" afterPath="$PROJECT_DIR$/../tum-thesis-latex-master/pages/abstract.tex" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../tum-thesis-latex-master/settings.tex" beforeDir="false" afterPath="$PROJECT_DIR$/../tum-thesis-latex-master/settings.tex" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -114,11 +59,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="evaluation.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="evaluation.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/evaluation.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="136">
-              <caret line="397" column="9" selection-start-line="397" selection-start-column="4" selection-end-line="397" selection-end-column="9" />
+              <caret line="500" column="58" selection-start-line="500" selection-start-column="55" selection-end-line="500" selection-end-column="58" />
               <folding>
                 <element signature="e#0#13#0" expanded="true" />
               </folding>
@@ -126,11 +71,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="connection_component.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="connection_component.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/connection_component.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="102">
-              <caret line="6" column="24" selection-start-line="6" selection-start-column="24" selection-end-line="6" selection-end-column="24" />
+              <caret line="6" column="23" lean-forward="true" selection-start-line="6" selection-start-column="23" selection-end-line="6" selection-end-column="23" />
             </state>
           </provider>
         </entry>
@@ -979,16 +924,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/evaluation.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="397" column="9" selection-start-line="397" selection-start-column="4" selection-end-line="397" selection-end-column="9" />
-          <folding>
-            <element signature="e#0#13#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$USER_HOME$/.PyCharm2018.1/system/python_stubs/-1736918564/math.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="187">
@@ -1009,7 +944,17 @@
     <entry file="file://$PROJECT_DIR$/connection_component.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="102">
-          <caret line="6" column="24" selection-start-line="6" selection-start-column="24" selection-end-line="6" selection-end-column="24" />
+          <caret line="6" column="23" lean-forward="true" selection-start-line="6" selection-start-column="23" selection-end-line="6" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/evaluation.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="136">
+          <caret line="500" column="58" selection-start-line="500" selection-start-column="55" selection-end-line="500" selection-end-column="58" />
+          <folding>
+            <element signature="e#0#13#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

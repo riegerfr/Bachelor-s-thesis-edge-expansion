@@ -2014,22 +2014,21 @@
     <bcf:citekey order="16">ChanLTZ16</bcf:citekey>
     <bcf:citekey order="17">ChanLTZ16</bcf:citekey>
     <bcf:citekey order="18">ChanLTZ16</bcf:citekey>
-    <bcf:citekey order="19">ChanLTZ16</bcf:citekey>
-    <bcf:citekey order="20">LouisM14</bcf:citekey>
-    <bcf:citekey order="21">ChanLTZ16</bcf:citekey>
-    <bcf:citekey order="22">LouisM14</bcf:citekey>
-    <bcf:citekey order="23">ChanLTZ16</bcf:citekey>
+    <bcf:citekey order="19">LouisM14</bcf:citekey>
+    <bcf:citekey order="20">ChanLTZ16</bcf:citekey>
+    <bcf:citekey order="21">LouisM14</bcf:citekey>
+    <bcf:citekey order="22">ChanLTZ16</bcf:citekey>
+    <bcf:citekey order="23">LouisM14</bcf:citekey>
     <bcf:citekey order="24">LouisM14</bcf:citekey>
-    <bcf:citekey order="25">LouisM14</bcf:citekey>
-    <bcf:citekey order="26">ChanLTZ16</bcf:citekey>
+    <bcf:citekey order="25">ChanLTZ16</bcf:citekey>
+    <bcf:citekey order="26">ghoshal2009random</bcf:citekey>
     <bcf:citekey order="27">ghoshal2009random</bcf:citekey>
-    <bcf:citekey order="28">ghoshal2009random</bcf:citekey>
-    <bcf:citekey order="28">zhang2010hypergraph</bcf:citekey>
-    <bcf:citekey order="29">numpy</bcf:citekey>
-    <bcf:citekey order="30">scipy</bcf:citekey>
-    <bcf:citekey order="31">matplotlib</bcf:citekey>
-    <bcf:citekey order="32">zhang2010hypergraph</bcf:citekey>
-    <bcf:citekey order="33">ghoshal2009random</bcf:citekey>
+    <bcf:citekey order="27">zhang2010hypergraph</bcf:citekey>
+    <bcf:citekey order="28">numpy</bcf:citekey>
+    <bcf:citekey order="29">scipy</bcf:citekey>
+    <bcf:citekey order="30">matplotlib</bcf:citekey>
+    <bcf:citekey order="31">zhang2010hypergraph</bcf:citekey>
+    <bcf:citekey order="32">ghoshal2009random</bcf:citekey>
   </bcf:section>
   <!-- SORTING TEMPLATES -->
   <bcf:sortingtemplate name="none">

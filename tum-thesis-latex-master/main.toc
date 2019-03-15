@@ -33,46 +33,46 @@
 \defcounter {refsection}{0}\relax 
 \contentsline {section}{\numberline {4.2}Adding random edges}{16}{section.4.2}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {4.3}Bound on vertex degrees}{17}{section.4.3}
+\contentsline {section}{\numberline {4.3}Bound on vertex degrees}{18}{section.4.3}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {4.4}Sampling from low degree vertices}{19}{section.4.4}
+\contentsline {section}{\numberline {4.4}Sampling from low degree vertices}{18}{section.4.4}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {4.5}Resampling whole graph until connected}{20}{section.4.5}
+\contentsline {section}{\numberline {4.5}Resampling whole graph until connected}{21}{section.4.5}
 \defcounter {refsection}{0}\relax 
 \contentsline {section}{\numberline {4.6}Swapping edges at random}{21}{section.4.6}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {4.7}Creating of spanning tree}{21}{section.4.7}
+\contentsline {section}{\numberline {4.7}Creation of spanning tree}{22}{section.4.7}
 \defcounter {refsection}{0}\relax 
 \contentsline {section}{\numberline {4.8}Overview}{22}{section.4.8}
 \defcounter {refsection}{0}\relax 
-\contentsline {chapter}{\numberline {5}Implementation}{24}{chapter.5}
+\contentsline {chapter}{\numberline {5}Implementation}{25}{chapter.5}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {5.1}Technologies}{24}{section.5.1}
+\contentsline {section}{\numberline {5.1}Technologies}{25}{section.5.1}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {5.2}Code structure}{24}{section.5.2}
+\contentsline {section}{\numberline {5.2}Code structure}{25}{section.5.2}
 \defcounter {refsection}{0}\relax 
-\contentsline {chapter}{\numberline {6}Evaluation}{26}{chapter.6}
+\contentsline {chapter}{\numberline {6}Evaluation}{27}{chapter.6}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {6.1}Input graph sizes}{26}{section.6.1}
+\contentsline {section}{\numberline {6.1}Input graph sizes}{27}{section.6.1}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {6.2}Rank degree combinations}{28}{section.6.2}
+\contentsline {section}{\numberline {6.2}Rank degree combinations}{29}{section.6.2}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {6.3}Evaluation of k}{29}{section.6.3}
+\contentsline {section}{\numberline {6.3}Evaluation of k}{30}{section.6.3}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {6.4}Small expansion sizes}{29}{section.6.4}
+\contentsline {section}{\numberline {6.4}Small expansion sizes}{30}{section.6.4}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {6.5}Random graphs comparison}{31}{section.6.5}
+\contentsline {section}{\numberline {6.5}Random graphs comparison}{32}{section.6.5}
 \defcounter {refsection}{0}\relax 
 \contentsline {section}{\numberline {6.6}Estimation of C}{32}{section.6.6}
 \defcounter {refsection}{0}\relax 
 \contentsline {section}{\numberline {6.7}Comparison of expansion values}{32}{section.6.7}
 \defcounter {refsection}{0}\relax 
-\contentsline {chapter}{\numberline {7}Applications}{35}{chapter.7}
+\contentsline {chapter}{\numberline {7}Applications}{37}{chapter.7}
 \defcounter {refsection}{0}\relax 
-\contentsline {chapter}{\numberline {8}Conclusion and Further Work}{36}{chapter.8}
+\contentsline {chapter}{\numberline {8}Conclusion and Further Work}{38}{chapter.8}
 \defcounter {refsection}{0}\relax 
-\contentsline {chapter}{\nonumberline List of Figures}{37}{chapter*.17}
+\contentsline {chapter}{\nonumberline List of Figures}{39}{chapter*.17}
 \defcounter {refsection}{0}\relax 
-\contentsline {chapter}{\nonumberline List of Tables}{38}{chapter*.18}
+\contentsline {chapter}{\nonumberline List of Tables}{40}{chapter*.18}
 \defcounter {refsection}{0}\relax 
-\contentsline {chapter}{\nonumberline Bibliography}{39}{chapter*.19}
+\contentsline {chapter}{\nonumberline Bibliography}{41}{chapter*.19}

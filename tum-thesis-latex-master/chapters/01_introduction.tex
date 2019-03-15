@@ -25,7 +25,7 @@ In graph theory, a 2-graph $G := (V,E)$ is defined as a set of $n$ vertices $V =
 
 	\end{pgfonlayer}
 	
-	\node[elabel,color=yellow,label=right:\(e_1\)]  (e1) at (-3,0) {};
+	\node[elabel,color=yellow,label=right:\(e_1\)]  (e1) at (-2,0) {};
 	\node[elabel,below of=e1,color=blue,label=right:\(e_2\)]  (e2) {};
 
 	\end{tikzpicture}
@@ -35,7 +35,7 @@ In graph theory, a 2-graph $G := (V,E)$ is defined as a set of $n$ vertices $V =
 \end{figure}
 
 \section{Hypergraphs} \label{section:hypergraphs}
-This thesis mostly deals with a generalized form of 2-graphs, namely (hyper)graphs.
+This thesis deals with a generalized form of 2-graphs, namely (hyper)graphs.
 A weighted, undirected hypergraph $H = (V, E, w)$ consists of a set of $n$ vertices $V = \{v_1, \ldots, v_n\}$ and a set of $m$ (hyper-)edges $E = \{ e_1, \ldots , e_m | \forall i \in [i]: e_i \subseteq V \land e_i \neq \emptyset \} $ where every edge $e$ is a non-empty subset of $V$ and has a positive weight $w_e:= w(e) $, defined by the weight function $w: E \to  \mathbb{R}_+ $. An example for a hypergraph can be seen in \cref{fig:exapmlehypergraph}.
 
 
@@ -71,28 +71,28 @@ A weighted, undirected hypergraph $H = (V, E, w)$ consists of a set of $n$ verti
 
 
 The degree of a vertex $v\in V$ is defined as $deg(v) := |\{e\in E: v\in e\}|$, which is the count of edges which $v$ is in contact with.
-A hypergraph where every vertex has exactly degree $d$, formally $\forall v\in V : deg(v) =d $,  is called $d$-regular. Hence a 2-graph like defined in \cref{section:2-graph} is a 2-regular hypergraph.
+A hypergraph where every vertex has exactly degree $d$, formally $\forall v\in V : deg(v) =d $,  is called $d$-regular. Hence a 2-graph like defined in \cref{section:2-graph} is a 2-uniform hypergraph.
 A hypergraph where every edge contains exactly $r$ vertices, formally $\forall e\in E : |e| =r $ is called $r$-uniform.
 
-For $d$-regular, $r$-uniform hypergraphs, the following correlation with the number of vertices $n$ and the number of edges $m$ holds:
+For $d$-regular, $r$-uniform hypergraphs, the following correlation with $n$ vertices and the $m$ edges holds:
 \begin{equation}\label{eq:ndmr}
 	 n d = m r
 \end{equation}
- This can be verified in the following way: If a 'connection' is defined to be the where an edge and a vertex connect, one can count these connections from the vertices' perspective by summing up the degrees of all the vertices (which equals to $nd$ for regular graphs). But one can also consider the count of connections from the edges perspective by summing up the ranks of the edges, which equates to $mr$ for uniform graphs. As both ways count the same number of connections, \cref{eq:ndmr} holds. (TODO: source?)
+ This can be verified in the following way: If a 'connection' is defined to be the where an edge and a vertex connect, one can count these connections from the perspective of the vertices by summing up the degrees of all the vertices (which equals to $nd$ for regular graphs). Bu the count of connections can also be considered from the edges perspective by summing up the ranks of the edges, which equates to $mr$ for uniform graphs. As both ways count the same number of connections, \cref{eq:ndmr} holds.
  
  
 A path between two vertices $v_1,v_k\in V$ is a list of vertices $v_1, v_2 \ldots , v_k$ where each tuple of vertices following another is connected by an edge, i.e. $\forall i \in [k-1]\exists e \in E: u_i, u_{i+1} \in e  $. Hence, a path exists if it is possible to reach $v_k$ by hopping from one vertex to another by moving along the edges, starting at $v_1$.
-A connected component in a undirected graph is a subset of vertices $S\subseteq V$  where for every two vertices $u,v \in S$ there exists a path, between $u$ and $v$. Thus, within a connected component it is possible to reach every vertex from every other vertex. If $S=V$, the whole graph consists of only one connected component, ergo it is called connected.
+A connected component in a undirected graph is a subset of vertices $S\subseteq V$  where for every two vertices $u,v \in S$ there exists a path between $u$ and $v$. Thus, within a connected component it is possible to reach every vertex from every other vertex. If $S=V$, the whole graph consists of only one connected component, ergo it is called connected.
 
 \section{Cuts}
-On such hypergraphs certain properties can be described, which are of theoretical interest but also have influence on the behaviour of a system which is described by such a graph. Some of these properties are so called cuts. A cut is described by its cut-set $\emptyset \neq S \subsetneq V$, a non-empty strict subset of the vertices  $V$. Interesting cuts are for example the so called minimum cut or the maximum cut which are defined by the minimum (or maximum) number of edges (or their added weight for weighted graphs) going between the vertices of set $S$ and all the remaining vertices $V \setminus S$. Formally, this can be expressed by the following equation: \begin{equation}
+On such hypergraphs certain properties can be observed, which are of theoretical interest but also have influence on the behaviour of a system which is described by such a graph. Some of these properties are so-called cuts. A cut is defined by its cut-set $\emptyset \neq S \subsetneq V$, a non-empty strict subset of the vertices $V$. Interesting cuts are for example the so called minimum cut or the maximum cut which are defined by the minimum (or maximum) number of edges going between the vertices of set $S$ and all the remaining vertices $V \setminus S$. For weighted graphs, instead of the number of edges, their added weight is considered. Formally, this can be expressed by the following equation: \begin{equation}
 MinCut(G) := \min_{\emptyset \subsetneq S \subsetneq V} \sum_{e\in E:\exists u, v \in e: u \in S \land v \in V \setminus S } w_e
 \end{equation}
 For computing the minimum cut the Stoer–Wagner algorithm can be used, which has a polynomial time complexity in the number of vertices \cite{stoer1997simple}.
 The maximum cut problem however, is known to be NP-hard \cite{karp1972reducibility}.
 
 \section{Edge Expansion}
-The cut on which this thesis focuses on is the so-called edge expansion (also just expansion) of a graph, which is the quotient of the summed weight of the edges crossing $S$ and $V\setminus S$ and the minimum of the summed weight of all the vertices in $S$ or $V\setminus S$. The formal notation is introduced in the following and oriented on the article \cite{ChanLTZ16}, on which the crucial approximation algorithm of this thesis is based.
+The cut on which this thesis focuses on is the so-called edge expansion (also referred to as expansion) of a graph, which is the quotient of the summed weight of the edges crossing $S$ and $V\setminus S$ and the minimum of the summed weight of all the vertices in $S$ or $V\setminus S$. The formal notation which is introduced in the following and in \cref{chapter:notation} is found on the article, on which the crucial approximation algorithm of this thesis is based \cite{ChanLTZ16}.
 
 The set of edges which are cut by a subset of vertices $S$ contains all the edges, which contain at least one vertex in the set $S$ and at least one other vertex in $V\setminus S$ and is defined as \begin{equation}
 \partial S:= \{e\in E : e \cap S \neq \emptyset \land  e \cap (V \setminus S) \neq \emptyset  \}.
@@ -111,7 +111,7 @@ w(F) := \sum_{e\in F} w_e
 With that, the edge expansion of a non-empty set of vertices $S \subseteq V$ is defined by \begin{equation}
 \Phi(S):= \frac{w(\partial S)}{w(S)}.
 \end{equation}
-For a better understanding of the expansion, observe that $\Phi(S)$ is bounded: \begin{equation} \label{eq:phi_bounded}
+For better understanding of the expansion, observe that $\Phi(S)$ is bounded: \begin{equation} \label{eq:phi_bounded}
 \forall \emptyset \neq S \subseteq V : 0\le \Phi(S) \le 1 
 \end{equation} The first inequality holds because the edge-weights are positive. The second inequality holds because $w(S) \ge w(\partial S)$, as $w(S)$ takes at least every edge (and therefore the corresponding weight), which is also considered by $w(\partial S)$, into account.
 
@@ -121,7 +121,7 @@ With this, the expansion of a graph $H$ is defined as \begin{equation}
 \end{equation} Here again, $0\le \Phi(H)\le 1$ holds because of \cref{eq:phi_bounded}.
 
 In order to comprehend the edge expansion of a graph better, some special cases shall be considered.
-For non-connected graphs $\Phi(H) = 0$ holds, which can be verified by observing a $S$ which contains of the vertices of one connection component, as the cut would contain no edges. For an example refer to \cref{fig:exapmle_non_connected_hypergraph}. 
+For non-connected graphs $\Phi(H) = 0$ holds, which can be verified by observing a $S$ which contains only the vertices of one connection component, as the cut would contain no edges. For an example refer to \cref{fig:exapmle_non_connected_hypergraph}. 
 As this thesis focuses on finding sets $S$ with a low expansion value $\Phi(S)$, graphs with expansion $0$ are a trivial special case. Therefore, only connected graphs shall be of interest here.
 
 \begin{figure} [htpb]
@@ -155,11 +155,11 @@ As this thesis focuses on finding sets $S$ with a low expansion value $\Phi(S)$,
 	\caption[Example non-connected hypergraph]{An example for a non-connected hypergraph with two connection components. For $S:= \{v_5, v_6\} $ it can be verified that $\delta S = 0$, hence $\Phi(S) =\Phi(V\setminus S) = 0$. }\label{fig:exapmle_non_connected_hypergraph}
 \end{figure}
 
-Observe that for a graph $H$, which is obtained by connecting two connection components with an edge with small weight, $\Phi(H)$ takes a small value, which can be seen when $S$ is chosen to be one of the previously separated connection components. For a fully connected graph, where each vertex shares at least one edge with every other vertex, where every edge-weight takes the same value,  $\partial S$ is relatively high for every $S\subsetneq V$. Therefore $\Phi(S)$ and ultimately also $\Phi(H)$ will take a high value.
+Note that for a graph $H$, which is obtained by connecting two connection components with an edge with a relatively small weight, $\Phi(H)$ takes a small value, which can be seen when $S$ is chosen to be one of the previously separated connection components. For a fully connected graph, where each vertex shares at least one edge with every other vertex, where every edge-weight takes the same value,  $\partial S$ is relatively high for every $S\subsetneq V$. Therefore $\Phi(S)$ and ultimately also $\Phi(H)$ will take a high value.
 
 The problem of computing the expansion $\Phi(H)$ on a hypergraph is NP-hard, as it is already NP-hard on 2-uniform-graphs, a special case of hypergraphs \cite{kaibel2004expansion}.
 However, there exist polynomial time approximation algorithms for some relaxations of this problem, one of them will be focused on here:
-For certain applications, it can be interesting to find small expansion sets $S$, where the vertices are strongly connected within the set but only have a weak connection to the rest of the vertices, hence a set with a low expansion value $\Phi(S)$ is desired. Here, small refers to the number of vertices, so $|S|$ should be low compared to the total number of vertices $n = |V|$. In the presented algorithm, with high probability, sets which have at max a constant fraction $\frac{1}{c}$ of the total number of vertices $|V|$ are computed, formally $|S|\le \frac{|V|}{c}$.
+For certain applications like finding a group of friends in a social network, it can be interesting to find small expansion sets $S$, where the vertices are strongly connected within the set but only have a weak connection to the rest of the vertices, hence a set with a low expansion value $\Phi(S)$ is desired. Here, small refers to the number of vertices, so $|S|$ should be low compared to the total number of vertices $n = |V|$. In the presented algorithm, with high probability, sets which have at most a constant fraction $\frac{1}{c}$ of the total number of vertices $|V|$ are computed, formally $|S|\le \frac{|V|}{c}$.
 
 Finding such a $S$ will be achieved by \cref{alg:ses}, which was deducted from results in \cite{ChanLTZ16}. As the algorithm uses spectral properties of graphs, the required notation is introduced in \cref{chapter:notation}. In \cref{chapter:algorithms}, this algorithm and the algorithms it is based on as well as brute force solutions are presented.
 The involved constant shall be estimated in a empirical manner by running the algorithm multiple times on different random graphs, whose various creation methods are discussed in \cref{chapter:random_hypergraphs}.  Details regarding the implementation of the algorithms can be found in \cref{chapter:implementation}, which is followed by the evaluation of the results in \cref{chapter:Evaluation}. Possible applications of the algorithm are discussed in \cref{chapter:applications} and finally, \cref{chapter:resmue_further_work} elaborates on possible future work and completes the thesis.
@@ -168,8 +168,6 @@ The involved constant shall be estimated in a empirical manner by running the al
 
 
 
-
-TODO: fix small/low big/high everywhere
 
 
 

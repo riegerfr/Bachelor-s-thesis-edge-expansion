@@ -1,15 +1,15 @@
-import pickle
-import time
-import random
-import numpy as np
-import matplotlib.pyplot as plt
-from matplotlib.ticker import MaxNLocator
-from pathlib import Path
-import scipy.stats as stats
-from graph import Graph
 import math
-import scipy.optimize
+import pickle
+import random
+import time
+from pathlib import Path
 
+import matplotlib.pyplot as plt
+import numpy as np
+import scipy.stats as stats
+from matplotlib.ticker import MaxNLocator
+
+from graph import Graph
 from graph_log import Graph_Log
 
 min_weight = 0.1
@@ -18,14 +18,13 @@ max_weight = 1.1
 
 def evaluate_creation_algorithm(log_path=None, log_filename="creation_algorithm_log", number_vertices=12, rank=3,
                                 degree=3,
-                                graphs_per_algorithm=5,  # todo: 10?
+                                graphs_per_algorithm=5,
                                 plot=False):
     creation_algorithms_names = get_creation_algorithms(number_vertices, rank, degree)
 
     log = {"log_list": []}
     start_time = time.time()
-    for creation_algorithm, creation_algorithm_name in creation_algorithms_names:  # todo: log everything, store
-
+    for creation_algorithm, creation_algorithm_name in creation_algorithms_names:
         algorithm_start_time = time.time()
 
         print("creation algorithm " + str(creation_algorithm_name))
@@ -72,14 +71,13 @@ def evaluate_creation_algorithm(log_path=None, log_filename="creation_algorithm_
 
 
 def evaluate_quality(log_path=None, log_filename="quality_evaluation_log_called", number_vertices=20, rank=3, degree=3,
-                     graphs_per_algorithm=5,  # todo: 10?
+                     graphs_per_algorithm=5,
                      random_small_expansion_tries_per_graph=100, k=2, plot=False, random_repetitions_gaussian=100):
     creation_algorithms_names = get_creation_algorithms(number_vertices, rank, degree)
 
     log = {"log_list": []}
     start_time = time.time()
-    for creation_algorithm, creation_algorithm_name in creation_algorithms_names:  # todo: log everything, store
-
+    for creation_algorithm, creation_algorithm_name in creation_algorithms_names:
         algorithm_start_time = time.time()
 
         print("creation algorithm " + str(creation_algorithm_name))
@@ -108,7 +106,7 @@ def evaluate_quality(log_path=None, log_filename="quality_evaluation_log_called"
 
             result = graph.generate_small_expansion_set(
                 k, random_small_expansion_tries_per_graph,
-                random_repetitions_gaussian=random_repetitions_gaussian)  # todo: use different k_s
+                random_repetitions_gaussian=random_repetitions_gaussian)
             for small_expansion_vertices, small_expansion_value, c_estimate in result:
                 small_expansion_vertices_list.append(small_expansion_vertices)
                 small_expansion_value_list.append(small_expansion_value)
@@ -150,7 +148,7 @@ def evaluate_quality(log_path=None, log_filename="quality_evaluation_log_called"
 
 
 def get_creation_algorithms(number_vertices=12, rank=3, degree=3):
-    creation_algorithms = [  # todo: beautyfiy code, extract this
+    creation_algorithms = [
         (lambda graph: graph.create_connected_graph_random_edge_adding_resampling(number_vertices, rank, degree,
                                                                                   min_weight,
                                                                                   max_weight),
@@ -163,7 +161,7 @@ def get_creation_algorithms(number_vertices=12, rank=3, degree=3):
         (lambda graph: graph.create_connected_graph_spanning_tree_low_degrees(number_vertices, rank, degree, min_weight,
                                                                               max_weight), "spanning tree first")
 
-    ]  # todo: extend
+    ]
     return creation_algorithms
 
 
@@ -174,14 +172,14 @@ def save_log(log, log_filename, log_path):
         filehandler.close()
 
 
-def analyze_run_time_number_vertices(log_path, log_filename="number_vertices_all_logs", max_number_vertices = 25, k=3):
+def analyze_run_time_number_vertices(log_path, log_filename="number_vertices_all_logs", max_number_vertices=25, k=3):
     start_time = time.time()
     logs = {}
-    for i in range(6, max_number_vertices+1):
+    for i in range(6, max_number_vertices + 1):
         vertex_number_time = time.time()
         print("testing times on " + str(i) + " vertices")
         log = evaluate_quality(number_vertices=i, rank=3, degree=3,
-                               graphs_per_algorithm=2,  # todo: 10?
+                               graphs_per_algorithm=2,
                                random_small_expansion_tries_per_graph=20, k=k)
         logs[i] = log
         save_log(logs, log_filename, log_path)
@@ -210,7 +208,7 @@ def analyze_run_time_k(log_path, log_filename="k_all_logs", max_k=3, number_vert
 
 
 def analyze_run_time_rank_degree_combinations(log_path, log_filename="rank_degree_combinations_all_logs",
-                                              number_vertices=20, rank_degree_combinations=None, k = 2):
+                                              number_vertices=20, rank_degree_combinations=None, k=2):
     if rank_degree_combinations == None:
         rank_degree_combinations = [(2, 2), (3, 3), (4, 4), (5, 5), (6, 6), (7, 7), (8, 8), (2, 4), (4, 2), (2, 8),
                                     (8, 2), (3, 6), (6, 3), (4, 8), (8, 4)]
@@ -221,7 +219,7 @@ def analyze_run_time_rank_degree_combinations(log_path, log_filename="rank_degre
         print("testing times on for degree " + str(degree) + " and rank " + str(rank))
         log = evaluate_quality(
             number_vertices=number_vertices, rank=rank, degree=degree,
-            graphs_per_algorithm=2,  # todo: 10?
+            graphs_per_algorithm=2,
             random_small_expansion_tries_per_graph=20, k=k)
         logs[(rank, degree)] = log
         save_log(logs, log_filename, log_path)
@@ -268,10 +266,6 @@ def plot_times(log_path, log_filename, xlabel="", ylabel=""):
         small_expansion_times_combined.extend(small_expansion_times_this_number)
         number_vertices_combined_small_expansion.extend([key] * len(small_expansion_times_this_number))
 
-    # def func(n, t, t0) :
-    #     return np.power(n, t)+t0
-    # curve_fit_small_expansion = scipy.optimize.curve_fit(func, number_vertices_combined_small_expansion, small_expansion_times_combined)
-    # print("curve fit for small expansion: "+str(curve_fit_small_expansion))
     plt.scatter(number_vertices_combined_brute_force, brute_force_times_combined, label="brute-force algorithm")
     plt.scatter(number_vertices_combined_small_expansion, small_expansion_times_combined,
                 label="approximation algorithm")
@@ -324,16 +318,16 @@ def plot_values(log_path, log_filename):
         small_expansion_vertices_numbers.extend(small_expansion_vertices_numbers_this_graph)
 
         for expansion_size in set(
-                small_expansion_vertices_numbers_this_graph):  # [len(small_expansion_vertices) for small_expansion_vertices in graph_log.small_expansion_vertices_list]:
+                small_expansion_vertices_numbers_this_graph):
             indices_of_size = [i for i, n in enumerate(small_expansion_vertices_numbers_this_graph) if
-                               n == expansion_size]  # todo: simplify size/number
+                               n == expansion_size]
             small_expansion_values_of_size = [graph_log.small_expansion_value_list[i] for i in indices_of_size]
             best_small_expansions_each_size.append(min(small_expansion_values_of_size))
             respective_smallest_percentile.append(graph_log.brute_force_smallest_percentile_expansion[expansion_size])
 
     ax = plt.figure().gca()
     ax.hist(c_estimates)
-    print("c estimates:"+str(stats.describe(c_estimates)))
+    print("c estimates:" + str(stats.describe(c_estimates)))
     ax.xaxis.set_major_locator(MaxNLocator(integer=True))
     plt.xlabel('C values')
     plt.ylabel('Count')
@@ -350,44 +344,36 @@ def plot_values(log_path, log_filename):
     plt.show()
     plt.close()
 
-    plt.subplot(2,2,1)
+    plt.subplot(2, 2, 1)
     plt.plot([0, 1], [0, 1], ls="--", c=".3")
-    plt.scatter(small_expansion_values, lowest_expansion_values_for_same_size,alpha = 0.5,
+    plt.scatter(small_expansion_values, lowest_expansion_values_for_same_size, alpha=0.5,
                 label="small expansion vs lowest expansion")
     plt.xlabel('small set approximation')
     plt.ylabel('brute-force')
 
-    plt.subplot(2,2,2)
+    plt.subplot(2, 2, 2)
     plt.plot([0, 1], [0, 1], ls="--", c=".3")
 
-    plt.scatter(small_expansion_values, average_expansion_values_for_same_size,alpha = 0.5,
+    plt.scatter(small_expansion_values, average_expansion_values_for_same_size, alpha=0.5,
                 label="average brute-force")
 
     plt.xlabel('small set approximation')
     plt.ylabel('average value brute-force')
-    #plt.legend('best')
 
-    plt.subplot(2,2,3)
+    plt.subplot(2, 2, 3)
     plt.plot([0, 1], [0, 1], ls="--", c=".3")
     plt.scatter(small_expansion_values, median_expansion_values_for_same_size, alpha=0.5,
                 label="median brute-force")
     plt.xlabel('small set approximation')
     plt.ylabel('median value brute-force')
-    # plt.scatter(small_expansion_values, smallest_percentile_expansion_values_for_same_size,
-    #             label="small expansion vs 1 percentile expansion")
-    #plt.xlabel('small set approximation')
-    #plt.ylabel('best percentile brute-force')
-    plt.subplot(2,2,4)
+
+    plt.subplot(2, 2, 4)
     plt.plot([0, 1], [0, 1], ls="--", c=".3")
 
-
-    plt.scatter(best_small_expansions_each_size, respective_smallest_percentile,alpha = 0.5,
+    plt.scatter(best_small_expansions_each_size, respective_smallest_percentile, alpha=0.5,
                 label="lowest of small expansion vs 1 percentile expansion")
     plt.xlabel('best small set approximation')
     plt.ylabel('best percentile brute-force')
-   # plt.legend(loc='best')
-   # plt.xlabel('expansion value small expansion set approximation')
-   # plt.ylabel('expansion value brute-force')
     plt.subplots_adjust(left=None, bottom=None, right=None, top=None, wspace=0.5, hspace=0.5)
     plt.savefig(log_path / (log_filename + "_expansion_values_for_same_number_verticies.pdf"))
     plt.show()
@@ -439,7 +425,6 @@ def plot_creation_algorithm_differences(log_path, log_filename):
     brute_force_average_expansion_values = {}
     brute_force_smallest_percentile_expansion = {}
     for key in all_logs.keys():  # key: number_vertices/ rank/degree combination / k
-        number_vertices_in_expansion = []
         for graph_log in all_logs["log_list"]:
             if graph_log.creation_algorithm_number not in brute_force_lowest_expansion_values.keys():
                 brute_force_lowest_expansion_values[graph_log.creation_algorithm_number] = []
@@ -458,7 +443,7 @@ def plot_creation_algorithm_differences(log_path, log_filename):
     for creation_algorithm_name in brute_force_lowest_expansion_values.keys():
         plt.hist(brute_force_lowest_expansion_values[creation_algorithm_name], alpha=0.5,
                  label=str(creation_algorithm_name),
-                 bins=np.arange(0, 1, 0.05))  # todo: equal buckets
+                 bins=np.arange(0, 1, 0.05))
         print(stats.describe(brute_force_lowest_expansion_values[creation_algorithm_name]))
 
     plt.legend(loc='best')
@@ -487,32 +472,48 @@ def plot_creation_algorithm_differences(log_path, log_filename):
     plt.close()
 
 
-random.seed(123)
-np.random.seed(123)
+def evaluate():
+    log_path = Path("logs/")
+    n = 10
+    k = 2
+    graphs_per_algorithm = 3
+    plot_values(log_path, log_filename="quality_evaluation_log")
+    plot_times(log_path, log_filename="number_vertices_all_logs", xlabel="number of vertices", ylabel="time in s")
+    plot_expansion_sizes(log_path, log_filename="k_all_logs")
+    plot_creation_algorithm_differences(log_path, log_filename="creation_algorithm_log")
+    plot_times(log_path, log_filename="k_all_logs", xlabel="k", ylabel="time in s")
+    plot_times(log_path, log_filename="rank_degree_combinations_all_logs", xlabel="(rank, degree)", ylabel="time in s")
 
-log_path = Path("logs/")
-n = 20
-k=3
-graphs_per_algorithm = 3
-plot_values(log_path, log_filename="quality_evaluation_log")
-plot_times(log_path, log_filename="number_vertices_all_logs", xlabel="number of vertices", ylabel="time in s")
-plot_expansion_sizes(log_path, log_filename="k_all_logs")
-plot_creation_algorithm_differences(log_path, log_filename="creation_algorithm_log")
-plot_times(log_path, log_filename="k_all_logs", xlabel="k", ylabel="time in s")
-plot_times(log_path, log_filename="rank_degree_combinations_all_logs", xlabel="(rank, degree)", ylabel="time in s")
+    evaluate_quality(log_path, log_filename="quality_evaluation_log", number_vertices=n, rank=3, degree=3,
+                     graphs_per_algorithm=graphs_per_algorithm,
+                     random_small_expansion_tries_per_graph=100, k=k, plot=True)
+    evaluate_creation_algorithm(log_path, log_filename="creation_algorithm_log", number_vertices=n, rank=3,
+                                degree=3,
+                                graphs_per_algorithm=graphs_per_algorithm,
+                                plot=True)
 
-evaluate_quality(log_path, log_filename="quality_evaluation_log", number_vertices=n, rank=3, degree=3,
-                 graphs_per_algorithm=graphs_per_algorithm,  # todo: 10?
-                 random_small_expansion_tries_per_graph=100, k=k, plot=True)
-evaluate_creation_algorithm(log_path, log_filename="creation_algorithm_log", number_vertices=n, rank=3,
-                            degree=3,
-                            graphs_per_algorithm=graphs_per_algorithm,
-                            plot=True)
+    analyze_run_time_rank_degree_combinations(log_path, log_filename="rank_degree_combinations_all_logs",
+                                              number_vertices=n)
+    analyze_run_time_number_vertices(log_path, log_filename="number_vertices_all_logs", max_number_vertices=n)
+    analyze_run_time_k(log_path, log_filename="k_all_logs", number_vertices=n)
+
+    print("done")
 
 
-# analyze_run_time_rank_degree_combinations(log_path, log_filename="rank_degree_combinations_all_logs", number_vertices=n)
-# analyze_run_time_number_vertices(log_path, log_filename="number_vertices_all_logs", max_number_vertices=n)
-# analyze_run_time_k(log_path, log_filename="k_all_logs", number_vertices=n)
+def example():
+    graph = Graph()
+    graph.create_connected_graph_spanning_tree_low_degrees(number_vertices=10, rank=3, degree=3, min_weight=0.1,
+                                                           max_weight=1.1)
+    graph.brute_force_hypergraph_expansion()
+    result = graph.generate_small_expansion_set(k=3)
+    lowest_expansion_vertices, lowest_expansion, c_estimate = result[0]
+    print("vertices of the small expansion set " + str(lowest_expansion_vertices))
+    print("expansion value of the set " + str(lowest_expansion))
+    print("estimate for C for this set " + str(c_estimate))
 
-print("done")
 
+if __name__ == "__main__":
+    random.seed(123)
+    np.random.seed(123)
+    example()
+    evaluate()

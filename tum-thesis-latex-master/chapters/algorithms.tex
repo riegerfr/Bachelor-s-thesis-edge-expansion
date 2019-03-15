@@ -5,7 +5,7 @@ and also for sets of all possible sizes  %$ \Phi(S), |S|=i$
 are shown. Following, a more efficient approximation algorithm, which is based on the results of \cite{ChanLTZ16}, for finding small expansion sets is presented.
 %TODO: NP-hard? --> approximation needed
 %todo: which tense to use where?
-\section{Brute Force}
+\section{Brute-force}
 One obvious approach for generating the edge expansion $\Phi(H)$ of a hypergraph $H$ is to brute-force the problem like in \cref{alg:brute_force}.
 \begin{algorithm}[H]
 	\caption{Brute-force edge expansion on a hypergraph \label{alg:brute_force}}
@@ -75,7 +75,7 @@ For \cref{alg:brute_force_size} and \cref{alg:brute_force_size_just_one_side} th
 \section{Approximation of small expansion sets}
 
 As described in \cite{ChanLTZ16}, an algorithm for generating a random small expansion set can be derived by first creating a set of $k\ge2$  non-zero vectors $f_1, \ldots, f_k$, which are orthogonal in the weighted space and have a low maximal discrepancy ratio $\xi = max_{f_1, \ldots, f_k} D_w(f_k)$.
-Then, the set of vectors can be inputted to \cref{alg:small_set_expansion} which is algorithm 1 in \cite{ChanLTZ16}. There, the vectors are used to create an set of vertices which are then returned. The combination of these steps results in \cref{alg:ses}, which takes a graph $H$ and an integer $k \ge 2$ and returns a small expansion set. In the following, the subroutines of this algorithm shall be elaborated.
+Then, the set of vectors can be inputted to \cref{alg:small_set_expansion} which is algorithm 1 in \cite{ChanLTZ16}. There, the vectors are used to create a set of vertices which are then returned. The combination of these steps results in \cref{alg:ses}, which takes a graph $H$ and an integer $k \ge 2$ and returns a small expansion set. In the following, the subroutines of this algorithm shall be elaborated.
 
 \begin{algorithm}[htpb]
 	\caption{Find Small Expansion Set \label{alg:ses}} 
@@ -202,10 +202,10 @@ Here again, in the implementation, this algorithm is repeated several times as i
 \end{theorem}
 
 
-In \cref{alg:orthogonal_separator} a number of $l := \lceil \frac{\log_2 k}{1-\log_2 (1+\frac{2}{log_2 k})}\rceil$ assignments are sampled for each vertex $u \in V$ with the help of \cref{alg:sample_assignments}, which assigns a value $w_j(u) \in \{0,1\}$ to each vertex $u$ for $j \in [l]$. With that, for each vertex $u$, a word $W(u) =  w_1(u)w_2(u)\cdots w_l(u)$ can be defined out of the assignments. Then, a random $word$ is picked, depending on whether $n\ge 2^l$, either from $\{0,1\}^l$ or from all the constructed words with the same probability. In the latter case, $|V|-|W| $ new, distinct words are constructed, if there are duplicates within the words $W(u)$. $|W|$ refers to the number of unique words in $W$. The constructed words are added to the set of words to pick from. Following, a value $r\in(0,1)$ is chosen uniformly at random. Only those vertices $v$ whose word $W(v)$ equals the chosen word and whose vector $\tilde{u}_v$ is smaller than $r$ get selected into the set $S$, which is returned to \cref{alg:small_set_expansion}. In the implementation, if a word, is chosen that does not belong to any vertex, the process of sampling a word is repeated, as an empty $S$ would not be useful.
+In \cref{alg:orthogonal_separator} a number of $l := \lceil \frac{\log_2 k}{1-\log_2 (1+\frac{2}{log_2 k})}\rceil$ assignments are sampled for each vertex $u \in V$ with the help of \cref{alg:sample_assignments}, which assigns a value $w_j(u) \in \{0,1\}$ to each vertex $u$ for $j \in [l]$. With that, for each vertex $u$, a word $W(u) =  w_1(u)w_2(u)\cdots w_l(u)$ can be defined based on the assignments. Then, a random $word$ is picked, depending on whether $n\ge 2^l$, either from $\{0,1\}^l$ or from all the constructed words with the same probability. In the latter case, $|V|-|W| $ new distinct words are constructed, if there are duplicates within the words $W(u)$. $|W|$ refers to the number of unique words in $W$. The constructed words are added to the set of words to pick from. Following, a value $r\in(0,1)$ is chosen uniformly at random. Only those vertices $v$ whose word $W(v)$ equals the chosen word and whose vector $\tilde{u}_v$ is smaller than $r$ get selected into the set $S$, which is returned to \cref{alg:small_set_expansion}. In the implementation, if a word, is chosen that does not belong to any vertex, the process of sampling a word is repeated, as an empty $S$ would not be useful.
 
 \begin{algorithm}[htpb]
-\caption{Orthogonal Separator (combination of Lemma 18 and algorithm of Theorem 10 in \cite{LouisM14} (also Fact 6.7 in \cite{ChanLTZ16})) \label{alg:orthogonal_separator}} 
+\caption{Orthogonal Separator (combination of Lemma 18 and algorithm of Theorem 10 in \cite{LouisM14}; also Fact 6.7 in \cite{ChanLTZ16}) \label{alg:orthogonal_separator}} 
 
 \begin{algorithmic}
 	\Function{OrthogonalSeparator}{$\{\tilde{u}_v\}_{v\in V} , \beta = \frac{99}{100}, \tau = k$}
@@ -240,7 +240,7 @@ In \cref{alg:orthogonal_separator} a number of $l := \lceil \frac{\log_2 k}{1-\l
 \end{algorithmic}
 \end{algorithm}	
 
-For sampling the assignments, \cref{alg:sample_assignments} uses a Poisson process on $\mathbb{R}$ with rate $\lambda$. It is important to note that for one call of the algorithm, the times on which the events happen do not change. Therefore, given a time $t$, the process returns the number of events which have happened between $t_0 = 0$ and $t$. Observe that $t\in \mathbb{R}$ can also take negative values, which does not create a problem since in the Poisson process events happen continuously and $t_0$ can be set on any possible event, which naturally has predecessors.
+For sampling the assignments, \cref{alg:sample_assignments} uses a Poisson process on $\mathbb{R}$ with rate $\lambda$. It is important to note that for one call of the algorithm, the times on which the events happen in the specific Poisson process do not change. Therefore, given a time $t$, the process returns the number of events which have happened between $t_0 = 0$ and $t$. Observe that $t\in \mathbb{R}$ can also take negative values, which does not create a problem since in the Poisson process events happen continuously and $t_0$ can be set on any possible event, which naturally has predecessors.
 Additionally, a vector $g \in \mathbb{R}^k$ is created, where each component is sampled independently from a standard normal distribution $\mathcal{N}(0,1)$. Then, for each vertex $v$ and for $i = 1, 2, \ldots, l$ a 'time' $t = \langle g, \tilde{u}_v \rangle $ is calculated.
 Depending on whether the number of events that happened in the Poisson process between $t$ and $t_0$, is even or odd, $w_i(v)$ is set to $0$ or $1$. Finally, $w$ is returned.
 

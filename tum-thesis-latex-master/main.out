@@ -2,13 +2,13 @@
 \BOOKMARK [0][-]{chapter*.1}{Abstract}{}% 2
 \BOOKMARK [0][-]{toc.0}{Contents}{}% 3
 \BOOKMARK [0][-]{chapter.1}{Introduction}{}% 4
-\BOOKMARK [1][-]{section.1.1}{2-Graphs}{chapter.1}% 5
+\BOOKMARK [1][-]{section.1.1}{2-graphs}{chapter.1}% 5
 \BOOKMARK [1][-]{section.1.2}{Hypergraphs}{chapter.1}% 6
 \BOOKMARK [1][-]{section.1.3}{Cuts}{chapter.1}% 7
-\BOOKMARK [1][-]{section.1.4}{Edge Expansion}{chapter.1}% 8
+\BOOKMARK [1][-]{section.1.4}{Edge expansion}{chapter.1}% 8
 \BOOKMARK [0][-]{chapter.2}{Notation}{}% 9
 \BOOKMARK [0][-]{chapter.3}{Expansion Algorithms}{}% 10
-\BOOKMARK [1][-]{section.3.1}{Brute Force}{chapter.3}% 11
+\BOOKMARK [1][-]{section.3.1}{Brute-force}{chapter.3}% 11
 \BOOKMARK [1][-]{section.3.2}{Approximation of small expansion sets}{chapter.3}% 12
 \BOOKMARK [2][-]{subsection.3.2.1}{Creation of orthogonal vectors with low discrepancy ratio}{section.3.2}% 13
 \BOOKMARK [2][-]{subsection.3.2.2}{Calculating a small expansion set}{section.3.2}% 14

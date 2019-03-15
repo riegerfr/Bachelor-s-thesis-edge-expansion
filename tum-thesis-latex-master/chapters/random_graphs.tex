@@ -1,7 +1,7 @@
 \chapter{Random hypergraph generation }\label{chapter:random_hypergraphs}
 In order to evaluate the algorithms of \cref{chapter:algorithms}, hypergraphs are required as inputs. However, instead of creating a few hypergraphs by hand, they shall be generated at random in order to have a diverse array of graphs.
 
-The initial aim was to find an algorithm which creates random r-uniform, d-regular, connected hypergraphs with no doubled edges in an effective manner which is guaranteed to terminate, where effective refers to a polynomial time complexity in the number of vertices, rank and the number of edges or the desired degrees respectively. Additionally, every graph which fulfills these criteria shall be created with equal probability.
+The initial aim was to find an algorithm which creates random r-uniform, d-regular, connected hypergraphs with no doubled edges in an effective manner which is guaranteed to terminate. Here, effective refers to a polynomial time complexity in the number of vertices, rank and the number of edges or the desired degrees respectively. Additionally, every graph which fulfills these criteria shall be created with equal probability.
 
 However, this intention showed to be a non-trivial challenge. Therefore, several different approaches, which fulfill some of these criteria, will be discussed and their resulting graphs shall also be analyzed by their edge expansion.
 \section{Creating all graphs}
@@ -10,7 +10,7 @@ However, this intention showed to be a non-trivial challenge. Therefore, several
 	\caption{Generate by sampling from all graphs\label{alg:sample_all_graphs}} 
 	\begin{algorithmic}
 		\Function{GenerateAllGraphs}{$n, r, d, weightDistribution$}
-		\State $H_{n,r,d,  weightDistribution} = \{H: H\text{ d-regular, r-uniorm, connected, unique edges}\}$
+		\State $H_{n,r,d,  weightDistribution} = \{H: H\text{ d-regular, r-uniform, connected, unique edges}\}$
 	
 		\State return $ choose(H_{n,r,d,  weightDistribution})$ \Comment uniformly at random
 		\EndFunction 
@@ -40,7 +40,7 @@ This makes the algorithm guaranteed to terminate, as it contains no conditional 
 
 As there is no restriction on how the edges are to be added, every graph which fulfills the abovementioned criteria can be constructed. This can be verified by the following argument: Assume there is a $H = (V, E, w)$ which can not be constructed by \cref{alg:simple_random_graph}. Say $m:=|E|$. Chose any edge $e \in E$ and remove it (and the corresponding weight) to construct $H' = (V, E', w')$. It can be seen that $|E'|= |E|-1 = m-1 $. Hence, if this process is repeated until no edges are left, one can execute the algorithm's main loop and with non-zero probability chose exactly those edges (and their corresponding weights) which have been removed in the opposite order. In the end one would end up with exactly $H$ again, contradicting that it can not be constructed.
 
-However, the algorithm might never sample one vertex $v \in V$, therefore the rank of this vertex would be $0$ which does make the graph possibly non-regular (as other vertices would have a degree $>0$) and also not connected. Additionally, the algorithm does not guarantee to have no doubled edges. No statement can be made on whether the probability that one graph is constructed is equal to any other graph, as for that a more specific graph model would be required. In discussion of the other algorithms, this question shall be disregarded. The reader may be referred to \cite{ghoshal2009random} for further reference.
+However, the algorithm might never sample one vertex $v \in V$, therefore the rank of this vertex would be $0$, which does make the graph possibly non-regular (as other vertices would have a degree $>0$) and also not connected. Additionally, the algorithm does not guarantee to have no doubled edges. No statement can be made on whether the probability that one graph is constructed is equal to any other graph, as for that a more specific graph model would be required. In discussion of the other algorithms, this question shall be disregarded. The reader may be referred to \cite{ghoshal2009random} for further information.
 
 \section{Bound on vertex degrees}
 \begin{algorithm}
@@ -59,7 +59,7 @@ However, the algorithm might never sample one vertex $v \in V$, therefore the ra
 		\EndFunction
 	\end{algorithmic}
 \end{algorithm}	
-The first idea of \cref{alg:simple_random_graph} can be improved by ensuring the degree of the vertices do not exceed $d$, as shown in \cref{alg:GenerateRandomGraphBoundDegrees}. This algorithm repeatedly samples edges as long as there are at least $r$ vertices left which have a degree lower than $d$. It is again guaranteed to terminate, and the resulting graph is $r$-uniform, all possible graphs can be constructed and there is no guarantee for the graph to have unique edges, following a similar argumentation to \cref{alg:simple_random_graph}. Also, this algorithm is of polynomial runtime complexity, as there can be an upper bound on the number of executions of the loop: A graph on $n$ vertices with rank $r$ and a maximum degree $d$ can have at most $m \le \frac{nd}{r}$ edges according to \cref{eq:ndmr}. As every execution of the loop creates an edge, the loop will execute at most $m$ times. 
+The first idea of \cref{alg:simple_random_graph} can be improved by ensuring the degree of the vertices do not exceed $d$, as shown in \cref{alg:GenerateRandomGraphBoundDegrees}. This algorithm repeatedly samples edges as long as there are at least $r$ vertices left which have a degree lower than $d$. It is again guaranteed to terminate, the resulting graph is $r$-uniform, all possible graphs can be constructed and there is no guarantee for the graph to have unique edges, following a similar argumentation to \cref{alg:simple_random_graph}. Also, this algorithm is of polynomial runtime complexity, as there can be an upper bound on the number of executions of the loop: A graph on $n$ vertices with rank $r$ and a maximum degree $d$ can have at most $m \le \frac{nd}{r}$ edges according to \cref{eq:ndmr}. As every execution of the loop creates an edge, the loop will execute at most $m$ times. 
 
 
 
@@ -123,10 +123,10 @@ However, it is not guaranteed that this graph is connected, and it is possible t
 		\EndFunction 
 	\end{algorithmic}
 \end{algorithm}	
-To overcome these problems, the edges could only be sampled from the vertices with the smallest degrees like in \cref{alg:randomHypergraphSmallestDegrees}. If at some point there are less than $r$ vertices which share the lowest degree, as many vertices as needed for a full edge are sampled from the vertices, which have the next higher degree. Therefore, the degrees of the vertices are increased step by step and there is an upper bound on the difference in degrees $|deg(v)-deg(u)| <=1$. Therefore, it is not possible for some vertices to have the maximum degree already, while others do not have any edges yet, which might make it impossible for them to connect.
+To overcome these problems, the edges could only be sampled from the vertices with the smallest degrees, like in \cref{alg:randomHypergraphSmallestDegrees}. If at some point there are less than $r$ vertices which share the lowest degree, as many vertices as needed for a full edge are sampled from the vertices, which have the next higher degree. Therefore, the degrees of the vertices are increased step by step and there is an upper bound on the difference in degrees: $|deg(v)-deg(u)| <=1$. Therefore, it is not possible for some vertices to have the maximum degree already, while others do not have any edges yet, which might make it impossible for them to connect.
 
 The algorithm is guaranteed to terminate, and of polynomial time complexity for the same reasons as \cref{alg:GenerateRandomGraphBoundDegrees}.
-Again, the resulting graph is r-uniform, but it is also d-regular, assuming there exists an integer $m$ for the combination of $n, r$ and $d$ in \cref{eq:ndmr}.
+Again, the resulting graph is r-uniform, but it is also d-regular, assuming there exists an integer value for $m$ for the combination of $n, r$ and $d$ in \cref{eq:ndmr}.
 
 However, it is not guaranteed that all the possible graphs can be constructed: %If $n$ is a multiple of $r$ this algorithm always fills the degrees perfectly after another, meaning that for every
 This algorithm basically constructs the edges by $d$ separate $r$-matchings, where a matching is a set of edges which encompasses each vertex in the graph exactly once. %TODO: source/example
@@ -168,7 +168,7 @@ But not every graph can be dissembled into d r-matchings, as seen in the counter
 	\caption[Counterexample hypergraph]{An example for a 2-regular 2-uniform hypergraph which can not be constructed by \cref{alg:randomHypergraphSmallestDegrees}.  }\label{fig:counterexample_matching}
 \end{figure}
 
-Again, this graph is not necessarily connected, and some edges might be doubled, as it proves challenging to avoid the following situation: Assume a graph is being generated, only one edge is missing and $r$ vertices have degree $d-1$. However, there already exists an edge consisting of those $r$ vertices, hence the next edge would be a doubled edge. The first idea which might arise to solve this problem could be to keep a track of the combinations of vertices which are still possible as edges, combined with their remaining number of connections until they reach degree $d$, from the beginning. Then one could avoid choosing paths which end up with doubled edges. However, this seems to be virtually impossible due to the sheer number of combinations in $n\choose r$, the number of all possible first edges. Therefore, one other remaining way for ensuring unique edges is to resample the graphs (as whole or just some edges) if there are doubled edges. These options shall be discussed in the following.
+Again, this graph is not necessarily connected, and some edges might be doubled, as it proves challenging to avoid the following situation: Assume a graph is being generated, only one edge is missing and $r$ vertices have degree $d-1$. However, there already exists an edge consisting of those $r$ vertices, hence the next edge would be a doubled edge. The first idea which might arise to solve this problem could be to keep a track of the combinations of vertices which are still possible as edges, combined with their remaining number of connections until they reach degree $d$, from the beginning. Then one could avoid choosing paths which end up with doubled edges. However, this seems to be virtually impossible due to the sheer number of combinations in $n\choose r$, the number of all possible first edges. Therefore, one other remaining way for ensuring unique edges is to resample the graphs (as whole or just some edges) if there are doubled edges or the graphs are not connected. These options shall be discussed in the following.
 
 \section{Resampling whole graph until connected}
 Algorithm \ref{alg:GenerateRandomGraphWithResampling} resamples the whole graph, if the graph constructed by \cref{alg:simple_random_graph} is not connected. This way, the algorithm loses the property of guaranteed terminating. The expected runtime would depend on the probability of creating a graph which fulfills the requirements. However, this shall not be analyzed here. 
@@ -192,7 +192,7 @@ This algorithm can be extended by checking for more properties like containing n
 \end{algorithm}	
 
 \section{Swapping edges at random}
-Instead of resampling the whole graph, one could also modify the constructed graph by changing the edges in some way. In \cref{alg:swap_edges}, as long as the graph is not connected, two edges $e,f \in E$ are selected and out of those one vertex each, such that $u\in e, v\in f$. Then, if the vertices do not belong to the same connected component, they are removed from their respective edges and added to the other one. By only 'swapping' if they do not belong to the same connected component, it shall be ensured that the number of connected components does not increase, as there are some situations where this operation can split a connected component into two separate components.
+Instead of resampling the whole graph, one could also modify the constructed graph by changing the edges in some way. In \cref{alg:swap_edges}, as long as the graph is not connected, two edges $e,f \in E$ are selected and out of those one vertex each is sampled, such that $u\in e, v\in f$. Then, if the vertices do not belong to the same connected component, they are removed from their respective edges and added to the other one. By only 'swapping' if they do not belong to the same connected component, it shall be ensured that the number of connected components does not increase, as there are some situations where this operation can split a connected component into two separate components.
 
 As the graph initially created by \cref{alg:randomHypergraphSmallestDegrees} is d-regular, \cref{alg:swap_edges} will not change that, as for every edge which is removed from a vertex, another one is added. This also holds for the edges; therefore, the graph is also r-uniform. Doubled edges can still occur and it is not guaranteed that the algorithm terminates, as it might never swap those edges and vertices which would be needed for connecting the graph.
 
@@ -202,7 +202,7 @@ As the graph initially created by \cref{alg:randomHypergraphSmallestDegrees} is 
 
 	
 \begin{algorithm}%[htpb]
-		\caption{Generate by randomly swapping edges, \label{alg:swap_edges}} 
+		\caption{Generate by randomly swapping edges \label{alg:swap_edges}} 
 		\begin{algorithmic}
 			\Function{GenerateSwapEdges}{$n, r, d, weightDistribution$}
 			\State $G:=$ \Call{GenerateSampleSmallestDegrees}{$n, r, d, weightDistribution$}
@@ -225,7 +225,7 @@ As the graph initially created by \cref{alg:randomHypergraphSmallestDegrees} is 
 \section{Creation of spanning tree}
 One other approach for generating connected graphs is to ensure the graph is connected in the beginning by first creating a tree like  \cref{alg:spanning_tree} does. Therefore, at first, the main connection component is created by sampling a random edge. Then, until the graph is connected, for every new edge one vertex $v$ of degree $deg(v) = 1$ from the main connection component is sampled along with $r-1$ non-connected vertices. In case less than $r-1$ non-connected vertices remain, all of them will be combined to one edge and the remaining vertices are chosen from those with degree $1$.
 Afterwards, the edges are sampled from the vertices of lowest degree like in \cref{alg:randomHypergraphSmallestDegrees} in order to ensure regularity.
-Therefore, the graphs generated will again be d-regular and r-uniform and might contain doubled edges. The algorithm is guaranteed to terminate and of polynomial time complexity analogously to \cref{alg:randomHypergraphSmallestDegrees}.
+Therefore, the graphs generated will again be d-regular and r-uniform and might contain doubled edges. The algorithm is guaranteed to terminate and of polynomial time complexity and it is not known whether all possible graphs can be constructed, analogously to \cref{alg:randomHypergraphSmallestDegrees}.
 
 
 \begin{algorithm}%[htpb]
@@ -287,8 +287,8 @@ An overview of the properties of the discussed algorithms can be seen in \cref{t
 			\midrule
 			r-uniform 					&\cmark&\cmark&\cmark&\cmark&\cmark&\cmark&\cmark\\
 			d-regular 					&\cmark&\xmark&\xmark&\cmark&\xmark&\cmark&\cmark\\
-			unique edges 				&\cmark&\xmark&\xmark&\xmark&\xmark&\xmark&\xmark\\
-			connected 					&\cmark&\xmark&\xmark&\xmark&\cmark&\cmark&\cmark \\
+			unique edges guaranteed			&\cmark&\xmark&\xmark&\xmark&\xmark&\xmark&\xmark\\
+			connected guaranteed					&\cmark&\xmark&\xmark&\xmark&\cmark&\cmark&\cmark \\
 			guaranteed to terminate 				&\cmark&\cmark&\cmark&\cmark&\xmark&\xmark&\cmark\\
 		
 			polynomial time complexity	&\xmark&\cmark&\cmark&\cmark&? 	   &? 	  &\cmark \\

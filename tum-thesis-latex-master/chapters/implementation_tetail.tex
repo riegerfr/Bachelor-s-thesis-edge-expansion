@@ -1,10 +1,10 @@
 \chapter{Implementation}\label{chapter:implementation}
 
-The discussed algorithms of \cref{chapter:algorithms} were implemented in order to analyze the performance. In order to have graphs on which the performance can be verified, some of the hypergraph creation algorithms of \cref{chapter:random_hypergraphs} were implemented as well. This chapter shall give an overview over the used technologies and the structure of the code.
+The discussed algorithms of \cref{chapter:algorithms} were implemented to analyze the performance. In order to have graphs on which the performance can be verified, some of the hypergraph creation algorithms of \cref{chapter:random_hypergraphs} were implemented as well. This chapter shall give an overview over the used technologies and the structure of the code.
 
 \section{Technologies}
 The focus of the implementation is less on fast execution time but on demonstrating feasibility of the algorithms. Therefore, Python 3 in combination with several libraries is utilized.
-For vector representation and operations, NumPy \cite{numpy} proved useful and is therefore used. In order to optimize the semidefinite programming problem \cref{SDP}, the commonly used SciPy \cite{scipy} was chosen over less commonly used tools like cvxpy or cvxopt as an implementation using them proved problematic due to lack of information resources about them.
+For vector representation and operations, NumPy \cite{numpy} proved useful and is therefore used. In order to optimize the semidefinite programming problem SDP \ref{SDP}, the commonly used SciPy \cite{scipy} was chosen over less commonly used tools like cvxpy or cvxopt as an implementation using them proved problematic due to lack of information resources about them.
 For storing the results of the evaluation on graphs, Pickle is employed. In order to plot the graphs, Matplotlib \cite{matplotlib}, in special PyPlot was utilized.
 
 
@@ -41,7 +41,7 @@ A whole Graph $H$ is encapsulated by the class \textit{Graph}, which contains se
 		\ref{alg:spanning_tree} & \textit{create\_connected\_graph\_spanning\_tree\_low\_degrees} \\
 	
 	\end{tabular}
-	\caption[Algorithm implementation methods mapping]{Mapping the algorithms to the respective methods in the implementation.}\label{tab:algorithm_implementation_mapping}
+	\caption[Algorithm implementation methods mapping]{Mapping of the algorithms to the respective methods in the implementation.}\label{tab:algorithm_implementation_mapping}
 	
 \end{table}
 

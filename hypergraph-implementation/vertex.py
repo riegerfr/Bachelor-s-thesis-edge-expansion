@@ -4,13 +4,12 @@ class Vertex:
     def __init__(self, graph):
         self.graph = graph
         self.edges = []
-        # todo: measure?
         # this takes: O(n*m*r) memory
         self.weight = 0
         self.degree = 0
-        self.index = Vertex.indexes  # todo: use everywhere
+        self.index = Vertex.indexes
         Vertex.indexes += 1
-        self.connection_component = {self}  # todo: correct? or better ConnectionComponent({self})
+        self.connection_component = {self}
 
     def add_to_edge(self, edge):
         self.degree += 1
@@ -20,7 +19,7 @@ class Vertex:
         self.weight += edge.weight
         self.graph.total_vertex_weight += edge.weight
 
-    def recompute_weights_degrees(self):  # todo: needed?
+    def recompute_weights_degrees(self):
         weight = 0
         degree = 0
         for edge in self.edges:

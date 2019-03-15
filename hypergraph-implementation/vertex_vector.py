@@ -2,13 +2,13 @@ import random
 
 
 class Vertex_Vector:
-    def __init__(self, graph, values=None):  # todo: assert values have correct order
+    def __init__(self, graph, values=None):
         self.graph = graph
         self.vector = {}
         if values is not None:
             assert len(values) == len(graph.vertices)
             for i, vertex in enumerate(graph.vertices):
-                assert i == vertex.index  # todo: remove that
+                assert i == vertex.index
                 self.vector[vertex] = values[i]
         else:
             self.insert_random_values()

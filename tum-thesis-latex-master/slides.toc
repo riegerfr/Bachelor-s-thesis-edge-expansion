@@ -1,0 +1,18 @@
+\boolfalse {citerequest}\boolfalse {citetracker}\boolfalse {pagetracker}\boolfalse {backtracker}\relax 
+\babel@toc {american}{}
+\defcounter {refsection}{0}\relax 
+\beamer@sectionintoc {1}{Motivation}{2}{0}{1}
+\defcounter {refsection}{0}\relax 
+\beamer@sectionintoc {2}{Hypergraphs}{3}{0}{2}
+\defcounter {refsection}{0}\relax 
+\beamer@sectionintoc {3}{Edge expansion}{5}{0}{3}
+\defcounter {refsection}{0}\relax 
+\beamer@sectionintoc {4}{Algorithms}{8}{0}{4}
+\defcounter {refsection}{0}\relax 
+\beamer@sectionintoc {5}{Random Hypergraphs}{13}{0}{5}
+\defcounter {refsection}{0}\relax 
+\beamer@sectionintoc {6}{Evaluation}{18}{0}{6}
+\defcounter {refsection}{0}\relax 
+\beamer@sectionintoc {7}{Applications}{24}{0}{7}
+\defcounter {refsection}{0}\relax 
+\beamer@sectionintoc {8}{Wrap up}{25}{0}{8}
